@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIMPADU RT — RT 14 Modinan, Banyuraden, Gamping</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230B4D33'/%3E%3Cpath d='M16 32 32 18l16 14' stroke='%23F0A422' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M22 32v14h20V32' stroke='%23fff' stroke-width='4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#152A1E; --pine:#0B4D33; --pine-d:#083A26; --leaf:#1F7A4D; --mint:#E7F2EA; --mint-2:#F2F8F3;
+  --amber:#F0A422; --amber-d:#B97A0E; --amber-s:#FDF3DC; --red:#D64545; --red-s:#FBEAEA;
+  --paper:#F4F7F2; --card:#fff; --line:#DCE6DD; --muted:#63776B;
+  --disp:"Bricolage Grotesque",sans-serif; --body:"Plus Jakarta Sans",sans-serif; --mono:"Space Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--paper);font-size:14.5px;line-height:1.55;text-shadow:none;-webkit-text-stroke:0}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%230B4D33' stroke-opacity='.05'%3E%3Cellipse cx='28' cy='10' rx='7' ry='12'/%3E%3Cellipse cx='28' cy='46' rx='7' ry='12'/%3E%3Cellipse cx='10' cy='28' rx='12' ry='7'/%3E%3Cellipse cx='46' cy='28' rx='12' ry='7'/%3E%3Ccircle cx='28' cy='28' r='2.4'/%3E%3C/g%3E%3C/svg%3E")}
+::selection{background:var(--amber);color:#3A2A05}
+button{font-family:inherit;text-shadow:none}
+img{display:block;max-width:100%}
+h1,h2,h3,h4{font-family:var(--disp);line-height:1.15;letter-spacing:-.01em}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.kicker{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf)}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+
+.fld{margin-top:14px}
+.fld label{display:block;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.inp{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink);transition:.15s}
+.inp:focus{outline:none;border-color:var(--leaf);box-shadow:0 0 0 3px rgba(31,122,77,.14)}
+textarea.inp{resize:vertical;min-height:90px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;border:1px solid transparent;font-weight:800;font-size:13.5px;cursor:pointer;transition:.18s;text-decoration:none;color:var(--ink)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.ui-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex-shrink:0;vertical-align:middle}
+.ui-icon svg{width:100%;height:100%;display:block;stroke:currentColor;fill:none;stroke-width:1.85;stroke-linecap:round;stroke-linejoin:round}
+.ui-icon svg .fill{fill:currentColor;stroke:none}
+.btn-pine{background:var(--pine);color:#fff;box-shadow:0 8px 18px -8px rgba(11,77,51,.5)}
+.btn-pine:hover{background:#0D5E3F}
+.btn-amber{background:var(--amber);color:#3A2A05;box-shadow:0 8px 18px -8px rgba(240,164,34,.6)}
+.btn-ghost{background:#fff;border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--leaf);color:var(--pine)}
+.btn-red{background:var(--red);color:#fff}
+.btn-sm{padding:7px 12px;font-size:12.5px;border-radius:8px}
+.btn-block{width:100%;justify-content:center}
+.demo-chips{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.demo-chips button{flex:1;min-width:100px;border:1.5px dashed var(--line);background:var(--mint-2);border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
+.demo-chips button:hover{border-color:var(--leaf);background:var(--mint)}
+.demo-chips b{display:block;color:var(--pine)}
+.login-err{display:none;margin-top:12px;background:var(--red-s);color:var(--red);font-size:12.5px;font-weight:700;padding:9px 12px;border-radius:9px}
+.shake{animation:shake .4s !important}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+.app{display:flex;flex-direction:column;min-height:100vh}
+.sidebar{width:100%;position:sticky;top:0;z-index:70;background:linear-gradient(180deg,rgba(8,58,38,0.96),rgba(11,77,51,0.96));color:#EAF6EE;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px 12px;border-bottom:1px solid rgba(255,255,255,.12);box-shadow:0 10px 20px -18px rgba(8,40,26,.9);transition:transform .28s}
+.sb-head{display:flex;align-items:center;gap:12px;padding:8px 6px;min-width:180px}
+.sb-head h3{font-size:17px}
+.sb-head p{font-size:11px;color:#9DC5AE;font-weight:600}
+.sb-nav{display:flex;align-items:center;flex:1;flex-wrap:wrap;gap:8px;padding:4px 0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.sb-nav::-webkit-scrollbar{display:none}
+.sb-grp{font-size:10px;font-weight:800;letter-spacing:.16em;color:#7FA892;padding:0 8px 0 0;display:none}
+.nv{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;color:#F5FAF6;font-weight:800;font-size:12.8px;cursor:pointer;position:relative;transition:.18s ease;text-decoration:none;border:0;background:rgba(255,255,255,.02);white-space:nowrap;text-align:left;box-shadow:none;text-shadow:none;line-height:1.2;letter-spacing:.01em;opacity:.94}
+.nv:hover{background:rgba(255,255,255,.08);color:#FFFFFF;transform:translateY(-1px)}
+.nv.on{background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.09));color:#FFFFFF;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);text-shadow:none;opacity:1}
+.nv.on::before{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:3px;border-radius:99px;background:var(--amber)}
+.nv .pill{margin-left:2px;background:var(--amber);color:#3A2A05;font-size:9.5px;font-weight:800;border-radius:99px;padding:1px 6px;box-shadow:0 8px 12px -10px rgba(240,164,34,.8)}
+.sb-foot{padding:8px 8px 2px;font-size:11px;color:#8FB8A1;white-space:nowrap}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(244,247,242,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px 22px}
+.hbg{display:none;background:none;border:1.5px solid var(--line);border-radius:9px;width:38px;height:38px;cursor:pointer;align-items:center;justify-content:center}
+.tb-title h2{font-size:18px}
+.tb-title p{font-size:11.5px;color:var(--muted)}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.bell{position:relative}
+.bell-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;display:grid;place-items:center;transition:.15s;position:relative}
+.bell-btn:hover{border-color:var(--leaf);transform:translateY(-1px)}
+.bell-dot{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:99px;display:grid;place-items:center;padding:0 4px;border:2px solid var(--paper)}
+.bell-panel{position:absolute;right:0;top:calc(100% + 10px);width:min(360px,88vw);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 50px -20px rgba(11,77,51,.35);display:none;overflow:hidden}
+.bell-panel.open{display:block;animation:fadeUp .22s}
+.bell-panel header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:800;font-family:var(--disp)}
+.bp-list{max-height:340px;overflow:auto}
+.bp-item{display:flex;gap:11px;padding:12px 16px;border-bottom:1px solid var(--mint);cursor:pointer;transition:.12s}
+.bp-item:hover{background:var(--mint-2)}
+.bp-item.unread{background:var(--amber-s)}
+.u-chip{display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:5px 12px 5px 5px}
+.u-ava{width:32px;height:32px;border-radius:50%;background:var(--pine);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+.u-chip b{font-size:12.5px;display:block;line-height:1.1}
+.u-chip span{font-size:10.5px;color:var(--muted);font-weight:700}
+.content{padding:22px;flex:1}
+.foot{padding:18px 22px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between}
+
+.page{display:none}.page.active{display:block;animation:fadeUp .35s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px}
+.card .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;border-bottom:1px solid var(--mint)}
+.card .hd h3{font-size:16px}
+.pad{padding:20px}
+.hov{transition:.18s}.hov:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(11,77,51,.35)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.split{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;align-items:start}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;white-space:nowrap}
+.b-green{background:var(--mint);color:var(--pine)}
+.b-amber{background:var(--amber-s);color:var(--amber-d)}
+.b-red{background:var(--red-s);color:var(--red)}
+.b-gray{background:#EEF1EE;color:var(--muted)}
+.b-blue{background:#E3EEF7;color:#1F5E86}
+.b-pine{background:var(--pine);color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.pulse{position:relative}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--red);animation:pl 1.4s infinite}
+@keyframes pl{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:7px 15px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--leaf)}
+.chip.on{background:var(--pine);border-color:var(--pine);color:#fff}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search{position:relative;flex:1;min-width:200px}
+.search input{padding-left:16px}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th{text-align:left;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--line);white-space:nowrap}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--mint);vertical-align:middle}
+.tbl tbody tr{transition:.12s}
+.tbl tbody tr:hover{background:var(--mint-2)}
+.tbl .num{font-family:var(--mono);font-size:12.5px}
+.avt{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px;flex-shrink:0}
+.avt.sm{width:30px;height:30px;border-radius:9px;font-size:12px}
+.stat{position:relative;overflow:hidden;border-radius:14px;padding:18px;border:1px solid var(--line);background:#fff;transition:.18s}
+.stat:hover{transform:translateY(-3px);box-shadow:0 16px 32px -20px rgba(11,77,51,.4)}
+.stat .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px}
+.stat b{display:block;font-family:var(--disp);font-size:30px;font-weight:800;line-height:1}
+.stat span{font-size:12px;color:var(--muted);font-weight:700}
+.stat.dark{background:linear-gradient(140deg,var(--pine-d),var(--pine));color:#fff;border:0}
+.stat.dark span{color:#A8CEB9}
+.pbar{height:9px;background:#EDF2ED;border-radius:99px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--leaf),var(--amber));border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.ticker{display:flex;align-items:center;background:var(--amber-s);border:1px solid #F2DCA8;border-radius:12px;overflow:hidden;margin-bottom:16px}
+.ticker .tk-lab{background:var(--amber);color:#3A2A05;font-weight:800;font-size:11.5px;letter-spacing:.08em;padding:10px 14px;display:flex;gap:7px;align-items:center;white-space:nowrap;z-index:1}
+.tk-wrap{overflow:hidden;flex:1}
+.tk-track{display:flex;gap:56px;width:max-content;padding:10px 0;animation:tick 30s linear infinite;font-weight:600;font-size:13px;color:#6B4E12}
+.tk-wrap:hover .tk-track{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(-50%)}}
+.hero{position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(130deg,var(--pine-d),var(--pine) 55%,#116B46);color:#fff;padding:30px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.hero::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.09'%3E%3Cellipse cx='28' cy='10' rx='7' ry='12'/%3E%3Cellipse cx='28' cy='46' rx='7' ry='12'/%3E%3Cellipse cx='10' cy='28' rx='12' ry='7'/%3E%3Cellipse cx='46' cy='28' rx='12' ry='7'/%3E%3Ccircle cx='28' cy='28' r='2.4'/%3E%3C/g%3E%3C/svg%3E")}
+.hero::after{content:"";position:absolute;right:-70px;top:-90px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(240,164,34,.4),transparent 70%)}
+.hero>*{position:relative;z-index:1}
+.hero h1{font-size:clamp(24px,3vw,36px);font-weight:800}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero p{color:#C7E2D2;max-width:52ch;margin-top:6px;font-size:14px}
+.hero .acts{display:flex;gap:10px;flex-wrap:wrap}
+.dt-blk{width:48px;flex-shrink:0;border-radius:11px;background:var(--mint);text-align:center;padding:7px 4px}
+.dt-blk b{display:block;font-family:var(--disp);font-size:19px;color:var(--pine);line-height:1}
+.dt-blk span{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--leaf);letter-spacing:.08em}
+.tl-item{display:flex;gap:13px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.tl-item:last-child{border:0}
+.ann-card{border-left:4px solid var(--leaf);background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:12px;padding:16px;transition:.18s}
+.ann-card:hover{transform:translateX(4px);box-shadow:0 12px 26px -18px rgba(11,77,51,.4)}
+.ann-card.darurat{border-left-color:var(--red);background:linear-gradient(90deg,#FFF6F6,#fff 55%)}
+.steps{display:flex;margin-top:10px}
+.stp{flex:1;text-align:center;position:relative;font-size:10.5px;font-weight:800;color:var(--muted)}
+.stp::before{content:"";display:block;width:14px;height:14px;border-radius:50%;background:#E2E9E2;border:3px solid #fff;box-shadow:0 0 0 1.5px #D4DED5;margin:0 auto 5px;position:relative;z-index:1}
+.stp::after{content:"";position:absolute;top:6px;left:50%;width:100%;height:3px;background:#E2E9E2}
+.stp:last-child::after{display:none}
+.stp.done{color:var(--pine)}
+.stp.done::before{background:var(--leaf);box-shadow:0 0 0 1.5px var(--leaf)}
+.stp.done::after{background:var(--leaf)}
+.stp.cur{color:var(--amber-d)}
+.stp.cur::before{background:var(--amber);animation:pl2 1.6s infinite}
+@keyframes pl2{0%{box-shadow:0 0 0 1.5px var(--amber)}70%{box-shadow:0 0 0 7px rgba(240,164,34,0)}100%{box-shadow:0 0 0 1.5px var(--amber)}}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cal .dow{font-size:10px;font-weight:800;text-align:center;color:var(--muted);padding:4px 0;text-transform:uppercase}
+.cal-cell{aspect-ratio:1;border-radius:9px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.14s;background:var(--mint-2)}
+.cal-cell:hover{border-color:var(--leaf);transform:scale(1.06)}
+.cal-cell.blank{background:none;cursor:default}
+.cal-cell.today{background:var(--pine);color:#fff;font-weight:800}
+.cal-cell.sel{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber-s)}
+.dots{display:flex;gap:3px}.dots i{width:5px;height:5px;border-radius:50%;display:block}
+.bars{display:flex;align-items:flex-end;gap:14px;height:190px;padding-top:10px}
+.bar-g{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar-pair{display:flex;gap:4px;align-items:flex-end;width:100%;height:100%;justify-content:center}
+.bar{width:16px;border-radius:6px 6px 2px 2px;transform-origin:bottom;animation:grow .7s cubic-bezier(.2,.8,.2,1) both;cursor:pointer}
+.bar.in{background:linear-gradient(180deg,var(--leaf),var(--pine))}
+.bar.out{background:linear-gradient(180deg,#F2B04C,var(--amber-d))}
+.bar:hover{filter:brightness(1.12)}
+@keyframes grow{from{transform:scaleY(0)}}
+.bar-lab{font-size:10.5px;font-weight:800;color:var(--muted)}
+.donut{border-radius:50%;position:relative;flex-shrink:0}
+.donut::after{content:"";position:absolute;inset:26%;background:#fff;border-radius:50%}
+.donut b{position:absolute;inset:0;display:grid;place-items:center;z-index:1;font-family:var(--disp)}
+.legend li{display:flex;align-items:center;gap:9px;font-size:13px;padding:5px 0;list-style:none}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:9px}
+.cat{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:.15s;font-size:12px;font-weight:700}
+.cat:hover{border-color:var(--leaf);transform:translateY(-2px)}
+.cat .em{font-size:22px;display:block;margin-bottom:5px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.ph{border-radius:12px;overflow:hidden;position:relative;aspect-ratio:4/3;background:var(--mint)}
+.ph img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.ph:hover img{transform:scale(1.08)}
+.ph figcaption{position:absolute;inset:auto 0 0 0;padding:20px 10px 8px;background:linear-gradient(transparent,rgba(8,40,26,.85));color:#fff;font-size:11.5px;font-weight:700}
+.gal-x{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(8,40,26,.75);color:#fff;border:0;cursor:pointer;display:grid;place-items:center;z-index:2;transition:.15s}
+.gal-x:hover{background:var(--red)}
+.hscroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+.hscroll>*{scroll-snap-align:start;flex-shrink:0}
+.tabs{display:flex;gap:6px;border-bottom:2px solid var(--line);margin-bottom:18px;overflow-x:auto}
+.tab{padding:10px 18px;font-weight:800;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;background:none;border-top:0;border-left:0;border-right:0}
+.tab.on{color:var(--pine);border-bottom-color:var(--amber)}
+.icobtn{width:34px;height:34px;border-radius:10px;border:1px solid #DDE8E0;background:linear-gradient(180deg,#fff,#F6FAF7);cursor:pointer;display:grid;place-items:center;transition:.16s ease;color:var(--ink);box-shadow:0 2px 8px rgba(11,77,51,.05);text-shadow:none}
+.icobtn:hover{border-color:rgba(31,122,77,.35);background:linear-gradient(180deg,#EEF8F1,#F8FBF8);color:var(--pine);transform:translateY(-2px);box-shadow:0 10px 18px -12px rgba(11,77,51,.26)}
+.icobtn.red{background:linear-gradient(180deg,#fff,#FFF7F7);color:var(--red);border-color:#F0D8D8}
+.icobtn.red:hover{border-color:rgba(214,69,69,.42);background:linear-gradient(180deg,#FFF1F1,#FFF8F8);color:var(--red);box-shadow:0 10px 18px -12px rgba(214,69,69,.22)}
+.note{background:var(--amber-s);border:1px solid #F2DCA8;color:#6B4E12;border-radius:11px;padding:11px 14px;font-size:12.5px;font-weight:600}
+.ovl{position:fixed;inset:0;background:rgba(8,35,22,.55);z-index:90;display:none;place-items:center;padding:18px}
+.ovl.open{display:grid}
+.modal{background:#fff;border-radius:16px;width:min(600px,94vw);max-height:90vh;overflow:auto;animation:pop .25s}
+.modal>header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:1}
+.modal>header h3{font-size:17px}
+.mbody{padding:20px}
+.mrow{display:grid;grid-template-columns:1.4fr .5fr 1fr 1fr 34px;gap:7px;margin-bottom:7px;align-items:center}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#toasts{position:fixed;bottom:20px;right:20px;z-index:120;display:flex;flex-direction:column;gap:9px}
+.toast{background:var(--pine-d);color:#fff;padding:13px 18px;border-radius:12px;font-size:13.5px;font-weight:600;display:flex;gap:10px;align-items:center;box-shadow:0 16px 34px -14px rgba(8,40,26,.6);animation:toastIn .3s cubic-bezier(.2,.8,.2,1);max-width:340px}
+.toast.err{background:#7C2020}.toast.warn{background:#7A5510}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.95)}}
+.reveal{opacity:0;transform:translateY(18px);transition:.6s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.orgchart-top{display:flex;justify-content:center;margin-bottom:14px}
+.pcard{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:13px;background:#fff;transition:.18s}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 14px 28px -18px rgba(11,77,51,.35);border-color:var(--leaf)}
+.pcard b{display:block;font-size:14px}
+.pcard span{font-size:12px;color:var(--muted);font-weight:600}
+.news-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:.2s;cursor:pointer}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 18px 36px -20px rgba(11,77,51,.4)}
+.news-card .img{aspect-ratio:16/9;overflow:hidden}
+.news-card .img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.news-card:hover .img img{transform:scale(1.06)}
+.rep-card{border:1px solid var(--line);border-radius:14px;padding:20px;background:#fff;transition:.18s;display:flex;flex-direction:column;gap:10px}
+.rep-card:hover{transform:translateY(-3px);box-shadow:0 16px 32px -20px rgba(11,77,51,.35)}
+.rep-card .top{display:flex;align-items:center;gap:12px}
+.gate{min-height:55vh;display:grid;place-items:center;text-align:center;padding:20px}
+.gate .em{font-size:46px}
+.gate h2{font-size:26px;margin:10px 0 8px}
+.rowact{display:flex;gap:6px;align-items:center}
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:55;padding:6px 4px calc(6px + env(safe-area-inset-bottom));grid-template-columns:repeat(5,1fr)}
+.bnav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:800;color:var(--muted);cursor:pointer;padding:6px 2px;position:relative;border-radius:10px}
+.bnav button.on{color:var(--pine)}
+.bnav .pill{position:absolute;top:1px;right:calc(50% - 20px);background:var(--red);color:#fff;font-size:9px;border-radius:99px;padding:1px 5px}
+.scrim{display:none;position:fixed;inset:0;background:rgba(8,35,22,.45);z-index:58}
+.scrim.show{display:block}
+.empty{text-align:center;padding:36px 16px;color:var(--muted)}
+.empty .em{font-size:34px;display:block;margin-bottom:8px}
+
+@media (max-width:1080px){
+  .sidebar{position:sticky;transform:none;box-shadow:none;justify-content:center;padding:10px 14px}
+  .sb-nav{justify-content:center}
+  .main{margin-left:0}
+  .hbg{display:none}
+  .g5{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:760px){
+  .sidebar{padding:8px 10px;position:static}
+  .sb-head{padding:6px 4px;min-width:0}
+  .sb-head p{display:none}
+  .sb-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;justify-content:flex-start;white-space:normal;overflow:visible;padding:4px 0 6px;scrollbar-width:none}
+  .sb-nav::-webkit-scrollbar{display:none}
+  .nv{padding:10px 8px;font-size:12px;border-radius:9px;justify-content:flex-start;min-width:0}
+  .nv .pill{font-size:8.5px;padding:1px 5px}
+  .content{padding:14px;padding-bottom:86px}
+  .split,.g2,.g3{grid-template-columns:1fr}
+  .g4,.g5{grid-template-columns:repeat(2,1fr)}
+  .bnav{display:grid}
+  .foot{display:none}
+  .topbar{padding:10px 14px}
+  .u-chip div{display:none}
+  .hero{padding:22px}
+  .mrow{grid-template-columns:1fr 1fr 34px}
+  .mrow .inp:nth-child(4){grid-column:1/3}
+  .f2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="scrim" id="scrim" data-act="drawer"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head"><span id="sbMark"></span><div><h3>SIMPADU RT</h3><p id="sbSub">RT 14 · Modinan · Banyuraden Gamping</p></div></div>
+    <nav class="sb-nav" id="sbNav"></nav>
+    <div class="sb-foot" id="sbFoot">© Kalurahan Banyuraden</div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hbg" data-act="drawer" title="Menu">☰</button>
+      <div class="tb-title"><h2 id="tbTitle">Beranda</h2><p id="tbDate"></p></div>
+      <div class="tb-right" id="tbRight"></div>
+    </header>
+
+    <main class="content" id="pages">
+      <section class="page" id="pg-beranda"></section>
+      <section class="page" id="pg-kontak"></section>
+      <section class="page" id="pg-warga"></section>
+      <section class="page" id="pg-pengumuman"></section>
+      <section class="page" id="pg-agenda"></section>
+      <section class="page" id="pg-keuangan"></section>
+      <section class="page" id="pg-pengaduan"></section>
+      <section class="page" id="pg-berita"></section>
+      <section class="page" id="pg-laporan"></section>
+      <section class="page" id="pg-notifikasi"></section>
+      <section class="page" id="pg-pengaturan"></section>
+    </main>
+
+    <footer class="foot"><span>© RT 14 Padukuhan Modinan, Kalurahan Banyuraden, Kapanewon Gamping, Kab. Sleman, DIY</span><span>SIMPADU — Sistem Informasi Terpadu Warga</span></footer>
+  </div>
+
+  <nav class="bnav" id="bnav"></nav>
+</div>
+
+<div class="ovl" id="ovl">
+  <div class="modal" id="mBox">
+    <header><h3 id="mTitle">Modal</h3><button class="icobtn" data-act="close">✕</button></header>
+    <div class="mbody" id="mBody"></div>
+  </div>
+</div>
+<div id="toasts"></div>
+
+<script>
+/* ================= UTIL ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rupiah=n=>"Rp "+Math.round(n).toLocaleString("id-ID");
+const BULAN=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const BULANS=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const todayStr=()=>iso(new Date());
+const fmtTgl=t=>{if(!t)return"-";const d=new Date(t+"T00:00");return d.getDate()+" "+BULANS[d.getMonth()]+" "+d.getFullYear()};
+function rel(isoStr){const s=(Date.now()-new Date(isoStr))/1000;if(s<60)return"baru saja";if(s<3600)return Math.floor(s/60)+" mnt lalu";if(s<86400)return Math.floor(s/3600)+" jam lalu";return Math.floor(s/86400)+" hari lalu"}
+const avColor=n=>["#0B4D33","#1F7A4D","#B97A0E","#2A7FA8","#7B5EA7","#C94F7C","#D98324"][(n.charCodeAt(0)+n.length)%7];
+const initials=n=>n.replace(/^[A-Z][a-z]*\.?\s*/,"").split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase()||n.slice(0,2).toUpperCase();
+function toast(msg,type=""){const t=document.createElement("div");t.className="toast "+type;t.innerHTML=(type==="err"?"⚠️ ":type==="warn"?"🔶 ":"✅ ")+esc(msg);$("#toasts").appendChild(t);setTimeout(()=>{t.style.opacity=0;t.style.transition=".4s";setTimeout(()=>t.remove(),400)},3400)}
+function openModal(title,html){$("#mTitle").textContent=title;$("#mBody").innerHTML=html;$("#ovl").classList.add("open")}
+function closeModal(){$("#ovl").classList.remove("open")}
+$("#ovl").addEventListener("click",e=>{if(e.target.id==="ovl")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal();const bp=$("#bellPanel");if(bp)bp.classList.remove("open")}});
+
+/* ================= EXPORT ================= */
+function exportExcel(name,headers,rows){
+  let h='<table border="1"><tr>'+headers.map(x=>'<th style="background:#0B4D33;color:#fff;padding:6px 10px">'+esc(x)+"</th>").join("")+"</tr>";
+  rows.forEach(r=>h+="<tr>"+r.map(c=>"<td style='padding:4px 10px'>"+esc(c??"")+"</td>").join("")+"</tr>");
+  const blob=new Blob(["\ufeff<html><head><meta charset='utf-8'></head><body>"+h+"</table></body></html>"],{type:"application/vnd.ms-excel"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name+".xls";a.click();
+  toast("File Excel berhasil diunduh");
+}
+function exportPDF(title,bodyHTML){
+  const w=window.open("","_blank");if(!w){toast("Izinkan pop-up untuk export PDF","warn");return}
+  w.document.write("<html><head><title>"+esc(title)+"</title><style>body{font-family:Segoe UI,Arial,sans-serif;padding:28px;color:#152A1E}h1{font-size:20px;margin:0}.head{border-bottom:3px solid #0B4D33;padding-bottom:12px;margin-bottom:18px}.head small{color:#666}table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}th{background:#0B4D33;color:#fff;padding:6px 8px;text-align:left}td{padding:5px 8px;border-bottom:1px solid #ddd}.tot{font-weight:bold}.foot{margin-top:22px;font-size:11px;color:#888}@media print{body{padding:0}}</style></head><body><div class='head'><h1>SIMPADU RT — "+esc(DB.profil.rt.toUpperCase()+" "+DB.profil.padukuhan.toUpperCase())+"</h1><small>"+esc(DB.profil.kalurahan+", "+DB.profil.kapanewon+", "+DB.profil.kabupaten)+" · "+title+" · dicetak "+new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})+"</small></div>"+bodyHTML+"<div class='foot'>Dokumen dibuat otomatis oleh SIMPADU RT.</div><scr"+"ipt>window.onload=function(){window.print()}<"+"/scr"+"ipt></body></html>");
+  w.document.close();toast("Membuka dokumen PDF — gunakan 'Save as PDF'");
+}
+function pdfTable(headers,rows){return "<table><tr>"+headers.map(h=>"<th>"+h+"</th>").join("")+"</tr>"+rows.map(r=>"<tr>"+r.map(c=>"<td>"+esc(c??"-")+"</td>").join("")+"</tr>").join("")+"</table>"}
+
+/* ================= SEED DATA ================= */
+const M=(nama,jk,relasi,kerja="")=>({nama,jk,relasi,kerja});
+function seed(){
+  const now=new Date(), d=o=>{const x=new Date(now);x.setDate(x.getDate()+o);return iso(x)};
+  const profil={rt:"RT 14",padukuhan:"Padukuhan Modinan",kalurahan:"Kalurahan Banyuraden",kapanewon:"Kapanewon Gamping",kabupaten:"Kabupaten Sleman, DIY",alamat:"Pos RT 14, Jl. Modinan No. 1",wa:"0812-2700-1001",iuran:25000,visi:"RT yang guyub, transparan, dan berbasis digital.",misi:"Administrasi rapi, kas transparan, lingkungan bersih & aman.",periodeMulai:2023,periodeSelesai:2028};
+  const users=[
+    {id:1,u:"ketua",p:"rt123",role:"admin",nama:"H. Sudarman",jab:"Ketua RT"},
+    {id:2,u:"sekretaris",p:"rt123",role:"sekretaris",nama:"Budi Santoso",jab:"Sekretaris"},
+    {id:3,u:"bendahara",p:"rt123",role:"bendahara",nama:"Siti Aminah",jab:"Bendahara"}];
+  const warga=[
+   {id:1,nama:"H. Sudarman",alamat:"Jl. Modinan No. 12",hp:"0812-2700-1001",tinggal:"Tetap",status:"Aktif",jk:"L",anggota:[M("Hj. Mulyani","P","Istri","Guru"),M("Rendra Pratama","L","Anak","Mahasiswa"),M("Ayu Wulandari","P","Anak","Pelajar")]},
+   {id:2,nama:"Budi Santoso",alamat:"Jl. Modinan No. 8",hp:"0813-2844-2002",tinggal:"Tetap",status:"Aktif",jk:"L",anggota:[M("Rina Budi","P","Istri","Wiraswasta"),M("Galih Saputra","L","Anak","Pelajar")]},
+   {id:3,nama:"Slamet Riyadi",alamat:"Jl. Modinan No. 21",hp:"0821-3390-3003",tinggal:"Tetap",status:"Aktif",jk:"L",anggota:[M("Sulastri","P","Istri","Ibu Rumah Tangga"),M("Bagus Setiawan","L","Anak","Buruh"),M("Nina Riyanti","P","Anak","Mahasiswi"),M("Mbah Karto","L","Orang Tua","Pensiunan")]},
+   {id:4,nama:"Agus Wijaya",alamat:"Jl. Wates KM 7,5",hp:"0857-4300-4004",tinggal:"Kontrak",status:"Aktif",jk:"L",anggota:[M("Dian Puspita","P","Istri","Perawat"),M("Kevin Alfarizi","L","Anak","Pelajar")]},
+   {id:5,nama:"Siti Aminah",alamat:"Jl. Modinan No. 3",hp:"0819-0266-5005",tinggal:"Tetap",status:"Aktif",jk:"P",anggota:[M("Ahmad Fauzi","L","Anak","Karyawan Swasta")]},
+   {id:6,nama:"Joko Priyono",alamat:"Jl. Anggrek No. 4",hp:"0812-1188-6006",tinggal:"Tetap",status:"Aktif",jk:"L",anggota:[M("Tutik Handayani","P","Istri","Penjahit"),M("Rizky Maulana","L","Anak","Pelajar"),M("Salsa Putri","P","Anak","Pelajar")]},
+   {id:7,nama:"Rina Hartati",alamat:"Jl. Anggrek No. 7",hp:"0838-9921-7007",tinggal:"Tetap",status:"Aktif",jk:"P",anggota:[M("Doni Firmansyah","L","Suami","Sopir"),M("Kirana","P","Anak","Pelajar")]},
+   {id:8,nama:"Bambang Sutrisno",alamat:"Jl. Modinan No. 30",hp:"0822-7765-8008",tinggal:"Tetap",status:"Aktif",jk:"L",anggota:[M("Eni Susilowati","P","Istri","Pedagang"),M("Fajar Ramadhan","L","Anak","Mahasiswa"),M("Tia Lestari","P","Anak","Pelajar")]},
+   {id:9,nama:"Dewi Lestari",alamat:"Jl. Durian No. 2",hp:"0851-5540-9009",tinggal:"Tetap",status:"Aktif",jk:"P",anggota:[M("Raka Lestari","L","Anak","Pelajar"),M("Rani Lestari","P","Anak","Mahasiswi")]},
+   {id:10,nama:"Hendra Gunawan",alamat:"Jl. Durian No. 5",hp:"0878-3312-1010",tinggal:"Kontrak",status:"Aktif",jk:"L",anggota:[M("Wulan Sari","P","Istri","Guru")]},
+   {id:11,nama:"Yuni Astuti",alamat:"Jl. Modinan No. 18",hp:"0812-6677-1111",tinggal:"Tetap",status:"Aktif",jk:"P",anggota:[M("Bimo Aji","L","Anak","Pelajar"),M("Sari Astuti","P","Anak","Pelajar")]},
+   {id:12,nama:"Purnomo Adi",alamat:"Jl. Wates KM 7",hp:"0819-8823-1212",tinggal:"Tetap",status:"Pindah",jk:"L",anggota:[M("Lastri","P","Istri","Ibu Rumah Tangga"),M("Yoga Adi","L","Anak","Pelajar"),M("Dinda Adi","P","Anak","Pelajar")]},
+   {id:13,nama:"Fitriani",alamat:"Jl. Melati No. 1 (Kos Bu Marni)",hp:"0821-4456-1313",tinggal:"Kos",status:"Aktif",jk:"P",anggota:[]},
+   {id:14,nama:"Wahyu Nugroho",alamat:"Jl. Melati No. 6",hp:"0813-9987-1414",tinggal:"Tetap",status:"Aktif",jk:"L",anggota:[M("Eka Prasetyo","L","Anak","Mahasiswa"),M("Lia Nugraha","P","Anak","Pelajar")]}
+  ];
+  const pengurus=[
+    {id:1,jab:"Ketua RT",nama:"H. Sudarman",hp:"0812-2700-1001"},{id:2,jab:"Wakil Ketua",nama:"Slamet Riyadi",hp:"0821-3390-3003"},
+    {id:3,jab:"Sekretaris",nama:"Budi Santoso",hp:"0813-2844-2002"},{id:4,jab:"Bendahara",nama:"Siti Aminah",hp:"0819-0266-5005"},
+    {id:5,jab:"Sie. Keamanan",nama:"Joko Priyono",hp:"0812-1188-6006"},{id:6,jab:"Sie. Kebersihan",nama:"Rina Hartati",hp:"0838-9921-7007"},
+    {id:7,jab:"Sie. Sosial & Humas",nama:"Dewi Lestari",hp:"0851-5540-9009"},{id:8,jab:"Sie. Pemuda & Olahraga",nama:"Wahyu Nugroho",hp:"0813-9987-1414"}];
+  const periodeList=[
+    {id:1,mulai:2018,selesai:2023,thn:"2018–2023",ket:"Periode pertama — pembentukan bank sampah & rabat beton Jl. Modinan.",pengurus:[
+      {jab:"Ketua RT",nama:"H. Sudarman",hp:"0812-2700-1001"},
+      {jab:"Sekretaris",nama:"Bambang Sutrisno",hp:"0822-7765-8008"},
+      {jab:"Bendahara",nama:"Eni Susilowati",hp:"—"},
+      {jab:"Sie. Keamanan",nama:"Purnomo Adi",hp:"0819-8823-1212"},
+      {jab:"Sie. Kebersihan",nama:"Slamet Riyadi",hp:"0821-3390-3003"}]},
+    {id:2,mulai:2013,selesai:2018,thn:"2013–2018",ket:"Periode perintisan pos kamling & pengajian rutin.",pengurus:[
+      {jab:"Ketua RT",nama:"Mbah Karto",hp:"—"},
+      {jab:"Sekretaris",nama:"H. Sudarman",hp:"0812-2700-1001"},
+      {jab:"Bendahara",nama:"Sulastri",hp:"—"}]}];
+  const pengumuman=[
+    {id:1,judul:"Kerja Bakti Bersih Saluran Air Menjelang Musim Hujan",kat:"Kerja Bakti",tgl:d(3),penulis:"Sekretariat RT",isi:"Dimohon kehadiran seluruh warga RT 14 pada kerja bakti hari Minggu pukul 07.00 WIB di sepanjang saluran air Jl. Modinan. Bawa peralatan masing-masing. Konsumsi disediakan panitia."},
+    {id:2,judul:"PERHATIAN: Perbaikan Pompa Air Bersih Blok Melati",kat:"Darurat",tgl:d(-1),penulis:"Ketua RT",isi:"Pompa air blok Melati sedang diperbaiki sejak tadi malam. Estimasi normal kembali dalam 2 hari. Warga dimohon menghemat penggunaan air dan dapat mengambil air di rumah Bapak Purnomo (blok lama)."},
+    {id:3,judul:"Pendataan Warga Pendatang Baru Semester Ini",kat:"RT",tgl:d(-2),penulis:"Sekretaris",isi:"Bagi warga baru / penghuni kos dan kontrak yang belum terdata, harap melaporkan diri ke Sekretaris RT dengan membawa fotokopi KTP paling lambat akhir bulan ini."},
+    {id:4,judul:"Hasil Rapat Warga: Penambahan Lampu Jalan di 3 Titik",kat:"RT",tgl:d(-6),penulis:"Ketua RT",isi:"Rapat warga menyepakati pemasangan 3 lampu jalan baru di Jl. Anggrek dan Jl. Durian menggunakan dana kas. Pemasangan dijadwalkan bulan ini."}];
+  const arisan=[
+    {id:1,bulan:"2026-09",penerima:"Ibu Dewi Lestari",keterangan:"Arisan bulan September di rumah Ibu Dewi",jumlah:250000,selanjutnya:"Oktober 2026 - Ibu Siti Aminah"},
+    {id:2,bulan:"2026-08",penerima:"Ibu Siti Aminah",keterangan:"Arisan bulanan ibu-ibu PKK",jumlah:250000,selanjutnya:"September 2026 - Ibu Dewi Lestari"},
+    {id:3,bulan:"2026-07",penerima:"Ibu Rina Hartati",keterangan:"Arisan PKK dan dana sosial",jumlah:250000,selanjutnya:"Agustus 2026 - Ibu Siti Aminah"}
+  ];
+  const danaSosial=[
+    {id:1,nama:"Bantuan santunan warga sakit",jumlah:500000,tanggal:"2026-08-12"},
+    {id:2,nama:"Bantuan perawatan keluarga terdampak",jumlah:750000,tanggal:"2026-08-17"},
+    {id:3,nama:"Kebersihan lingkungan & pos ronda",jumlah:350000,tanggal:"2026-08-22"}
+  ];
+  const agenda=[
+    {id:1,judul:"Kerja Bakti Bersih Saluran Air",kat:"Kerja Bakti",tgl:d(3),jam:"07.00",tempat:"Saluran air Jl. Modinan",desc:"Gotong royong membersihkan saluran menjelang musim hujan."},
+    {id:2,judul:"Posyandu Melati — Imunisasi & Timbang Balita",kat:"Posyandu",tgl:d(5),jam:"08.00",tempat:"Rumah Ibu Siti Aminah",desc:"Pelayanan imunisasi, penimbangan balita, dan PMT."},
+    {id:3,judul:"Rapat Warga Bulanan",kat:"Rapat Warga",tgl:d(8),jam:"19.30",tempat:"Pos RT Modinan",desc:"Evaluasi kegiatan, laporan kas, dan rencana kerja bulan depan."},
+    {id:4,judul:"Pengajian Rutin Malam Jumat",kat:"Pengajian",tgl:d(12),jam:"19.45",tempat:"Mushola Al-Ikhlas",desc:"Pengajian rutin bergilir, pekan ini di Mushola Al-Ikhlas."},
+    {id:5,judul:"Arisan Ibu-Ibu PKK",kat:"Arisan",tgl:d(15),jam:"15.00",tempat:"Rumah Ibu Dewi",desc:"Arisan bulanan sekaligus arisan dapur."},
+    {id:6,judul:"Bakti Sosial Donor Darah",kat:"Sosial",tgl:d(21),jam:"08.00",tempat:"Balai Padukuhan Modinan",desc:"Kerja sama dengan PMI Kabupaten Sleman. Terbuka untuk umum."},
+    {id:7,judul:"Kerja Bakti Pengecatan Pos RT",kat:"Kerja Bakti",tgl:d(-10),jam:"07.00",tempat:"Pos RT Modinan",desc:"Telah dilaksanakan. Dokumentasi tersedia di galeri."}];
+  const transaksi=[];let tid=1;
+  transaksi.push({id:tid++,tgl:iso(new Date(now.getFullYear(),now.getMonth()-5,2)),jenis:"Masuk",kat:"Saldo Awal",ket:"Saldo awal kas RT",jumlah:750000,bukti:""});
+  for(let i=5;i>=0;i--){const b=new Date(now.getFullYear(),now.getMonth()-i,1),ym=b.getFullYear()+"-"+pad(b.getMonth()+1);
+    transaksi.push({id:tid++,tgl:ym+"-05",jenis:"Masuk",kat:"Iuran Warga",ket:"Iuran bulanan warga "+BULAN[b.getMonth()]+" "+b.getFullYear(),jumlah:14*25000-(i===0?4*25000:0),bukti:"kwitansi-iuran.jpg"});
+    if(i%2===0)transaksi.push({id:tid++,tgl:ym+"-10",jenis:"Masuk",kat:"Donasi",ket:"Donasi hamba Allah",jumlah:150000+i*25000,bukti:""});
+    transaksi.push({id:tid++,tgl:ym+"-08",jenis:"Keluar",kat:"Kebersihan",ket:"Pengangkutan sampah bulanan",jumlah:120000,bukti:"nota-sampah.jpg"});
+    transaksi.push({id:tid++,tgl:ym+"-15",jenis:"Keluar",kat:"Keamanan",ket:"Insentif ronda & kopi pos kamling",jumlah:100000,bukti:""});
+    if(i===2)transaksi.push({id:tid++,tgl:ym+"-20",jenis:"Keluar",kat:"Pembangunan",ket:"Perbaikan lampu jalan Jl. Anggrek",jumlah:350000,bukti:"nota-lampu.jpg"});
+    if(i===1)transaksi.push({id:tid++,tgl:ym+"-22",jenis:"Keluar",kat:"Sosial",ket:"Bantuan warga sakit (Bpk. Karto)",jumlah:300000,bukti:""});
+    if(i===3)transaksi.push({id:tid++,tgl:ym+"-18",jenis:"Keluar",kat:"Kegiatan",ket:"Konsumsi kerja bakti",jumlah:175000,bukti:"struk-konsumsi.jpg"});
+  }
+  const iuran=[];
+  warga.filter(k=>k.status==="Aktif").forEach(k=>{
+    for(let i=5;i>=0;i--){const b=new Date(now.getFullYear(),now.getMonth()-i,1),ym=b.getFullYear()+"-"+pad(b.getMonth()+1);
+      const lunas=i>0?(k.id!==11||i!==4):(k.id%3!==0);
+      iuran.push({kkId:k.id,bulan:ym,status:lunas?"Lunas":"Belum",tgl:lunas?ym+"-"+pad((k.id%8)+2):null});
+    }});
+  const pengaduan=[
+    {id:1,pelapor:"Joko Priyono",kat:"Lampu Jalan",judul:"Lampu jalan mati depan Pos RT",desc:"Lampu PJU di depan Pos RT mati sudah 3 malam, jalan sangat gelap.",tgl:d(-9),status:3,catatan:["Dilaporkan via grup WA","Dilaporkan ke Dishub Sleman","Lampu sudah diganti 2 hari lalu"]},
+    {id:2,pelapor:"Rina Hartati",kat:"Sampah",judul:"Tumpukan sampah di tikungan Jl. Anggrek",desc:"Ada warga luar yang membuang sampah sembarangan di tikungan, mulai bau.",tgl:d(-4),status:2,catatan:["Sudah dibersihkan sebagian oleh Sie. Kebersihan","Menunggu gerobak tambahan"]},
+    {id:3,pelapor:"Agus Wijaya",kat:"Jalan Rusak",judul:"Jalan berlubang depan Jl. Wates KM 7,5",desc:"Lubang cukup dalam sekitar 30cm, berbahaya untuk motor malam hari.",tgl:d(-2),status:1,catatan:["Sudah diteruskan ke Dukuh & Kalurahan"]},
+    {id:4,pelapor:"Fitriani",kat:"Keamanan",judul:"Ronda malam Rabu sering kosong",desc:"Jadwal ronda malam Rabu beberapa kali tidak ada yang piket.",tgl:d(-1),status:0,catatan:[]},
+    {id:5,pelapor:"Dewi Lestari",kat:"Masalah Air",judul:"Air kecil di Blok Melati",desc:"Aliran air sangat kecil sejak kemarin sore di sekitar Jl. Melati.",tgl:d(-1),status:1,catatan:["Dicek: pompa sedang diperbaiki"]},
+    {id:6,pelapor:"Bambang Sutrisno",kat:"Masalah Listrik",judul:"Kabel PLN dekat pohon bambu",desc:"Kabel menempel rumpun bambu, khawatir korslet saat hujan angin.",tgl:d(-14),status:3,catatan:["Dilaporkan ke PLN","Pohon sudah dipangkas"]}];
+  const berita=[
+    {id:1,judul:"Kerja Bakti Pengecatan Pos RT Berjalan Lancar",kat:"Berita",tgl:d(-9),foto:"https://picsum.photos/seed/kerjabakti-posrt/640/400",excerpt:"Puluhan warga antusias mengecat ulang Pos RT dengan warna hijau khas Modinan, dilanjutkan sarapan bersama.",isi:"Sejak pukul 07.00 warga RT 14 bergotong royong mengecat ulang Pos RT. Kegiatan dipimpin Sie. Kebersihan dan ditutup makan bersama hasil sumbangan warga. Pos RT kini tampil segar dan siap digunakan untuk kegiatan warga."},
+    {id:2,judul:"Posyandu Modinan Raih Peringkat 2 Tingkat Kapanewon",kat:"Berita",tgl:d(-16),foto:"https://picsum.photos/seed/posyandu-modinan/640/400",excerpt:"Kader Posyandu Melati Modinan meraih juara 2 lomba posyandu berprestasi tingkat Kapanewon Gamping.",isi:"Prestasi ini buah kerja keras kader dan dukungan warga. Penilaian meliputi kelengkapan administrasi, cakupan imunisasi, dan inovasi PMT lokal berbahan singkong."},
+    {id:3,judul:"Tips Hemat Air Bersih di Musim Kemarau",kat:"Artikel",tgl:d(-20),foto:"https://picsum.photos/seed/hemat-air/640/400",excerpt:"Panduan sederhana mengelola pemakaian air pompa RT agar tetap lancar untuk semua warga.",isi:"1) Tampung air di luar jam sibuk (05.00–07.00). 2) Periksa kebocoran keran secara berkala. 3) Gunakan air bekas cucian beras untuk menyiram tanaman. 4) Lapor ke pengurus jika debit menurun drastis."},
+    {id:4,judul:"Ronda & Siskamling: Jadwal Baru Bulan Ini",kat:"Berita",tgl:d(-7),foto:"https://picsum.photos/seed/ronda-malin/640/400",excerpt:"Jadwal ronda diperbarui dengan sistem regu per gang, lengkap dengan grup koordinasi WhatsApp.",isi:"Mulai bulan ini ronda menggunakan sistem regu per gang (Melati, Anggrek, Durian, Modinan). Setiap regu 4 orang, kentongan dicek tiap pergantian shift. Jadwal lengkap dibagikan Sekretaris melalui ketua regu."}];
+  const galeri=[
+    {id:1,foto:"https://picsum.photos/seed/modinan-gotong/500/380",judul:"Gotong royong pengecatan pos",kat:"Kerja Bakti",tgl:d(-9)},
+    {id:2,foto:"https://picsum.photos/seed/modinan-posyandu/500/380",judul:"Timbang balita Posyandu Melati",kat:"Posyandu",tgl:d(-16)},
+    {id:3,foto:"https://picsum.photos/seed/modinan-pengajian/500/380",judul:"Pengajian rutin malam Jumat",kat:"Pengajian",tgl:d(-13)},
+    {id:4,foto:"https://picsum.photos/seed/modinan-arisan/500/380",judul:"Arisan PKK bulanan",kat:"Arisan",tgl:d(-15)},
+    {id:5,foto:"https://picsum.photos/seed/modinan-ronda/500/380",judul:"Regu ronda malam Sabtu",kat:"Keamanan",tgl:d(-11)},
+    {id:6,foto:"https://picsum.photos/seed/modinan-bersih/500/380",judul:"Bersih saluran air",kat:"Kerja Bakti",tgl:d(-25)},
+    {id:7,foto:"https://picsum.photos/seed/modinan-rapat/500/380",judul:"Rapat warga bulanan",kat:"Rapat Warga",tgl:d(-22)},
+    {id:8,foto:"https://picsum.photos/seed/modinan-baksos/500/380",judul:"Baksos pembagian sembako",kat:"Sosial",tgl:d(-40)}];
+  const ars=[{id:1,thn:2024,acara:"Tasyakuran & Pentas Seni HUT RI 79"},{id:2,thn:2024,acara:"Kerja Bakti Normalisasi Selokan"},{id:3,thn:2023,acara:"Perbaikan Jalan Rabat Beton Jl. Modinan"},{id:4,thn:2023,acara:"Pembentukan Bank Sampah Modinan Asri"}];
+  const notifikasi=[
+    {id:1,tipe:"iuran",judul:"Pengingat Iuran",pesan:"4 KK belum membayar iuran bulan ini.",waktu:new Date(Date.now()-2*3600e3).toISOString(),read:false},
+    {id:2,tipe:"agenda",judul:"Agenda Terdekat",pesan:"Kerja bakti bersih saluran air — lusa, pukul 07.00.",waktu:new Date(Date.now()-5*3600e3).toISOString(),read:false},
+    {id:3,tipe:"pengumuman",judul:"Pengumuman Darurat",pesan:"Perbaikan pompa air bersih Blok Melati.",waktu:new Date(Date.now()-26*3600e3).toISOString(),read:false},
+    {id:4,tipe:"pengaduan",judul:"Pengaduan Selesai",pesan:"Lampu jalan depan Pos RT sudah diganti.",waktu:new Date(Date.now()-48*3600e3).toISOString(),read:true}];
+  return {profil,users,warga,pengurus,periodeList,pengumuman,agenda,arisan,danaSosial,transaksi,nextTid:tid,iuran,pengaduan,berita,galeri,arsip:ars,notifikasi,nextId:100};
+}
+
+/* ================= STORE, STATE & HAK AKSES ================= */
+const DB_KEY="simpadu_rt_modinan_v3";
+let DB;try{DB=JSON.parse(localStorage.getItem(DB_KEY))||seed()}catch(e){DB=seed()}
+/* migrasi ringan antar versi */
+if(!Array.isArray(DB.pengurus))DB.pengurus=[];
+DB.pengurus.forEach((x,i)=>{if(!x.id)x.id=i+1});
+if(!Array.isArray(DB.periodeList))DB.periodeList=[];
+if(DB.profil.periodeMulai==null){const m=String(DB.profil.periode||"2023–2028").match(/(\d{4})\s*[-–]\s*(\d{4})/);DB.profil.periodeMulai=m?+m[1]:2023;DB.profil.periodeSelesai=m?+m[2]:2028}
+const save=()=>{try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){};scheduleGasSync()};
+const periodeLabel=()=>DB.profil.periodeMulai+"–"+DB.profil.periodeSelesai;
+
+/* ================= SYNC GOOGLE APPS SCRIPT ================= */
+const GAS_URL="https://script.google.com/macros/s/AKfycbxXCs1OnTC_dIvJQwxX19_iU0BMgG9PZ_SmzRtXUOD_FYIaCMB9WJ-dxF9WCcba7WkaZg/exec"; // ← tempel URL Web App GAS di sini (lihat file Code.gs)
+let gasStatus={state:"off",msg:"Sinkronisasi"};
+function gasFetch(action,payload){
+  if(!GAS_URL)return Promise.reject(new Error("GAS_URL belum diisi"));
+  const url=GAS_URL+(GAS_URL.includes("?")?"&":"?")+"action="+action;
+  const opt={method:action==="save"?"POST":"GET",redirect:"follow"};
+  if(action==="save"){opt.body=JSON.stringify(payload);opt.headers={"Content-Type":"text/plain;charset=utf-8"}}
+  return fetch(url,opt).then(r=>r.json()).then(j=>{if(!j.ok)throw new Error(j.error||"Gagal sinkron");return j});
+}
+let _gasTimer=null;
+function scheduleGasSync(){
+  if(!GAS_URL)return;
+  clearTimeout(_gasTimer);
+  _gasTimer=setTimeout(()=>syncToGas(),1500);
+}
+function syncToGas(){
+  if(!GAS_URL)return Promise.resolve();
+  setGasStatus("sync","Menyinkron…");
+  return gasFetch("save",{data:DB}).then(()=>{setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
+    .catch(err=>{setGasStatus("err","Gagal: "+err.message);console.warn("GAS sync gagal",err);return false});
+}
+function syncFromGas(){
+  if(!GAS_URL)return Promise.resolve(false);
+  setGasStatus("sync","Memuat server…");
+  return gasFetch("get").then(j=>{
+    if(j.data&&Object.keys(j.data).length){
+      DB=mergeGas(j.data);
+      saveLocalOnly();
+      setGasStatus("ok","Data server dimuat "+new Date().toLocaleTimeString("id-ID"));
+      return true;
+    }
+    setGasStatus("ok","Server kosong — data lokal dipakai");
+    return false;
+  }).catch(err=>{setGasStatus("err","Gagal: "+err.message);return false});
+}
+function saveLocalOnly(){try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){}}
+function mergeGas(remote){
+  const base=JSON.parse(JSON.stringify(remote));
+  Object.keys(DB).forEach(k=>{if(base[k]===undefined)base[k]=DB[k]});
+  return base;
+}
+function setGasStatus(state,msg){gasStatus={state,msg};const el=$("#gasStatus");if(el)el.textContent=msg;const dot=$("#gasDot");if(dot)dot.className="dot "+(state==="ok"?"b-green":state==="err"?"b-red":"b-amber")}
+const state={user:null,page:"beranda",wq:"",wtTinggal:"",wtStatus:"",annF:"Semua",cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calSel:null,finTab:"trans",finBulan:"all",finJenis:"Semua",iurBulan:todayStr().slice(0,7),aduF:"Semua",aduKat:"Semua",members:[],beritaTab:"berita",galF:"Semua",setTab:"profil"};
+const ROLES={admin:"Admin / Ketua",sekretaris:"Sekretaris",bendahara:"Bendahara"};
+const ICONS={
+  home:`<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V20h14V9.5"></path><path d="M9 20v-6h6v6"></path></svg>`,
+  megaphone:`<svg viewBox="0 0 24 24"><path d="M3 11.5v1.3l9.2 4.2V7.3L3 11.5Z"></path><path d="M12.2 7.3v9.7"></path><path d="M18.5 9.5c1.6 1.1 1.6 3.9 0 5"></path><path d="M20.5 8.5c2.4 1.9 2.4 5.1 0 7"></path></svg>`,
+  calendar:`<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M3 10h18"></path></svg>`,
+  wallet:`<svg viewBox="0 0 24 24"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h10.8A2.7 2.7 0 0 1 20 8.7v7.8A2.5 2.5 0 0 1 17.5 19H6.5A2.5 2.5 0 0 1 4 16.5v-8Z"></path><path d="M4 10h13.5a2.5 2.5 0 0 1 2.5 2.5V13"></path><circle class="fill" cx="16.4" cy="13.6" r="1.2"></circle></svg>`,
+  contact:`<svg viewBox="0 0 24 24"><path d="M7.5 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path><path d="M5 19.5c.5-2 2.6-3.5 5-3.5s4.5 1.5 5 3.5"></path><path d="M17.5 8.5h3.2v10.5h-8.7"></path></svg>`,
+  alert:`<svg viewBox="0 0 24 24"><path d="M12 4.5 20 18H4L12 4.5Z"></path><path d="M12 9v4.2"></path><circle class="fill" cx="12" cy="16.1" r="1"></circle></svg>`,
+  bell:`<svg viewBox="0 0 24 24"><path d="M8 17h8l-1.1-1.5V11a3.9 3.9 0 0 0-7.8 0v4.5L8 17Z"></path><path d="M10 19a2 2 0 0 0 4 0"></path></svg>`,
+  logout:`<svg viewBox="0 0 24 24"><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h7A1.5 1.5 0 0 1 19 5.5v13A1.5 1.5 0 0 1 17.5 20h-7A1.5 1.5 0 0 1 9 18.5V17"></path><path d="M13 12h-9"></path><path d="m7 8-4 4 4 4"></path></svg>`,
+  document:`<svg viewBox="0 0 24 24"><path d="M7 4.5h7l4 4V18a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2Z"></path><path d="M14 4.5V9h4"></path><path d="M8.5 12.5h7M8.5 16h7"></path></svg>`,
+  user:`<svg viewBox="0 0 24 24"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path><path d="M3.5 19c.8-2.7 3.2-4 6.5-4s5.7 1.3 6.5 4"></path></svg>`,
+  report:`<svg viewBox="0 0 24 24"><path d="M7 18V8"></path><path d="M12 18V5"></path><path d="M17 18v-9"></path><path d="M4 18h16"></path></svg>`,
+  gear:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.5 12a7.8 7.8 0 0 0-.1-1.2l2.1-1.6-2-3.5-2.6 1a7.6 7.6 0 0 0-2.1-1.2L14.2 3h-4.4l-.6 2.5a7.6 7.6 0 0 0-2.1 1.2l-2.6-1-2 3.5 2.1 1.6a7.8 7.8 0 0 0-.1 1.2c0 .4 0 .8.1 1.2l-2.1 1.6 2 3.5 2.6-1c.6.5 1.3.9 2.1 1.2l.6 2.5h4.4l.6-2.5c.8-.3 1.5-.7 2.1-1.2l2.6 1 2-3.5-2.1-1.6c.1-.4.1-.8.1-1.2Z"></path></svg>`,
+  check:`<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 2"></path></svg>`,
+  menu:`<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>`,
+  plus:`<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>`,
+  spark:`<svg viewBox="0 0 24 24"><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z"></path></svg>`,
+  phone:`<svg viewBox="0 0 24 24"><path d="M8 3.5h2l1 4-2.2 1.5a14 14 0 0 0 8.2 8.2L18.5 15l4 1v2A2.5 2.5 0 0 1 20 20.5C11.7 19.6 4.4 12.3 3.5 4A2.5 2.5 0 0 1 6 1.5h2Z"></path></svg>`
+};
+function modernIcon(name){ return `<span class="ui-icon">${ICONS[name] || ICONS.spark}</span>`; }
+const logged=()=>!!state.user;
+const role=()=>state.user?state.user.role:null;
+const canWarga=()=>["admin","sekretaris"].includes(role());
+const canKonten=()=>["admin","sekretaris"].includes(role());
+const canKeu=()=>["admin","bendahara"].includes(role());
+const RENDER={};
+
+RENDER.kontak=function(){
+  const p=DB.profil;
+  const ketua=DB.pengurus.find(x=>/ketua rt/i.test(x.jab))||DB.pengurus[0];
+  const kontak=[
+    {judul:"Sekretariat RT",value:p.alamat,icon:"📍",sub:"Pos RT 14, Padukuhan Modinan"},
+    {judul:"WhatsApp / Kontak",value:p.wa,icon:"📞",sub:"Chat resmi RT / koordinasi warga"},
+    {judul:"Ketua RT",value:ketua?ketua.nama:"H. Sudarman",icon:"👤",sub:ketua?ketua.jab:"Ketua RT"},
+    {judul:"Jam Layanan",value:"Senin–Jumat, 08.00–12.00 WIB",icon:"🕘",sub:"Layanan administratif dan koordinasi warga"}
+  ];
+  $("#pg-kontak").innerHTML=`
+    <div class="card reveal">
+      <div class="hd"><h3>📞 Kontak RT 14</h3></div>
+      <div class="pad grid g2">
+        ${kontak.map(item=>`<div class="rep-card"><div class="top"><div style="width:42px;height:42px;border-radius:12px;background:var(--mint);display:grid;place-items:center;font-size:20px">${item.icon}</div><b style="font-family:var(--disp)">${esc(item.judul)}</b></div><p style="font-weight:800;font-size:15px;margin:0">${esc(item.value)}</p><p class="small muted" style="margin-top:4px">${esc(item.sub)}</p></div>`).join("")}
+      </div>
+    </div>
+    <div class="card reveal" style="margin-top:16px">
+      <div class="hd"><h3>📨 Hubungi via WhatsApp</h3></div>
+      <div class="pad">
+        <p class="small muted">Silakan hubungi kontak RT untuk kebutuhan administrasi, pengaduan, koordinasi kegiatan, atau informasi penting.</p>
+        <a class="btn btn-pine" href="https://wa.me/${p.wa.replace(/\D/g,"")}" target="_blank" rel="noopener noreferrer">💬 Chat WhatsApp</a>
+      </div>
+    </div>
+  `;
+};
+const canUsers=()=>role()==="admin";
+const guardFin=()=>{if(canKeu())return true;toast("Modul keuangan hanya dapat diubah oleh Admin/Ketua atau Bendahara","warn");return false};
+const aktifKK=()=>DB.warga.filter(k=>k.status==="Aktif");
+const totalJiwa=()=>aktifKK().reduce((s,k)=>s+k.anggota.length+1,0);
+const ADU_STAT=["Diajukan","Diproses","Ditangani","Selesai"];
+const KAT_COLORS={"Kerja Bakti":"#2F8F5B","Rapat Warga":"#0B4D33","Posyandu":"#D98324","Pengajian":"#7B5EA7","Arisan":"#C94F7C","Sosial":"#2A7FA8"};
+const ADU_KAT=[["Lampu Jalan","💡"],["Jalan Rusak","🛣"],["Sampah","🗑"],["Keamanan","🛡"],["Gangguan Lingkungan","🌳"],["Fasilitas Umum","🏛"],["Masalah Air","🚰"],["Masalah Listrik","⚡"],["Keluhan Lainnya","📝"]];
+const NOTIF_ICON={iuran:"💰",pengumuman:"📣",agenda:"🗓",pengaduan:"🛠",sistem:"🔔",user:"👤"};
+function pushNotif(tipe,judul,pesan){DB.notifikasi.unshift({id:++DB.nextId,tipe,judul,pesan,waktu:new Date().toISOString(),read:false});save();bellCount()}
+function bellCount(){
+  const n=DB.notifikasi.filter(x=>!x.read).length,el=$("#bellDot");if(el){el.style.display=n?"grid":"none";el.textContent=n}
+  const open=DB.pengaduan.filter(a=>a.status<3).length;
+  [["#aduBadge",open],["#bnavAdu",open]].forEach(([id,v])=>{const e=$(id);if(e){e.style.display=v?"inline-block":"none";e.textContent=v}});
+}
+
+/* ================= AUTH ================= */
+function openLogin(){
+  openModal("🔑 Login Pengurus RT",`
+  <div class="note" style="margin-bottom:4px">🌐 Area khusus <b>pengurus</b> (Admin, Sekretaris, Bendahara). Warga tidak perlu login untuk membaca informasi & membuat pengaduan.</div>
+  <div class="fld"><label>Username</label><input class="inp" id="lgU" placeholder="ketua" autocomplete="username"></div>
+  <div class="fld"><label>Kata Sandi</label><input class="inp" id="lgP" type="password" placeholder="••••••" autocomplete="current-password"></div>
+  <div class="login-err" id="lgErr">Username atau kata sandi salah. Coba lagi.</div>
+  <button class="btn btn-pine btn-block" style="margin-top:14px" data-act="login-go">Masuk sebagai Pengurus →</button>
+  <div class="demo-chips">
+    <button type="button" data-act="demo" data-u="ketua" data-p="rt123"><b>Admin / Ketua</b>ketua / rt123</button>
+    <button type="button" data-act="demo" data-u="sekretaris" data-p="rt123"><b>Sekretaris</b>sekretaris / rt123</button>
+    <button type="button" data-act="demo" data-u="bendahara" data-p="rt123"><b>Bendahara</b>bendahara / rt123</button>
+  </div>`);
+  setTimeout(()=>$("#lgU").focus(),100);
+}
+function doLogin(){
+  const u=DB.users.find(x=>x.u===$("#lgU").value.trim().toLowerCase()&&x.p===$("#lgP").value);
+  if(!u){$("#lgErr").style.display="block";$("#mBox").classList.add("shake");setTimeout(()=>$("#mBox").classList.remove("shake"),450);return}
+  state.user=u;sessionStorage.setItem("simpadu_uid",u.u);
+  closeModal();applyAuth();toast("Selamat datang, "+u.nama+" — "+ROLES[u.role]);
+}
+function logout(){state.user=null;sessionStorage.removeItem("simpadu_uid");applyAuth();toast("Anda keluar — kembali ke tampilan warga")}
+function applyAuth(){renderTopbar();buildNav();buildBnav();bellCount();setPage(logged()?state.page:"beranda")}
+
+/* ================= NAV & TOPBAR ================= */
+function renderTopbar(){
+  const r=$("#tbRight");
+  const syncChip=`<span class="bdg ${gasStatus.state==="ok"?"b-green":gasStatus.state==="err"?"b-red":gasStatus.state==="sync"?"b-amber":"b-gray"}" style="cursor:pointer" data-act="gas-sync-now" title="Klik untuk sinkronisasi manual">${gasStatus.state==="sync"?"🔄":"☁️"} <span id="gasStatus">${esc(gasStatus.msg)}</span></span>`;
+  if(!logged()){r.innerHTML=syncChip+`<button class="btn btn-amber btn-sm" data-act="login-open">${modernIcon("bell")} Masuk Pengurus</button>`;return}
+  r.innerHTML=syncChip+`
+  <div class="bell">
+    <button class="bell-btn" data-act="bell" title="Notifikasi">${modernIcon("bell")}<span class="bell-dot" id="bellDot" style="display:none">0</span></button>
+    <div class="bell-panel" id="bellPanel">
+      <header>Notifikasi <button class="btn btn-sm btn-ghost" data-act="read-all">Tandai dibaca</button></header>
+      <div class="bp-list" id="bellList"></div>
+      <div style="padding:10px;text-align:center;border-top:1px solid var(--line)"><button class="btn btn-sm btn-ghost" data-act="nav" data-page="notifikasi">Lihat semua →</button></div>
+    </div>
+  </div>
+  <div class="u-chip"><div class="u-ava">${initials(state.user.nama)}</div><div><b>${esc(state.user.nama)}</b><span>${ROLES[state.user.role]} · ${esc(state.user.jab)}</span></div></div>
+  <button class="icobtn red" data-act="logout" title="Keluar">${modernIcon("logout")}</button>`;
+}
+function buildNav(){
+  const p=DB.profil;
+  $("#sbSub").textContent=p.rt+" · "+p.padukuhan.replace("Padukuhan ","")+" · "+p.kalurahan.replace("Kalurahan ","");
+  const pub=[["beranda","home","Beranda"],["pengumuman","megaphone","Pengumuman"],["agenda","calendar","Agenda & Kegiatan"],["kontak","contact","Kontak"],["pengaduan","alert","Pengaduan Warga",1],["berita","document","Berita & Dokumentasi"],["keuangan","wallet",logged()?(canKeu()?"Keuangan RT":"Keuangan (Baca)"):"Transparansi Kas"]];
+  let h=`<div class="sb-grp">🌐 PUBLIK — UNTUK WARGA</div>`+pub.map(([pg,ic,lb,badge])=>`<button class="nv" data-act="nav" data-page="${pg}">${modernIcon(ic)} ${lb}${badge?'<span class="pill" id="aduBadge" style="display:none"></span>':""}</button>`).join("");
+  if(logged()){
+    let g=`<div class="sb-grp">🛡 PENGELOLAAN — PENGURUS</div>`;
+    if(canWarga())g+=`<button class="nv" data-act="nav" data-page="warga">${modernIcon("user")} Data Warga</button>`;
+    g+=`<button class="nv" data-act="nav" data-page="laporan">${modernIcon("report")} Laporan</button>
+        <button class="nv" data-act="nav" data-page="notifikasi">${modernIcon("bell")} Notifikasi</button>
+        <button class="nv" data-act="nav" data-page="pengaturan">${modernIcon("gear")} Pengaturan</button>`;
+    h+=g;
+  }
+  $("#sbNav").innerHTML=h;
+  $("#sbFoot").innerHTML=logged()?`Login: <b style="color:#fff">${esc(state.user.jab)}</b> (${ROLES[role()]})`:`Mode warga (tanpa login) · SIMPADU v1.4`;
+}
+function buildBnav(){
+  let items;
+  if(!logged())items=[["beranda","home","Beranda"],["pengumuman","megaphone","Info"],["agenda","calendar","Agenda"],["kontak","contact","Kontak"],["_","menu","Menu"]];
+  else if(role()==="admin")items=[["beranda","home","Beranda"],["warga","user","Warga"],["pengaduan","alert","Lapor",1],["keuangan","wallet","Kas"],["kontak","contact","Kontak"]];
+  else if(role()==="sekretaris")items=[["beranda","home","Beranda"],["warga","user","Warga"],["pengaduan","alert","Lapor",1],["pengumuman","megaphone","Info"],["kontak","contact","Kontak"]];
+  else items=[["beranda","home","Beranda"],["keuangan","wallet","Kas"],["pengaduan","alert","Lapor",1],["pengumuman","megaphone","Info"],["kontak","contact","Kontak"]];
+  if(!logged())items.push(["_","menu","Menu"]); else items.push(["_","menu","Menu"]);
+  $("#bnav").innerHTML=items.map(([pg,ic,lb,badge])=>pg==="_"
+    ?`<button data-act="drawer">${modernIcon(ic)}<span>${lb}</span></button>`
+    :`<button data-act="nav" data-page="${pg}">${modernIcon(ic)}<span>${lb}</span>${badge?'<span class="pill" id="bnavAdu" style="display:none"></span>':""}</button>`).join("");
+}
+
+/* ================= ROUTER ================= */
+const TITLES={beranda:"Beranda RT",kontak:"Kontak RT",warga:"Data Warga",pengumuman:"Pengumuman & Informasi",agenda:"Agenda & Kegiatan",keuangan:"Keuangan RT",pengaduan:"Pengaduan Warga",berita:"Berita & Dokumentasi",laporan:"Laporan",notifikasi:"Notifikasi",pengaturan:"Pengaturan"};
+const PROTECTED=["warga","laporan","notifikasi","pengaturan"];
+function setPage(p){
+  if(PROTECTED.includes(p)&&!logged()){openLogin();toast("Halaman khusus pengurus — silakan login dahulu","warn");return}
+  state.page=p;
+  $$(".page").forEach(s=>s.classList.remove("active"));
+  const sec=$("#pg-"+p);sec.classList.add("active");
+  RENDER[p]();
+  $("#tbTitle").textContent=(p==="keuangan"&&!logged())?"Transparansi Kas RT":TITLES[p];
+  $$("#sbNav .nv").forEach(n=>n.classList.toggle("on",n.dataset.page===p));
+  $$("#bnav button").forEach(n=>n.classList.toggle("on",n.dataset.page===p));
+  $("#sidebar").classList.remove("open");$("#scrim").classList.remove("show");
+  const bp=$("#bellPanel");if(bp)bp.classList.remove("open");
+  window.scrollTo({top:0});
+  requestAnimationFrame(()=>sec.querySelectorAll(".reveal").forEach(el=>io.observe(el)));
+  requestAnimationFrame(runCounters);
+}
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.1});
+function runCounters(){$$(".page.active [data-count]").forEach(el=>{const t=+el.dataset.count,s=performance.now(),dur=900;
+  (function f(n){const p=Math.min(1,(n-s)/dur);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString("id-ID");if(p<1)requestAnimationFrame(f)})(s)})}
+function lockedPage(em,t,d,showLogin){return`<div class="gate"><div><div class="em">${em}</div><h2>${t}</h2>
+  <p class="muted" style="max-width:42ch;margin:0 auto ${showLogin?"18px":"0"}">${d}</p>
+  ${showLogin?'<button class="btn btn-amber" data-act="login-open">🔑 Login Pengurus</button>':""}</div></div>`}
+
+/* ================= BERANDA ================= */
+RENDER.beranda=function(){
+  const p=DB.profil, ck=canKonten();
+  const ketua=DB.pengurus.find(x=>/ketua rt/i.test(x.jab))||DB.pengurus[0];
+  const others=DB.pengurus.filter(x=>!ketua||x.id!==ketua.id);
+  const riw=[...DB.periodeList].sort((a,b)=>b.selesai-a.selesai);
+  const tk=DB.pengumuman.map(x=>esc(x.judul)+" — "+fmtTgl(x.tgl)).join(" &nbsp;◆&nbsp; ");
+  const anns=[...DB.pengumuman].sort((a,b)=>(a.kat==="Darurat"?-1:0)-(b.kat==="Darurat"?-1:0)||b.tgl.localeCompare(a.tgl)).slice(0,4);
+  const upc=DB.agenda.filter(a=>a.tgl>=todayStr()).sort((a,b)=>a.tgl.localeCompare(b.tgl)).slice(0,4);
+  const iurNow=DB.iuran.filter(i=>i.bulan===todayStr().slice(0,7));
+  const lunas=iurNow.filter(i=>i.status==="Lunas").length,pct=iurNow.length?Math.round(lunas/iurNow.length*100):0;
+  const aduOpen=DB.pengaduan.filter(a=>a.status<3).length;
+  const acts=logged()
+    ?`<button class="btn btn-amber" data-act="nav" data-page="pengumuman">${modernIcon("megaphone")} Buat Pengumuman</button><button class="btn btn-ghost" data-act="nav" data-page="agenda">${modernIcon("calendar")} Agenda</button><button class="btn btn-ghost" data-act="nav" data-page="pengaturan">${modernIcon("gear")} Pengaturan</button>`
+    :`<button class="btn btn-amber" data-act="nav" data-page="pengaduan">${modernIcon("alert")} Buat Pengaduan</button><button class="btn btn-ghost" data-act="nav" data-page="agenda">${modernIcon("calendar")} Agenda Terdekat</button><button class="btn btn-ghost" data-act="nav" data-page="keuangan">${modernIcon("wallet")} Transparansi Kas</button>`;
+  $("#pg-beranda").innerHTML=`
+  <div class="ticker"><div class="tk-lab">📢 INFO WARGA</div><div class="tk-wrap"><div class="tk-track"><span>${tk}</span><span>${tk}</span></div></div></div>
+  <div class="hero">
+    <div>
+      <div class="kicker" style="color:var(--amber)">Sugeng Rawuh 🙏</div>
+      <h1>${logged()?`Halo, <em>${esc(state.user.nama)}</em>`:`Selamat datang, <em>Warga Modinan</em>`}</h1>
+      <p>Portal resmi ${p.rt} ${p.padukuhan}, ${p.kalurahan}, ${p.kapanewon}, ${p.kabupaten}.</p>
+      ${!logged()?`<div style="margin-top:10px"><button class="btn btn-amber btn-sm" data-act="login-open">${modernIcon("bell")} Masuk Pengurus</button></div>`:""}
+      <div style="margin-top:10px">${logged()
+        ?`<span class="bdg" style="background:rgba(255,255,255,.18);color:#fff">🛡 Mode Pengurus — ${ROLES[role()]}</span>`
+        :`<span class="bdg" style="background:rgba(255,255,255,.18);color:#fff">🌐 Mode Warga — tanpa login</span>`}</div>
+      <div class="acts" style="margin-top:16px">${acts}</div>
+    </div>
+    <div style="text-align:center;min-width:150px">
+      <div style="width:86px;height:86px;margin:0 auto 10px;border-radius:50%;background:var(--amber);display:grid;place-items:center;font-family:var(--disp);font-size:30px;font-weight:800;color:#3A2A05;border:4px solid rgba(255,255,255,.5)">RT</div>
+      <b style="font-family:var(--disp);font-size:17px">${p.rt} ${p.padukuhan.replace("Padukuhan ","")}</b>
+      <div class="small" style="color:#BFE0CE">${p.kalurahan.replace("Kalurahan ","")} · ${p.kapanewon.replace("Kapanewon ","")} · Sleman</div>
+    </div>
+  </div>
+  ${!logged()?`<div class="note reveal" style="margin-top:16px">🔑 Anda menjelajah sebagai warga. <b>Pengurus RT?</b> <button class="chip" style="padding:3px 12px" data-act="login-open">Login di sini</button> untuk mengelola data, kas, pengumuman & pengaduan.</div>`:""}
+  <div class="grid g5" style="margin-top:16px">
+    <div class="stat reveal"><div class="ic" style="background:var(--mint);color:var(--pine)">👥</div><b data-count="${totalJiwa()}">0</b><span>Total Warga (jiwa)</span></div>
+    <div class="stat reveal"><div class="ic" style="background:var(--amber-s);color:var(--amber-d)">🏠</div><b data-count="${DB.warga.length}">0</b><span>Kepala Keluarga</span></div>
+    <div class="stat reveal"><div class="ic" style="background:var(--mint);color:var(--pine)">✅</div><b data-count="${aktifKK().length}">0</b><span>KK Status Aktif</span></div>
+    <div class="stat reveal"><div class="ic" style="background:var(--amber-s);color:var(--amber-d)">💰</div><b><span data-count="${pct}">0</span>%</b><span>Iuran Terbayar Bulan Ini</span></div>
+    <div class="stat reveal"><div class="ic" style="background:var(--red-s);color:var(--red)">🛠</div><b data-count="${aduOpen}">0</b><span>Pengaduan Belum Selesai</span></div>
+  </div>
+  <div class="split" style="margin-top:16px">
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="card reveal">
+        <div class="hd"><h3>${modernIcon("megaphone")} Pengumuman Terbaru</h3><button class="btn btn-sm btn-ghost" data-act="nav" data-page="pengumuman">Semua →</button></div>
+        <div class="pad" style="display:flex;flex-direction:column;gap:11px">
+          ${anns.map(a=>`<div class="ann-card ${a.kat==="Darurat"?"darurat":""}">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <span class="bdg ${a.kat==="Darurat"?"b-red":a.kat==="Kerja Bakti"?"b-amber":"b-green"}">${a.kat==="Darurat"?'<span class="dot" style="background:var(--red)"></span>':""}${a.kat}</span>
+              <span class="small muted">${fmtTgl(a.tgl)} · ${esc(a.penulis)}</span></div>
+            <b style="font-family:var(--disp);font-size:15px;display:block;margin:6px 0 3px">${esc(a.judul)}</b>
+            <div class="small muted">${esc(a.isi.slice(0,130))}${a.isi.length>130?"…":""}</div></div>`).join("")}
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="hd"><h3>📰 Berita RT Terbaru</h3><button class="btn btn-sm btn-ghost" data-act="nav" data-page="berita">Semua →</button></div>
+        <div class="pad grid g2">${DB.berita.slice(0,2).map(b=>`
+          <div class="news-card" data-act="berita-read" data-id="${b.id}">
+            <div class="img"><img loading="lazy" src="${b.foto}" alt=""></div>
+            <div style="padding:13px"><span class="bdg ${b.kat==="Artikel"?"b-blue":"b-pine"}">${b.kat}</span>
+            <b style="display:block;margin-top:7px;font-family:var(--disp)">${esc(b.judul)}</b>
+            <div class="small muted" style="margin-top:4px">${fmtTgl(b.tgl)}</div></div></div>`).join("")}</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="card reveal">
+        <div class="hd"><h3>${modernIcon("calendar")} Agenda Terdekat</h3><button class="btn btn-sm btn-ghost" data-act="nav" data-page="agenda">Kalender →</button></div>
+        <div class="pad">${upc.length?upc.map(a=>{const dd=new Date(a.tgl+"T00:00");return`
+          <div class="tl-item"><div class="dt-blk"><b>${dd.getDate()}</b><span>${BULANS[dd.getMonth()]}</span></div>
+          <div style="min-width:0"><b style="font-size:13.5px">${esc(a.judul)}</b>
+          <div class="small muted">⏰ ${a.jam} WIB · 📍 ${esc(a.tempat)}</div>
+          <span class="bdg" style="background:${KAT_COLORS[a.kat]}18;color:${KAT_COLORS[a.kat]};margin-top:4px">${a.kat}</span></div></div>`}).join(""):'<div class="empty"><span class="em">🗓</span>Belum ada agenda terdekat.</div>'}</div>
+      </div>
+      <div class="card reveal"><div class="pad">
+        <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-family:var(--disp)">${modernIcon("wallet")} Iuran ${BULAN[new Date().getMonth()]}</b><span class="bdg ${pct>=80?"b-green":"b-amber"}">${lunas}/${iurNow.length} KK lunas</span></div>
+        <div class="pbar" style="margin:12px 0 8px"><i style="width:${pct}%"></i></div>
+        ${logged()&&canKeu()
+          ?`<div class="small muted">${iurNow.length-lunas} KK belum membayar · kelola di menu Keuangan</div><button class="btn btn-sm btn-ghost" style="margin-top:10px" data-act="nav" data-page="keuangan">Kelola Iuran →</button>`
+          :`<div class="small muted">${iurNow.length-lunas} KK belum membayar. Nominal ${rupiah(DB.profil.iuran)}/KK — pembayaran melalui Bendahara.</div>`}</div></div>
+      <div class="card reveal"><div class="pad">
+        <b style="font-family:var(--disp)">${modernIcon("alert")} Ada Masalah di Lingkungan RT?</b>
+        <p class="small muted" style="margin:6px 0 10px">Laporkan lampu rusak, sampah, keamanan, jalan, air & listrik. ${aduOpen} laporan sedang diproses.</p>
+        <button class="btn btn-sm btn-pine" data-act="nav" data-page="pengaduan">Buat Laporan →</button></div></div>
+    </div>
+  </div>
+  <div class="grid g2 reveal" style="margin-top:16px">
+    <div class="card"><div class="hd"><h3>👤 Sambutan Ketua RT</h3></div>
+      <div class="pad" style="display:flex;gap:16px">
+        <div class="avt" style="width:64px;height:64px;font-size:22px;border-radius:16px;background:var(--pine)">${esc(ketua?initials(ketua.nama):"RT")}</div>
+        <div><i style="color:var(--muted)">"Assalamu’alaikum wr. wb. Selamat datang di portal warga ${p.rt} ${p.padukuhan.replace("Padukuhan ","")}. Semoga aplikasi ini mempererat guyub rukun kita — dari iuran, kerja bakti, sampai pengaduan, semua jadi lebih mudah dan transparan. Monggo dimanfaatkan."</i>
+        <b style="display:block;margin-top:10px;font-family:var(--disp)">${esc(ketua?.nama||"Ketua RT")}</b><span class="small muted">${esc(ketua?.jab||"Ketua RT")} ${p.rt} · Periode ${periodeLabel()}</span></div></div></div>
+    <div class="card"><div class="hd"><h3>🏡 Profil ${p.rt}</h3></div>
+      <div class="pad small">
+        <p>${p.rt} berada di wilayah <b>${p.padukuhan}, ${p.kalurahan}, ${p.kapanewon}, ${p.kabupaten}</b>, di koridor barat Jalan Wates — kawasan permukiman guyub dengan semangat gotong royong. Sekretariat: 📍 ${esc(p.alamat)} · ☎ ${esc(p.wa)}.</p>
+        <div class="grid g2" style="margin-top:12px;gap:10px">
+          <div class="note" style="background:var(--mint);border-color:#CBE2D1;color:var(--pine)"><b>Visi</b><br>${esc(p.visi)}</div>
+          <div class="note" style="background:var(--mint);border-color:#CBE2D1;color:var(--pine)"><b>Misi</b><br>${esc(p.misi)}</div>
+        </div></div></div>
+  </div>
+  <div class="card reveal" style="margin-top:16px">
+    <div class="hd"><h3>${modernIcon("wallet")} Arisan Warga & Dana Sosial</h3></div>
+    <div class="pad grid g2">
+      <div>
+        <h4 style="margin-bottom:8px; font-size:16px;">Arisan Warga</h4>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Bulan</th><th>Penerima</th><th>Keterangan</th><th>Selanjutnya</th></tr></thead><tbody>
+          ${DB.arisan.map(item=>`<tr><td class="mono">${fmtTgl(item.bulan + '-01')}</td><td><b>${esc(item.penerima)}</b></td><td>${esc(item.keterangan)}</td><td class="small muted">${esc(item.selanjutnya)}</td></tr>`).join("")}
+        </tbody></table></div>
+      </div>
+      <div>
+        <h4 style="margin-bottom:8px; font-size:16px;">Dana Sosial</h4>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nama</th><th>Tanggal</th><th>Jumlah</th></tr></thead><tbody>
+          ${DB.danaSosial.map(item=>`<tr><td>${esc(item.nama)}</td><td class="mono">${fmtTgl(item.tanggal)}</td><td class="num">${rupiah(item.jumlah)}</td></tr>`).join("")}
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+  <div class="card reveal" style="margin-top:16px">
+    <div class="hd"><h3>🏛 Struktur Pengurus ${p.rt}</h3>
+      <div class="rowact"><span class="bdg b-green">Periode ${periodeLabel()} · Aktif</span>
+      ${ck?`<button class="btn btn-sm btn-pine" data-act="pgw-add">＋ Tambah Pengurus</button>`:""}</div></div>
+    <div class="pad">
+      ${ketua?`<div class="orgchart-top" style="width:100%"><div class="pcard hov" style="border:2px solid var(--amber);min-width:300px">
+        <div class="avt" style="background:var(--amber);color:#3A2A05">${initials(ketua.nama)}</div>
+        <div style="flex:1;min-width:0"><b>${esc(ketua.nama)}</b><span>${esc(ketua.jab)} · ${esc(ketua.hp)}</span></div>
+        ${ck?`<div class="rowact"><button class="icobtn" title="Edit" data-act="pgw-edit" data-id="${ketua.id}">✏️</button><button class="icobtn red" title="Hapus" data-act="pgw-del" data-id="${ketua.id}">🗑</button></div>`:""}</div></div>`
+      :'<div class="empty"><span class="em">🏛</span>Belum ada data pengurus — tambahkan lewat tombol ＋ Tambah Pengurus.</div>'}
+      <div class="grid g4" style="gap:10px">${others.map(x=>`
+        <div class="pcard hov"><div class="avt sm" style="background:${avColor(x.nama)};width:40px;height:40px">${initials(x.nama)}</div>
+        <div style="flex:1;min-width:0"><b>${esc(x.nama)}</b><span>${esc(x.jab)} · ${esc(x.hp)}</span></div>
+        ${ck?`<div class="rowact"><button class="icobtn" title="Edit" data-act="pgw-edit" data-id="${x.id}">✏️</button><button class="icobtn red" title="Hapus" data-act="pgw-del" data-id="${x.id}">🗑</button></div>`:""}</div>`).join("")}</div>
+      ${ck?`<div class="small muted" style="margin-top:12px">✏️ ubah nama/jabatan/kontak · 🗑 hapus dari struktur · ⏙ tutup periode & arsipkan (di bawah).</div>`:""}
+
+      <div style="margin-top:20px;border-top:1px dashed var(--line);padding-top:16px">
+        <div class="toolbar" style="justify-content:space-between;margin-bottom:6px">
+          <b style="font-family:var(--disp);font-size:15px">🗄 Riwayat Pergantian Pengurus</b>
+          ${ck?`<button class="btn btn-sm btn-amber" data-act="per-arsip">⏭ Tutup Periode & Arsipkan</button>`:""}
+        </div>
+        <p class="small muted" style="margin-bottom:10px">Arsip struktur periode lama — dapat dilihat warga, dikelola pengurus. Tahun periode diatur di ⚙️ Pengaturan.</p>
+        ${riw.length?riw.map(a=>`
+        <div class="card" style="margin-top:8px">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 16px">
+            <span class="bdg b-gray">🗄 Periode ${esc(a.thn)}</span>
+            <span class="small muted">${a.pengurus.length} pengurus${a.ket?" · "+esc(a.ket):""}</span>
+            <span class="rowact" style="margin-left:auto">
+              <button class="chip" style="padding:4px 12px" data-act="riw-tgl" data-id="${a.id}">👁 Lihat Struktur</button>
+              ${ck?`<button class="icobtn" title="Edit arsip" data-act="riw-edit" data-id="${a.id}">✏️</button>
+              <button class="icobtn red" title="Hapus arsip" data-act="riw-del" data-id="${a.id}">🗑</button>`:""}
+            </span></div>
+          <div id="riw-${a.id}" style="display:none;padding:0 16px 14px">
+            <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Jabatan</th><th>Nama</th><th>Kontak</th></tr></thead><tbody>
+            ${a.pengurus.map(x=>`<tr><td>${esc(x.jab)}</td><td><b>${esc(x.nama)}</b></td><td class="mono">${esc(x.hp||"—")}</td></tr>`).join("")||'<tr><td colspan="3" class="muted">Tidak ada data pengurus.</td></tr>'}
+            </tbody></table></div></div></div>`).join("")
+        :'<div class="empty" style="padding:18px"><span class="em">🗄</span>Belum ada arsip periode lama. Gunakan "Tutup Periode & Arsipkan" saat pergantian pengurus.</div>'}
+      </div>
+    </div>
+  </div>
+  <div class="card reveal" style="margin-top:16px">
+    <div class="hd"><h3>📸 Galeri Kegiatan</h3><button class="btn btn-sm btn-ghost" data-act="nav" data-page="berita">Galeri Lengkap →</button></div>
+    <div class="pad hscroll">${DB.galeri.slice(0,6).map(g=>`<figure class="ph" style="width:220px"><img loading="lazy" src="${g.foto}" alt=""><figcaption>${esc(g.judul)}</figcaption></figure>`).join("")}</div>
+  </div>
+  <div class="card reveal" style="margin-top:16px">
+    <div class="hd"><h3>📞 Kontak & Informasi</h3></div>
+    <div class="pad grid g3">
+      <div><div class="kicker">Sekretariat</div><div style="margin-top:8px; font-size:16px; font-weight:800; font-family:var(--disp)">${esc(p.rt)} ${esc(p.padukuhan)}</div><div class="small muted" style="margin-top:6px">📍 ${esc(p.alamat)}</div><div class="small muted" style="margin-top:4px">☎ ${esc(p.wa)}</div></div>
+      <div><div class="kicker">Ketua RT</div><div style="margin-top:8px; font-size:16px; font-weight:800; font-family:var(--disp)">${esc(ketua?.nama || "H. Sudarman")}</div><div class="small muted" style="margin-top:6px">${esc(ketua?.jab || "Ketua RT")}</div><div class="small muted" style="margin-top:4px">📱 ${esc(ketua?.hp || p.wa)}</div></div>
+      <div><div class="kicker">Jam Layanan</div><div style="margin-top:8px; font-size:14px; font-weight:700;">Senin–Jumat</div><div class="small muted" style="margin-top:4px">08.00–12.00 WIB</div><div class="small muted" style="margin-top:4px">Pos RT / WhatsApp aktif untuk kebutuhan warga</div></div>
+    </div>
+  </div>`;
+};
+
+/* ================= DATA WARGA ================= */
+RENDER.warga=function(){
+  if(!logged()){$("#pg-warga").innerHTML=lockedPage("🔒","Area Khusus Pengurus","Data pribadi warga hanya dapat dilihat oleh pengurus yang login.",true);return}
+  if(!canWarga()){$("#pg-warga").innerHTML=lockedPage("🔒","Akses Terbatas","Modul Data Warga hanya dikelola Ketua/Admin dan Sekretaris. Peran Anda: "+ROLES[role()]+".",false);return}
+  const f=state;
+  let rows=DB.warga.filter(k=>{
+    const q=(f.wq||"").toLowerCase();
+    const hit=!q||k.nama.toLowerCase().includes(q)||k.alamat.toLowerCase().includes(q)||k.anggota.some(a=>a.nama.toLowerCase().includes(q));
+    return hit&&(!f.wtTinggal||k.tinggal===f.wtTinggal)&&(!f.wtStatus||k.status===f.wtStatus);
+  });
+  const countT=t=>DB.warga.filter(k=>k.tinggal===t).length;
+  const donutBG=`conic-gradient(var(--pine) 0 ${countT("Tetap")/DB.warga.length*360}deg, var(--amber) ${countT("Tetap")/DB.warga.length*360}deg ${(countT("Tetap")+countT("Kontrak"))/DB.warga.length*360}deg, #2A7FA8 ${(countT("Tetap")+countT("Kontrak"))/DB.warga.length*360}deg 360deg)`;
+  $("#pg-warga").innerHTML=`
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="stat"><b data-count="${DB.warga.length}">0</b><span>Kepala Keluarga</span></div>
+    <div class="stat"><b data-count="${totalJiwa()}">0</b><span>Total Jiwa (aktif)</span></div>
+    <div class="stat"><b data-count="${aktifKK().length}">0</b><span>KK Aktif</span></div>
+    <div class="card pad" style="display:flex;align-items:center;gap:14px">
+      <div class="donut" style="width:72px;height:72px;background:${donutBG}"><b style="font-size:12px">${DB.warga.length}</b></div>
+      <ul class="legend" style="padding:0;font-size:11.5px">
+        <li><span class="dot" style="background:var(--pine)"></span>Tetap <b class="mono">${countT("Tetap")}</b></li>
+        <li><span class="dot" style="background:var(--amber)"></span>Kontrak <b class="mono">${countT("Kontrak")}</b></li>
+        <li><span class="dot" style="background:#2A7FA8"></span>Kos <b class="mono">${countT("Kos")}</b></li></ul></div>
+  </div>
+  <div class="card">
+    <div class="hd" style="flex-wrap:wrap">
+      <div class="toolbar" style="flex:1;width:100%">
+        <div class="search"><input class="inp" id="wq" placeholder="🔍 Cari nama KK, anggota, atau alamat…" value="${esc(f.wq)}" data-chk="wq"></div>
+        <select class="inp" style="width:auto" data-chk="wtTinggal"><option value="">Status Tinggal: Semua</option>${["Tetap","Kontrak","Kos"].map(s=>`<option ${f.wtTinggal===s?"selected":""}>${s}</option>`).join("")}</select>
+        <select class="inp" style="width:auto" data-chk="wtStatus"><option value="">Status Warga: Semua</option>${["Aktif","Pindah","Tidak Aktif"].map(s=>`<option ${f.wtStatus===s?"selected":""}>${s}</option>`).join("")}</select>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-sm btn-ghost" data-act="warga-template">⬇ Template</button>
+        <button class="btn btn-sm btn-ghost" data-act="warga-import">⬆ Import Excel</button>
+        <button class="btn btn-sm btn-amber" data-act="warga-export">⬇ Export Excel</button>
+        <button class="btn btn-sm btn-pine" data-act="warga-add">＋ Tambah KK</button>
+      </div>
+    </div>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>#</th><th>Kepala Keluarga</th><th>Anggota</th><th>No. HP</th><th>Status Tinggal</th><th>Status Warga</th><th>Aksi</th></tr></thead>
+      <tbody>${rows.map((k,i)=>`
+        <tr><td class="mono">${i+1}</td>
+        <td><div style="display:flex;gap:10px;align-items:center"><div class="avt sm" style="background:${avColor(k.nama)}">${initials(k.nama)}</div><div><b>${esc(k.nama)}</b><div class="small muted">${esc(k.alamat)}</div></div></div></td>
+        <td><button class="chip" style="padding:4px 10px" data-act="warga-tgl" data-id="${k.id}">${k.anggota.length+1} jiwa ▾</button></td>
+        <td class="mono">${esc(k.hp)}</td>
+        <td><span class="bdg ${k.tinggal==="Tetap"?"b-green":k.tinggal==="Kontrak"?"b-amber":"b-blue"}">${k.tinggal}</span></td>
+        <td><span class="bdg ${k.status==="Aktif"?"b-green":k.status==="Pindah"?"b-amber":"b-gray"}">${k.status}</span></td>
+        <td><div class="rowact">
+          <button class="icobtn" title="Edit" data-act="warga-edit" data-id="${k.id}">✏️</button>
+          <button class="icobtn red" title="Hapus" data-act="warga-del" data-id="${k.id}">🗑</button></div></td></tr>
+        <tr id="mem-${k.id}" style="display:none;background:var(--mint-2)"><td colspan="7" style="padding:12px 20px">
+          <table class="tbl" style="margin:0"><thead><tr><th>Nama</th><th>L/P</th><th>Hubungan</th><th>Pekerjaan</th></tr></thead><tbody>
+          <tr><td><b>${esc(k.nama)}</b></td><td>${k.jk||"L"}</td><td>Kepala Keluarga</td><td>—</td></tr>
+          ${k.anggota.map(a=>`<tr><td>${esc(a.nama)}</td><td>${a.jk}</td><td>${a.relasi}</td><td>${esc(a.kerja)||"—"}</td></tr>`).join("")}
+          </tbody></table></td></tr>`).join("")||'<tr><td colspan="7"><div class="empty"><span class="em">🔍</span>Tidak ada data yang cocok.</div></td></tr>'}
+      </tbody></table></div>
+    <div class="pad small muted">Menampilkan ${rows.length} dari ${DB.warga.length} kepala keluarga</div>
+  </div>`;
+};
+function wargaForm(k){
+  state.members=k?[...k.anggota.map(a=>({...a}))]:[];
+  openModal(k?"✏️ Edit Data KK":"＋ Tambah Kepala Keluarga",`
+  <div class="f2">
+    <div class="fld"><label>Nama Kepala Keluarga *</label><input class="inp" id="fkNama" value="${esc(k?.nama||"")}"></div>
+    <div class="fld"><label>No. HP</label><input class="inp" id="fkHp" value="${esc(k?.hp||"")}"></div>
+  </div>
+  <div class="fld"><label>Alamat *</label><input class="inp" id="fkAlamat" value="${esc(k?.alamat||"")}"></div>
+  <div class="f2">
+    <div class="fld"><label>Status Tinggal</label><select class="inp" id="fkTinggal">${["Tetap","Kontrak","Kos"].map(s=>`<option ${k?.tinggal===s?"selected":""}>${s}</option>`).join("")}</select></div>
+    <div class="fld"><label>Status Warga</label><select class="inp" id="fkStatus">${["Aktif","Pindah","Tidak Aktif"].map(s=>`<option ${k?.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
+  </div>
+  <div class="fld"><label>Anggota Keluarga</label><div id="mAnggota"></div>
+  <button class="btn btn-sm btn-ghost" data-act="mem-add">＋ Tambah Anggota</button></div>
+  <button class="btn btn-pine btn-block" style="margin-top:14px" data-act="warga-save" data-id="${k?.id||0}">💾 Simpan Data</button>`);
+  renderMembers();
+}
+function renderMembers(){
+  $("#mAnggota").innerHTML=state.members.map((m,i)=>`
+  <div class="mrow">
+    <input class="inp" data-f="nama" placeholder="Nama lengkap" value="${esc(m.nama)}">
+    <select class="inp" data-f="jk"><option ${m.jk==="L"?"selected":""}>L</option><option ${m.jk==="P"?"selected":""}>P</option></select>
+    <select class="inp" data-f="relasi">${["Istri","Suami","Anak","Orang Tua","Mertua","Lainnya"].map(r=>`<option ${m.relasi===r?"selected":""}>${r}</option>`).join("")}</select>
+    <input class="inp" data-f="kerja" placeholder="Pekerjaan" value="${esc(m.kerja)}">
+    <button class="icobtn red" data-act="mem-del" data-i="${i}">✕</button></div>`).join("")||'<p class="small muted">Belum ada anggota.</p>';
+}
+function saveWarga(id){
+  const nama=$("#fkNama").value.trim(),alamat=$("#fkAlamat").value.trim();
+  if(!nama||!alamat){toast("Nama dan alamat wajib diisi","err");return}
+  const anggota=[...$$("#mAnggota .mrow")].map(r=>({nama:r.querySelector('[data-f="nama"]').value,jk:r.querySelector('[data-f="jk"]').value,relasi:r.querySelector('[data-f="relasi"]').value,kerja:r.querySelector('[data-f="kerja"]').value})).filter(m=>m.nama.trim());
+  const data={nama,alamat,hp:$("#fkHp").value,tinggal:$("#fkTinggal").value,status:$("#fkStatus").value,anggota};
+  if(id){Object.assign(DB.warga.find(k=>k.id==id),data);toast("Data warga diperbarui")}
+  else{DB.warga.push({id:++DB.nextId,jk:"L",...data});toast("Kepala keluarga baru ditambahkan")}
+  save();closeModal();RENDER.warga();bellCount();
+}
+
+/* ================= PENGUMUMAN ================= */
+function annForm(a){
+  openModal(a?"✏️ Edit Pengumuman":"📣 Buat Pengumuman",`
+  <div class="fld"><label>Judul *</label><input class="inp" id="fAnnJudul" value="${esc(a?.judul||"")}"></div>
+  <div class="f2"><div class="fld"><label>Kategori</label><select class="inp" id="fAnnKat">${["RT","Darurat","Kerja Bakti"].map(k=>`<option ${a?.kat===k?"selected":""}>${k}</option>`).join("")}</select></div>
+  <div class="fld"><label>Tanggal</label><input type="date" class="inp" id="fAnnTgl" value="${a?.tgl||todayStr()}"></div></div>
+  <div class="fld"><label>Penulis</label><input class="inp" id="fAnnPen" value="${esc(a?.penulis||state.user.nama)}"></div>
+  <div class="fld"><label>Isi Pengumuman *</label><textarea class="inp" id="fAnnIsi">${esc(a?.isi||"")}</textarea></div>
+  ${!a?'<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="fAnnNotif" checked> Kirim notifikasi ke seluruh warga</label>':""}
+  <button class="btn btn-pine btn-block" style="margin-top:12px" data-act="ann-save" data-id="${a?.id||0}">${a?"💾 Simpan Perubahan":"Terbitkan"}</button>`);
+}
+RENDER.pengumuman=function(){
+  const ck=canKonten();
+  const list=DB.pengumuman.filter(p=>state.annF==="Semua"||p.kat===state.annF).sort((a,b)=>b.tgl.localeCompare(a.tgl));
+  $("#pg-pengumuman").innerHTML=`
+  ${!logged()?'<div class="note" style="margin-bottom:14px">📌 Informasi resmi dari pengurus untuk seluruh warga. Pengurus dapat login untuk menerbitkan, mengedit, atau menghapus pengumuman.</div>':""}
+  <div class="toolbar" style="margin-bottom:16px;justify-content:space-between">
+    <div class="chips">${["Semua","RT","Darurat","Kerja Bakti"].map(c=>`<button class="chip ${state.annF===c?"on":""}" data-act="ann-f" data-f="${c}">${c}</button>`).join("")}</div>
+    ${ck?'<button class="btn btn-pine" data-act="ann-add">＋ Buat Pengumuman</button>':""}
+  </div>
+  <div class="grid g2">${list.map(p=>`
+    <div class="card hov reveal" style="border-left:5px solid ${p.kat==="Darurat"?"var(--red)":p.kat==="Kerja Bakti"?"var(--amber)":"var(--leaf)"}">
+      <div class="pad">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="bdg ${p.kat==="Darurat"?"b-red":p.kat==="Kerja Bakti"?"b-amber":"b-green"}">${p.kat==="Darurat"?'<span class="dot pulse" style="background:var(--red)"></span> DARURAT':p.kat}</span>
+          <span class="small muted">${fmtTgl(p.tgl)} · ${esc(p.penulis)}</span>
+          ${ck?`<span style="margin-left:auto" class="rowact">
+            <button class="icobtn" title="Broadcast notifikasi" data-act="ann-broadcast" data-id="${p.id}">📨</button>
+            <button class="icobtn" title="Edit" data-act="ann-edit" data-id="${p.id}">✏️</button>
+            <button class="icobtn red" title="Hapus" data-act="ann-del" data-id="${p.id}">🗑</button></span>`:""}</div>
+        <h3 style="font-size:16.5px;margin:9px 0 6px">${esc(p.judul)}</h3>
+        <p class="small">${esc(p.isi)}</p></div></div>`).join("")||'<div class="empty card"><span class="em">📭</span>Belum ada pengumuman kategori ini.</div>'}</div>`;
+};
+
+/* ================= AGENDA ================= */
+function agForm(a){
+  openModal(a?"✏️ Edit Kegiatan":"🗓 Tambah Kegiatan",`
+  <div class="fld"><label>Nama Kegiatan *</label><input class="inp" id="fAgJudul" value="${esc(a?.judul||"")}"></div>
+  <div class="f2"><div class="fld"><label>Kategori</label><select class="inp" id="fAgKat">${Object.keys(KAT_COLORS).map(k=>`<option ${a?.kat===k?"selected":""}>${k}</option>`).join("")}</select></div>
+  <div class="fld"><label>Tanggal</label><input type="date" class="inp" id="fAgTgl" value="${a?.tgl||todayStr()}"></div></div>
+  <div class="f2"><div class="fld"><label>Jam (WIB)</label><input class="inp" id="fAgJam" placeholder="07.00" value="${esc(a?.jam||"")}"></div>
+  <div class="fld"><label>Tempat</label><input class="inp" id="fAgTmp" value="${esc(a?.tempat||"")}"></div></div>
+  <div class="fld"><label>Keterangan</label><textarea class="inp" id="fAgDesc">${esc(a?.desc||"")}</textarea></div>
+  <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="agenda-save" data-id="${a?.id||0}">${a?"💾 Simpan Perubahan":"Simpan Kegiatan"}</button>`);
+}
+RENDER.agenda=function(){
+  const ck=canKonten();
+  const {y,m}=state.cal;
+  const first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  let cells=['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(d=>`<div class="dow">${d}</div>`).join("");
+  for(let i=0;i<first;i++)cells+='<div class="cal-cell blank"></div>';
+  for(let dd=1;dd<=dim;dd++){
+    const ds=`${y}-${pad(m+1)}-${pad(dd)}`;
+    const evs=DB.agenda.filter(a=>a.tgl===ds);
+    cells+=`<div class="cal-cell ${ds===todayStr()?"today":""} ${state.calSel===ds?"sel":""}" data-act="cal-day" data-d="${ds}"><span>${dd}</span><span class="dots">${evs.slice(0,3).map(e=>`<i style="background:${KAT_COLORS[e.kat]||"#999"}"></i>`).join("")}</span></div>`;
+  }
+  const dayEvs=state.calSel?DB.agenda.filter(a=>a.tgl===state.calSel):[];
+  const monthEvs=DB.agenda.filter(a=>a.tgl.startsWith(`${y}-${pad(m+1)}`)).sort((a,b)=>a.tgl.localeCompare(b.tgl));
+  const shown=state.calSel?dayEvs:monthEvs;
+  $("#pg-agenda").innerHTML=`
+  <div class="toolbar" style="margin-bottom:16px;justify-content:space-between">
+    <div class="chips">${Object.entries(KAT_COLORS).map(([k,c])=>`<span class="chip" style="cursor:default"><span class="dot" style="background:${c}"></span> ${k}</span>`).join("")}</div>
+    ${ck?'<button class="btn btn-pine" data-act="agenda-add">＋ Tambah Kegiatan</button>':""}
+  </div>
+  <div class="split">
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+      <div class="card pad reveal">
+        <div class="cal-head">
+          <button class="icobtn" data-act="cal-nav" data-n="-1">◀</button>
+          <h3>${BULAN[m]} ${y}</h3>
+          <button class="icobtn" data-act="cal-nav" data-n="1">▶</button>
+        </div>
+        <div class="cal">${cells}</div>
+        ${state.calSel?`<div style="margin-top:10px;text-align:right"><button class="btn btn-sm btn-ghost" data-act="cal-clear">Lihat sebulan penuh</button></div>`:""}
+      </div>
+      <div class="card reveal"><div class="hd"><h3>📸 Dokumentasi Kegiatan</h3><button class="btn btn-sm btn-ghost" data-act="nav" data-page="berita">Galeri →</button></div>
+        <div class="pad hscroll">${DB.galeri.slice(0,5).map(g=>`<figure class="ph" style="width:200px"><img loading="lazy" src="${g.foto}" alt=""><figcaption>${esc(g.judul)}</figcaption></figure>`).join("")}</div></div>
+    </div>
+    <div class="card reveal"><div class="hd"><h3>${state.calSel?"📌 Kegiatan "+fmtTgl(state.calSel):"📌 Kegiatan "+BULAN[m]}</h3><span class="bdg b-gray">${shown.length} kegiatan</span></div>
+      <div class="pad">${shown.length?shown.map(a=>`
+        <div class="tl-item"><div class="dt-blk" style="background:${KAT_COLORS[a.kat]}18"><b style="color:${KAT_COLORS[a.kat]}">${new Date(a.tgl+"T00:00").getDate()}</b><span style="color:${KAT_COLORS[a.kat]}">${BULANS[new Date(a.tgl+"T00:00").getMonth()]}</span></div>
+        <div style="flex:1;min-width:0"><b style="font-size:13.5px">${esc(a.judul)}</b>
+        <div class="small muted">⏰ ${a.jam} WIB · 📍 ${esc(a.tempat)}</div>
+        <div class="small muted" style="margin-top:3px">${esc(a.desc||"")}</div>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="bdg" style="background:${KAT_COLORS[a.kat]}18;color:${KAT_COLORS[a.kat]}">${a.kat}</span>
+        ${ck?`<button class="chip" style="padding:2px 10px;font-size:11px" data-act="agenda-edit" data-id="${a.id}">✏️ Edit</button>
+        <button class="chip" style="padding:2px 10px;font-size:11px;color:var(--red)" data-act="agenda-del" data-id="${a.id}">🗑 Hapus</button>
+        ${a.tgl>=todayStr()?`<button class="chip" style="padding:2px 10px;font-size:11px" data-act="agenda-remind" data-id="${a.id}">🔔 H-3</button>`:""}`:""}</div></div></div>`).join(""):'<div class="empty"><span class="em">🗓</span>Tidak ada kegiatan pada tanggal ini.</div>'}</div></div>
+  </div>`;
+};
+
+/* ================= KEUANGAN ================= */
+const saldo=()=>DB.transaksi.reduce((s,t)=>s+(t.jenis==="Masuk"?t.jumlah:-t.jumlah),0);
+function chartData(){const now=new Date(),out=[];for(let i=5;i>=0;i--){const b=new Date(now.getFullYear(),now.getMonth()-i,1),ym=b.getFullYear()+"-"+pad(b.getMonth()+1);
+  out.push({lab:BULANS[b.getMonth()],in:DB.transaksi.filter(t=>t.tgl.startsWith(ym)&&t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0),out:DB.transaksi.filter(t=>t.tgl.startsWith(ym)&&t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0)})}return out}
+function chartHTML(chart){const maxV=Math.max(...chart.flatMap(c=>[c.in,c.out]),1);
+  return`<div class="small muted" style="margin-bottom:10px"><span class="dot" style="background:var(--pine)"></span> Masuk &nbsp; <span class="dot" style="background:var(--amber-d)"></span> Keluar</div>
+  <div class="bars">${chart.map((c,i)=>`<div class="bar-g"><div class="bar-pair">
+    <div class="bar in" title="Masuk ${c.lab}: ${rupiah(c.in)}" style="height:${c.in/maxV*100}%;animation-delay:${i*.08}s"></div>
+    <div class="bar out" title="Keluar ${c.lab}: ${rupiah(c.out)}" style="height:${c.out/maxV*100}%;animation-delay:${i*.08+.05}s"></div>
+    </div><span class="bar-lab">${c.lab}</span></div>`).join("")}</div>`}
+function finForm(t,presetKat="Kas RT"){
+  const defaultKat = t ? t.kat : presetKat;
+  openModal(t?"✏️ Edit Transaksi":"💰 Catat Transaksi",`
+  <div class="f2"><div class="fld"><label>Jenis</label><select class="inp" id="fTrJenis"><option ${t?.jenis==="Masuk"?"selected":""}>Masuk</option><option ${t?.jenis==="Keluar"?"selected":""}>Keluar</option></select></div>
+  <div class="fld"><label>Kategori</label><select class="inp" id="fTrKat">${["Kas RT","Dana Sosial","Arisan RT","Iuran Warga","Donasi","Dana Kalurahan","Kegiatan","Kebersihan","Keamanan","Pembangunan","Sosial","Saldo Awal","Lainnya"].map(k=>`<option ${defaultKat===k?"selected":""}>${k}</option>`).join("")}</select></div></div>
+  <div class="fld"><label>Keterangan *</label><input class="inp" id="fTrKet" placeholder="mis. Konsumsi rapat warga" value="${esc(t?.ket||"")}"></div>
+  <div class="f2"><div class="fld"><label>Jumlah (Rp) *</label><input type="number" class="inp mono" id="fTrJum" min="0" placeholder="150000" value="${t?.jumlah||""}"></div>
+  <div class="fld"><label>Tanggal</label><input type="date" class="inp" id="fTrTgl" value="${t?.tgl||todayStr()}"></div></div>
+  <div class="fld"><label>Upload Bukti ${t?.bukti?`(saat ini: ${esc(t.bukti)})`:"(opsional)"}</label><input type="file" class="inp" id="fTrBukti" accept="image/*,.pdf"></div>
+  <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="fin-save" data-id="${t?.id||0}">${t?"💾 Simpan Perubahan":"Simpan Transaksi"}</button>`);
+}
+function arisanRotasi(){
+  const rows=[...DB.arisan].sort((a,b)=>a.bulan.localeCompare(b.bulan));
+  return rows.map((it,idx)=>{
+    const next=rows[(idx+1)%rows.length];
+    return { ...it, bulanBerikutnya: next.bulan, penerimaBerikutnya: next.penerima };
+  });
+}
+RENDER.keuangan=function(){
+  const now=new Date(),ymNow=todayStr().slice(0,7);
+  const masukBulan=DB.transaksi.filter(t=>t.jenis==="Masuk"&&t.tgl.startsWith(ymNow)).reduce((s,t)=>s+t.jumlah,0);
+  const keluarBulan=DB.transaksi.filter(t=>t.jenis==="Keluar"&&t.tgl.startsWith(ymNow)).reduce((s,t)=>s+t.jumlah,0);
+  const iurBulan=DB.transaksi.filter(t=>t.kat==="Arisan RT"&&t.tgl.startsWith(ymNow)).reduce((s,t)=>s+t.jumlah,0);
+  if(!logged()){
+    const last=[...DB.transaksi].sort((a,b)=>b.tgl.localeCompare(a.tgl)).slice(0,10);
+    $("#pg-keuangan").innerHTML=`
+    <div class="note" style="margin-bottom:16px">🌐 <b>Transparansi Kas RT untuk warga.</b> Data ringkas & tanpa bukti transaksi. Pengelolaan kas hanya oleh pengurus — <button class="chip" style="padding:2px 10px" data-act="login-open">login pengurus</button>.</div>
+    <div class="grid g4" style="margin-bottom:16px">
+      <div class="stat dark"><div class="ic" style="background:rgba(255,255,255,.15)">🏦</div><b class="mono" style="font-size:24px">${rupiah(saldo())}</b><span>Saldo Kas RT</span></div>
+      <div class="stat"><div class="ic" style="background:var(--mint);color:var(--pine)">⬇</div><b class="mono" style="font-size:20px">${rupiah(masukBulan)}</b><span>Pemasukan ${BULANS[now.getMonth()]}</span></div>
+      <div class="stat"><div class="ic" style="background:var(--red-s);color:var(--red)">⬆</div><b class="mono" style="font-size:20px">${rupiah(keluarBulan)}</b><span>Pengeluaran ${BULANS[now.getMonth()]}</span></div>
+      <div class="stat"><div class="ic" style="background:var(--amber-s);color:var(--amber-d)">🤝</div><b class="mono" style="font-size:20px">${rupiah(DB.transaksi.filter(t=>t.kat==="Dana Sosial"&&t.tgl.startsWith(ymNow)).reduce((s,t)=>s+t.jumlah,0))}</b><span>Dana Sosial</span></div>
+    </div>
+    <div class="grid g2">
+      <div class="card pad reveal"><h3 style="margin-bottom:8px">📊 Arus Kas 6 Bulan Terakhir</h3>${chartHTML(chartData())}</div>
+      <div class="card reveal"><div class="hd"><h3>🧾 Transaksi Terakhir</h3><span class="bdg b-gray">10 terbaru</span></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Jumlah</th></tr></thead><tbody>
+      ${last.map(t=>`<tr><td class="mono">${fmtTgl(t.tgl)}</td><td>${esc(t.ket)}<div class="small muted">${t.kat}</div></td>
+      <td><span class="bdg ${t.jenis==="Masuk"?"b-green":"b-gray"}">${t.jenis}</span></td>
+      <td class="num" style="color:${t.jenis==="Masuk"?"var(--pine)":"var(--red)"}">${rupiah(t.jumlah)}</td></tr>`).join("")}
+      </tbody></table></div></div>
+    </div>`;
+    return;
+  }
+  const ck=canKeu();
+  const months=[...new Set(DB.transaksi.map(t=>t.tgl.slice(0,7)))].sort().reverse();
+  let tx=DB.transaksi.filter(t=>(state.finBulan==="all"||t.tgl.startsWith(state.finBulan))&&(state.finJenis==="Semua"||t.jenis===state.finJenis)).sort((a,b)=>b.tgl.localeCompare(a.tgl));
+  const iur=DB.iuran.filter(i=>i.bulan===state.iurBulan);
+  const lunasC=iur.filter(i=>i.status==="Lunas").length;
+  const danaSosialBulan=DB.transaksi.filter(t=>t.kat==="Dana Sosial"&&t.tgl.startsWith(ymNow)).reduce((s,t)=>s+t.jumlah,0);
+  const arisanBulanan=DB.arisan.reduce((s,item)=>s+item.jumlah,0);
+  $("#pg-keuangan").innerHTML=`
+  ${!ck?`<div class="note" style="margin-bottom:16px">🔒 Peran Anda (${ROLES[role()]}) — mode <b>baca saja</b>. Pencatatan kas hanya oleh Admin/Ketua atau Bendahara.</div>`:""}
+  <div class="grid g5" style="margin-bottom:16px">
+    <div class="stat dark"><div class="ic" style="background:rgba(255,255,255,.15)">🏦</div><b class="mono" style="font-size:24px">${rupiah(saldo())}</b><span>Saldo Kas RT</span></div>
+    <div class="stat"><div class="ic" style="background:var(--mint);color:var(--pine)">⬇</div><b class="mono" style="font-size:20px">${rupiah(masukBulan)}</b><span>Pemasukan ${BULANS[now.getMonth()]}</span></div>
+    <div class="stat"><div class="ic" style="background:var(--red-s);color:var(--red)">⬆</div><b class="mono" style="font-size:20px">${rupiah(keluarBulan)}</b><span>Pengeluaran ${BULANS[now.getMonth()]}</span></div>
+    <div class="stat"><div class="ic" style="background:var(--amber-s);color:var(--amber-d)">💰</div><b class="mono" style="font-size:20px">${rupiah(arisanBulanan)}</b><span>Arisan RT</span></div>
+    <div class="stat"><div class="ic" style="background:var(--mint);color:var(--pine)">🤝</div><b class="mono" style="font-size:20px">${rupiah(danaSosialBulan)}</b><span>Dana Sosial</span></div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="hd"><h3>💼 Kas RT</h3>${ck?`<div class="toolbar"><button class="btn btn-sm btn-pine" data-act="fin-add">＋ Input Kas RT</button><button class="btn btn-sm btn-amber" data-act="fin-add-social">＋ Input Dana Sosial</button></div>`:""}</div>
+    <div class="pad grid g2">
+      <div>
+        <div class="small muted" style="margin-bottom:8px">Rekap arus kas</div>
+        <div class="pbar"><i style="width:${Math.min(100, (masukBulan/(masukBulan+keluarBulan||1))*100)}%"></i></div>
+        <div class="small" style="margin-top:8px"><span style="color:var(--pine);font-weight:800">Masuk:</span> ${rupiah(masukBulan)} &nbsp; <span style="color:var(--red);font-weight:800">Keluar:</span> ${rupiah(keluarBulan)}</div>
+      </div>
+      <div>
+        <div class="small muted" style="margin-bottom:8px">Dana sosial & arisan RT</div>
+        <div class="small">💸 Dana sosial bulan ini: <b>${rupiah(danaSosialBulan)}</b></div>
+        <div class="small" style="margin-top:6px">🧩 Total arisan RT: <b>${rupiah(arisanBulanan)}</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab ${state.finTab==="trans"?"on":""}" data-act="fin-tab" data-t="trans">Riwayat Transaksi</button>
+    <button class="tab ${state.finTab==="arisan"?"on":""}" data-act="fin-tab" data-t="arisan">Arisan RT</button>
+    <button class="tab ${state.finTab==="lap"?"on":""}" data-act="fin-tab" data-t="lap">Laporan Grafik</button>
+  </div>
+  ${state.finTab==="trans"?finTransHTML(months,tx,ck):state.finTab==="arisan"?finArisanHTML(ck):finChartHTML()}`;
+};
+function finTransHTML(months,tx,ck){return`
+  <div class="card"><div class="hd" style="flex-wrap:wrap;gap:10px">
+    <div class="toolbar">
+      <select class="inp" style="width:auto" data-chk="finBulan"><option value="all">Semua Bulan</option>${months.map(m=>`<option value="${m}" ${state.finBulan===m?"selected":""}>${BULAN[+m.slice(5)-1]} ${m.slice(0,4)}</option>`).join("")}</select>
+      <select class="inp" style="width:auto" data-chk="finJenis">${["Semua","Masuk","Keluar"].map(s=>`<option ${state.finJenis===s?"selected":""}>${s}</option>`).join("")}</select>
+      <button class="btn btn-sm btn-ghost" data-act="fin-export">⬇ Excel</button>
+      <button class="btn btn-sm btn-ghost" data-act="fin-pdf">🖨 PDF</button>
+    </div>
+    ${ck?'<button class="btn btn-pine" data-act="fin-add">＋ Catat Transaksi</button>':""}
+  </div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Masuk</th><th>Keluar</th><th>Bukti</th><th>Aksi</th></tr></thead><tbody>
+  ${tx.map(t=>`<tr><td class="mono">${fmtTgl(t.tgl)}</td><td>${esc(t.ket)}<div class="small muted">#TRX-${String(t.id).padStart(4,"0")}</div></td>
+  <td><span class="bdg ${t.jenis==="Masuk"?"b-green":"b-gray"}">${t.kat}</span></td>
+  <td class="num" style="color:var(--pine)">${t.jenis==="Masuk"?rupiah(t.jumlah):""}</td>
+  <td class="num" style="color:var(--red)">${t.jenis==="Keluar"?rupiah(t.jumlah):""}</td>
+  <td>${t.bukti?`<span class="bdg b-blue" title="${esc(t.bukti)}">📎 ${esc(t.bukti.length>14?t.bukti.slice(0,14)+"…":t.bukti)}</span>`:'<span class="muted">—</span>'}</td>
+  <td>${ck?`<div class="rowact"><button class="icobtn" title="Edit" data-act="fin-edit" data-id="${t.id}">✏️</button><button class="icobtn red" title="Hapus" data-act="fin-del" data-id="${t.id}">🗑</button></div>`:'<span class="muted">—</span>'}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="pad small muted">${tx.length} transaksi · Total masuk <b class="mono">${rupiah(tx.filter(t=>t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0))}</b> · Total keluar <b class="mono">${rupiah(tx.filter(t=>t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))}</b></div></div>`}
+function finArisanHTML(ck){
+  const rows=arisanRotasi();
+  return `
+  <div class="card"><div class="hd" style="flex-wrap:wrap;gap:10px">
+    <div class="toolbar"><span class="bdg b-green">Rotasi Arisan RT</span></div>
+    ${ck?'<button class="btn btn-pine" data-act="ar-add">＋ Tambah Jadwal Arisan</button>':""}
+  </div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Bulan</th><th>Penerima</th><th>Keterangan</th><th>Bulan Berikutnya</th><th>Penerima Berikutnya</th>${ck?'<th>Aksi</th>':""}</tr></thead><tbody>
+  ${rows.map(item=>`<tr>
+    <td class="mono">${fmtTgl(item.bulan + "-01")}</td>
+    <td><b>${esc(item.penerima)}</b></td>
+    <td>${esc(item.keterangan)}</td>
+    <td class="mono">${fmtTgl(item.bulanBerikutnya + "-01")}</td>
+    <td><b>${esc(item.penerimaBerikutnya)}</b></td>
+    ${ck?`<td><div class="rowact"><button class="icobtn" data-act="ar-edit" data-id="${item.id}">✏️</button><button class="icobtn red" data-act="ar-del" data-id="${item.id}">🗑</button></div></td>`:""}
+  </tr>`).join("")}
+  </tbody></table></div>
+  <div class="pad small muted">Catatan: penerima arisan berikutnya ditentukan berdasarkan rotasi bulan berikutnya dan peserta yang berkesempatan menerima pada periode selanjutnya.</div></div>`;
+}
+function finChartHTML(){return`
+  <div class="grid g2">
+    <div class="card pad"><h3 style="margin-bottom:8px">📊 Arus Kas 6 Bulan Terakhir</h3>${chartHTML(chartData())}</div>
+    <div class="card pad">
+      <h3>🖨 Laporan Bulanan & Tahunan</h3>
+      <p class="small muted" style="margin:8px 0 14px">Cetak rekap kas resmi untuk arsip dan laporan ke warga pada rapat bulanan.</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <button class="btn btn-ghost" data-act="fin-pdf-month">🖨 Laporan Bulanan (PDF)</button>
+        <button class="btn btn-ghost" data-act="fin-pdf-year">🖨 Laporan Tahunan (PDF)</button>
+        <button class="btn btn-ghost" data-act="fin-export">📗 Semua Transaksi (Excel)</button>
+      </div>
+      <div class="note" style="margin-top:14px">💡 Saldo kas saat ini: <b class="mono">${rupiah(saldo())}</b></div></div>
+  </div>`}
+
+/* ================= PENGADUAN ================= */
+function aduEditForm(a){
+  openModal("✏️ Edit Pengaduan #ADU-"+String(a.id).padStart(3,"0"),`
+  <div class="f2"><div class="fld"><label>Kategori</label><select class="inp" id="fAdKat">${ADU_KAT.map(([k])=>`<option ${a.kat===k?"selected":""}>${k}</option>`).join("")}</select></div>
+  <div class="fld"><label>Status</label><select class="inp" id="fAdStat">${ADU_STAT.map((s,i)=>`<option value="${i}" ${a.status===i?"selected":""}>${s}</option>`).join("")}</select></div></div>
+  <div class="fld"><label>Pelapor</label><input class="inp" id="fAdPel" value="${esc(a.pelapor)}"></div>
+  <div class="fld"><label>Judul *</label><input class="inp" id="fAdJudul" value="${esc(a.judul)}"></div>
+  <div class="fld"><label>Uraian *</label><textarea class="inp" id="fAdDesc">${esc(a.desc)}</textarea></div>
+  <button class="btn btn-pine btn-block" style="margin-top:8px" data-act="adu-update" data-id="${a.id}">💾 Simpan Perubahan</button>`);
+}
+RENDER.pengaduan=function(){
+  const ck=canKonten();
+  const list=DB.pengaduan.filter(a=>(state.aduF==="Semua"||ADU_STAT[a.status]===state.aduF)&&(state.aduKat==="Semua"||a.kat===state.aduKat)).sort((a,b)=>a.status-b.status||b.tgl.localeCompare(a.tgl));
+  const counts=ADU_STAT.map((s,i)=>DB.pengaduan.filter(a=>a.status===i).length);
+  const icons={"Diajukan":"📥","Diproses":"⚙️","Ditangani":"🔧","Selesai":"✅"};
+  $("#pg-pengaduan").innerHTML=`
+  ${!logged()?'<div class="note" style="margin-bottom:16px">🌐 Warga dapat membuat laporan <b>tanpa login</b>. Pengurus yang login akan memproses laporan Anda (Diajukan → Diproses → Ditangani → Selesai).</div>':""}
+  <div class="card reveal" style="margin-bottom:16px"><div class="hd"><h3>🛠 Sampaikan Laporan Warga</h3><span class="bdg b-gray">Alur: Diajukan → Diproses → Ditangani → Selesai</span></div>
+    <div class="pad"><div class="cat-grid">${ADU_KAT.map(([k,em])=>`<div class="cat" data-act="adu-open" data-kat="${k}"><span class="em">${em}</span>${k}</div>`).join("")}</div></div></div>
+  <div class="grid g4" style="margin-bottom:16px">${ADU_STAT.map((s,i)=>`
+    <div class="stat hov" style="cursor:pointer" data-act="adu-f" data-f="${s}">
+      <div class="ic" style="background:var(--mint)">${icons[s]}</div><b data-count="${counts[i]}">0</b><span>${s}</span></div>`).join("")}</div>
+  <div class="toolbar" style="margin-bottom:14px;justify-content:space-between">
+    <div class="chips"><button class="chip ${state.aduF==="Semua"?"on":""}" data-act="adu-f" data-f="Semua">Semua</button>${ADU_STAT.map(s=>`<button class="chip ${state.aduF===s?"on":""}" data-act="adu-f" data-f="${s}">${s}</button>`).join("")}</div>
+    <select class="inp" style="width:auto" data-chk="aduKat"><option value="Semua">Kategori: Semua</option>${ADU_KAT.map(([k])=>`<option ${state.aduKat===k?"selected":""}>${k}</option>`).join("")}</select>
+  </div>
+  <div class="grid g2">${list.map(a=>`
+    <div class="card hov reveal"><div class="pad">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span class="bdg ${a.status===0?"b-red":a.status===3?"b-green":a.status===2?"b-blue":"b-amber"}">${ADU_STAT[a.status]}</span>
+        <span class="bdg b-gray">${a.kat}</span>
+        <span class="small muted" style="margin-left:auto">#ADU-${String(a.id).padStart(3,"0")} · ${fmtTgl(a.tgl)}</span></div>
+      <h3 style="font-size:15.5px;margin:9px 0 4px">${esc(a.judul)}</h3>
+      <p class="small">${esc(a.desc)}</p>
+      <p class="small muted" style="margin-top:4px">👤 Pelapor: <b>${esc(a.pelapor)}</b></p>
+      ${a.catatan.length?`<div style="margin-top:8px;padding:9px 12px;background:var(--mint-2);border-radius:9px" class="small">📝 ${a.catatan.map(c=>esc(c)).join(" · ")}</div>`:""}
+      <div class="steps">${ADU_STAT.map((s,i)=>`<div class="stp ${a.status>i?"done":""} ${a.status===i?"cur":""}">${s}</div>`).join("")}</div>
+      ${ck?`<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        ${a.status<3?`<button class="btn btn-sm btn-pine" data-act="adu-advance" data-id="${a.id}">⏩ ${a.status===0?"Mulai Proses":a.status===1?"Tandai Ditangani":"Tandai Selesai"}</button>`:""}
+        <button class="btn btn-sm btn-ghost" data-act="adu-note" data-id="${a.id}">＋ Catatan</button>
+        <button class="btn btn-sm btn-ghost" data-act="adu-edit" data-id="${a.id}">✏️ Edit</button>
+        <button class="btn btn-sm btn-ghost" style="color:var(--red)" data-act="adu-del" data-id="${a.id}">🗑 Hapus</button></div>`
+      :a.status===3?'<div class="small" style="margin-top:10px;color:var(--pine);font-weight:700">✅ Laporan telah selesai ditangani</div>'
+      :'<div class="small muted" style="margin-top:10px">⏳ Menunggu tindak lanjut pengurus…</div>'}
+    </div></div>`).join("")||'<div class="empty card"><span class="em">🎉</span>Tidak ada pengaduan pada filter ini.</div>'}</div>`;
+};
+function aduanForm(kat){
+  openModal("📝 Formulir Pengaduan Warga",`
+  <div class="fld"><label>Kategori Laporan</label><select class="inp" id="fKat">${ADU_KAT.map(([k])=>`<option ${k===kat?"selected":""}>${k}</option>`).join("")}</select></div>
+  <div class="fld"><label>Nama Pelapor ${logged()?"":"(boleh inisial)"}</label>
+    ${logged()
+      ?`<select class="inp" id="fPel">${DB.warga.filter(k=>k.status==="Aktif").map(k=>`<option>${esc(k.nama)}</option>`).join("")}</select>`
+      :`<input class="inp" id="fPelTxt" placeholder="Nama / inisial Anda">`}</div>
+  <div class="fld"><label>Judul Laporan *</label><input class="inp" id="fJudul" placeholder="mis. Lampu jalan mati di depan Pos RT"></div>
+  <div class="fld"><label>Uraian *</label><textarea class="inp" id="fDesc" placeholder="Jelaskan lokasi, kondisi, dan waktu kejadian…"></textarea></div>
+  <button class="btn btn-pine btn-block" style="margin-top:8px" data-act="adu-save">📨 Kirim Laporan</button>`);
+}
+
+/* ================= BERITA & DOKUMENTASI ================= */
+function berForm(b){
+  openModal(b?"✏️ Edit Berita":"📰 Tulis Berita / Artikel",`
+  <div class="fld"><label>Judul *</label><input class="inp" id="fBerJudul" value="${esc(b?.judul||"")}"></div>
+  <div class="f2"><div class="fld"><label>Kategori</label><select class="inp" id="fBerKat"><option ${b?.kat==="Berita"?"selected":""}>Berita</option><option ${b?.kat==="Artikel"?"selected":""}>Artikel</option></select></div>
+  <div class="fld"><label>URL Foto</label><input class="inp" id="fBerFoto" placeholder="https://…" value="${esc(b?.foto||"")}"></div></div>
+  <div class="fld"><label>Isi *</label><textarea class="inp" id="fBerIsi" style="min-height:130px">${esc(b?.isi||"")}</textarea></div>
+  <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="ber-save" data-id="${b?.id||0}">${b?"💾 Simpan Perubahan":"Terbitkan"}</button>`);
+}
+RENDER.berita=function(){
+  const ck=canKonten();
+  const gal=DB.galeri.filter(g=>state.galF==="Semua"||g.kat===state.galF);
+  $("#pg-berita").innerHTML=`
+  <div class="tabs">
+    <button class="tab ${state.beritaTab==="berita"?"on":""}" data-act="ber-tab" data-t="berita">📰 Berita & Artikel</button>
+    <button class="tab ${state.beritaTab==="galeri"?"on":""}" data-act="ber-tab" data-t="galeri">📸 Galeri Foto</button>
+    <button class="tab ${state.beritaTab==="arsip"?"on":""}" data-act="ber-tab" data-t="arsip">🗄 Arsip Tahunan</button>
+  </div>
+  ${state.beritaTab==="berita"?`
+    ${ck?'<div class="toolbar" style="margin-bottom:14px;justify-content:flex-end"><button class="btn btn-pine" data-act="ber-add">＋ Tulis Berita</button></div>':""}
+    <div class="grid g3">${DB.berita.map(b=>`
+      <div class="news-card reveal">
+        <div class="img" data-act="berita-read" data-id="${b.id}"><img loading="lazy" src="${b.foto}" alt=""></div>
+        <div style="padding:15px" data-act="berita-read" data-id="${b.id}">
+          <div style="display:flex;gap:7px;align-items:center"><span class="bdg ${b.kat==="Artikel"?"b-blue":"b-pine"}">${b.kat}</span><span class="small muted">${fmtTgl(b.tgl)}</span></div>
+          <b style="display:block;margin-top:8px;font-family:var(--disp);font-size:15px">${esc(b.judul)}</b>
+          <p class="small muted" style="margin-top:5px">${esc(b.excerpt)}</p>
+          <span class="small" style="color:var(--leaf);font-weight:800;display:block;margin-top:9px">Baca selengkapnya →</span></div>
+        ${ck?`<div style="padding:0 15px 15px;display:flex;gap:7px">
+          <button class="btn btn-sm btn-ghost" data-act="ber-edit" data-id="${b.id}">✏️ Edit</button>
+          <button class="btn btn-sm btn-ghost" style="color:var(--red)" data-act="ber-del" data-id="${b.id}">🗑 Hapus</button></div>`:""}
+      </div>`).join("")}</div>`
+  :state.beritaTab==="galeri"?`
+    <div class="toolbar" style="margin-bottom:14px;justify-content:space-between">
+      <div class="chips"><button class="chip ${state.galF==="Semua"?"on":""}" data-act="gal-f" data-f="Semua">Semua</button>${[...new Set(DB.galeri.map(g=>g.kat))].map(k=>`<button class="chip ${state.galF===k?"on":""}" data-act="gal-f" data-f="${k}">${k}</button>`).join("")}</div>
+      ${ck?'<button class="btn btn-pine btn-sm" data-act="gal-add">＋ Tambah Foto</button>':""}
+    </div>
+    <div class="gal">${gal.map(g=>`<figure class="ph reveal"><img loading="lazy" src="${g.foto}" alt=""><figcaption>${esc(g.judul)} · ${fmtTgl(g.tgl)}</figcaption>
+      ${ck?`<button class="gal-x" title="Hapus foto" data-act="gal-del" data-id="${g.id}">✕</button>`:""}</figure>`).join("")||'<div class="empty" style="grid-column:1/-1"><span class="em">📷</span>Belum ada foto.</div>'}</div>`
+  :`<div class="card"><div class="hd"><h3>🗄 Arsip Kegiatan Tahunan</h3>${ck?'<button class="btn btn-sm btn-pine" data-act="ar-add">＋ Tambah Arsip</button>':""}</div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tahun</th><th>Kegiatan</th><th>Keterangan</th>${ck?"<th>Aksi</th>":""}</tr></thead><tbody>
+    ${DB.arsip.map(a=>`<tr><td class="mono"><b>${a.thn}</b></td><td>${esc(a.acara)}</td><td class="small muted">Terarsip di dokumentasi sekretariat</td>
+    ${ck?`<td><div class="rowact"><button class="icobtn" data-act="ar-edit" data-id="${a.id}">✏️</button><button class="icobtn red" data-act="ar-del" data-id="${a.id}">🗑</button></div></td>`:""}</tr>`).join("")}
+    </tbody></table></div></div>`}`;
+};
+
+/* ================= LAPORAN ================= */
+RENDER.laporan=function(){
+  if(!logged()){$("#pg-laporan").innerHTML=lockedPage("🔒","Area Khusus Pengurus","Laporan resmi hanya untuk pengurus yang login.",true);return}
+  const reps=[
+    {k:"warga",em:"👥",t:"Laporan Data Warga",d:`${DB.warga.length} KK · ${totalJiwa()} jiwa · rekap status tinggal & status warga.`},
+    {k:"kas",em:"🏦",t:"Laporan Kas Keluar Masuk",d:`Pemasukan ${rupiah(DB.transaksi.filter(t=>t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0))} · pengeluaran ${rupiah(DB.transaksi.filter(t=>t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))}.`},
+    {k:"dana-sosial",em:"🤝",t:"Laporan Dana Sosial Keluar Masuk",d:`Dana sosial masuk ${rupiah(DB.transaksi.filter(t=>t.kat==="Dana Sosial"&&t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0))} · keluar ${rupiah(DB.transaksi.filter(t=>t.kat==="Dana Sosial"&&t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))}.`},
+    {k:"keuangan",em:"💰",t:"Laporan Keuangan",d:`${DB.transaksi.length} transaksi · saldo ${rupiah(saldo())}.`},
+    {k:"arisan",em:"🧾",t:"Laporan Arisan RT",d:`${DB.arisan.length} jadwal arisan · penerima dan rotasi bulan berikutnya terlihat jelas.`},
+    {k:"kegiatan",em:"🗓",t:"Laporan Kegiatan",d:`${DB.agenda.length} agenda tercatat beserta dokumentasinya.`},
+    {k:"pengaduan",em:"🛠",t:"Laporan Pengaduan",d:`${DB.pengaduan.length} laporan · ${DB.pengaduan.filter(a=>a.status===3).length} selesai ditangani.`},
+    {k:"pengurus",em:"🏛",t:"Laporan Struktur Pengurus",d:`${DB.pengurus.length} pengurus periode aktif ${periodeLabel()}.`},
+    {k:"riwayat",em:"🗄",t:"Laporan Riwayat Pengurus",d:`${DB.periodeList.length+1} periode tercatat (aktif + arsip).`}];
+  $("#pg-laporan").innerHTML=`
+  <div class="note" style="margin-bottom:16px">📑 Laporan resmi untuk rapat warga, arsip kalurahan, dan musyawarah RT. Tersedia export <b>PDF</b> (cetak) dan <b>Excel</b>.</div>
+  <div class="grid g3">${reps.map(r=>`
+    <div class="rep-card reveal">
+      <div class="top"><div style="width:44px;height:44px;border-radius:12px;background:var(--mint);display:grid;place-items:center;font-size:20px">${r.em}</div><b style="font-family:var(--disp)">${r.t}</b></div>
+      <p class="small muted">${r.d}</p>
+      <div style="display:flex;gap:8px;margin-top:auto">
+        <button class="btn btn-sm btn-pine" data-act="rep-pdf" data-k="${r.k}">🖨 Export PDF</button>
+        <button class="btn btn-sm btn-amber" data-act="rep-xls" data-k="${r.k}">📗 Excel</button></div></div>`).join("")}</div>`;
+};
+function repData(k){
+  const H={warga:["Nama KK","Alamat","No HP","Status Tinggal","Status Warga","Jumlah Anggota"],
+    kas:["Tanggal","Keterangan","Jenis","Kategori","Jumlah"],
+    "dana-sosial":["Tanggal","Nama Kegiatan","Jenis","Jumlah","Keterangan"],
+    keuangan:["Tanggal","Keterangan","Kategori","Jenis","Jumlah"],
+    arisan:["Bulan","Penerima","Keterangan","Bulan Berikutnya","Penerima Berikutnya"],
+    kegiatan:["Tanggal","Kegiatan","Kategori","Jam","Tempat"],
+    pengaduan:["ID","Tanggal","Pelapor","Kategori","Judul","Status"],
+    pengurus:["Jabatan","Nama","No. HP / Kontak"],
+    riwayat:["Periode","Status","Jumlah Pengurus","Ketua RT"]};
+  const R={
+    warga:()=>DB.warga.map(x=>[x.nama,x.alamat,x.hp,x.tinggal,x.status,x.anggota.length+1]),
+    kas:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,t.kat,rupiah(t.jumlah)]),
+    "dana-sosial":()=>DB.transaksi.filter(t=>t.kat==="Dana Sosial").sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,rupiah(t.jumlah),t.kat]),
+    keuangan:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,rupiah(t.jumlah)]),
+    arisan:()=>arisanRotasi().map(item=>[fmtTgl(item.bulan + "-01"),item.penerima,item.keterangan,fmtTgl(item.bulanBerikutnya + "-01"),item.penerimaBerikutnya]),
+    kegiatan:()=>DB.agenda.map(a=>[fmtTgl(a.tgl),a.judul,a.kat,a.jam+" WIB",a.tempat]),
+    pengaduan:()=>DB.pengaduan.map(a=>["ADU-"+a.id,fmtTgl(a.tgl),a.pelapor,a.kat,a.judul,ADU_STAT[a.status]]),
+    pengurus:()=>DB.pengurus.map(x=>[x.jab,x.nama,x.hp]),
+    riwayat:()=>[[periodeLabel(),"Aktif",DB.pengurus.length,(DB.pengurus.find(x=>/ketua rt/i.test(x.jab))||DB.pengurus[0])?.nama||"—"],
+      ...[...DB.periodeList].sort((a,b)=>b.selesai-a.selesai).map(a=>[a.thn,"Arsip",a.pengurus.length,(a.pengurus.find(x=>/ketua rt/i.test(x.jab))||a.pengurus[0])?.nama||"—"])]};
+  return{H:H[k],R:R[k]()};
+}
+
+/* ================= NOTIFIKASI ================= */
+function bellListHTML(items){return items.map(n=>`
+  <div class="bp-item ${n.read?"":"unread"}" data-act="notif-read" data-id="${n.id}">
+    <div style="font-size:19px">${NOTIF_ICON[n.tipe]||"🔔"}</div>
+    <div style="min-width:0"><b style="font-size:13px;display:block">${esc(n.judul)}</b>
+    <span class="small muted">${esc(n.pesan)}</span>
+    <div class="small muted" style="opacity:.7">${rel(n.waktu)}</div></div></div>`).join("")||'<div class="empty small">Tidak ada notifikasi.</div>'}
+RENDER.notifikasi=function(){
+  if(!logged()){$("#pg-notifikasi").innerHTML=lockedPage("🔒","Area Khusus Pengurus","Notifikasi internal hanya untuk pengurus yang login.",true);return}
+  $("#pg-notifikasi").innerHTML=`
+  <div class="card"><div class="hd"><h3>🔔 Semua Notifikasi</h3><div class="toolbar">
+    <button class="btn btn-sm btn-amber" data-act="notif-reminder">🧾 Kirim Pengingat Iuran</button>
+    <button class="btn btn-sm btn-ghost" data-act="read-all">Tandai Semua Dibaca</button></div></div>
+  <div>${DB.notifikasi.map(n=>`
+    <div class="bp-item ${n.read?"":"unread"}" style="border-bottom:1px solid var(--mint)">
+      <div style="font-size:21px">${NOTIF_ICON[n.tipe]||"🔔"}</div>
+      <div style="min-width:0;flex:1" data-act="notif-read" data-id="${n.id}"><b style="font-size:13.5px;display:block">${esc(n.judul)}</b>
+      <span class="small muted">${esc(n.pesan)}</span>
+      <div class="small muted" style="opacity:.7">${rel(n.waktu)}</div></div>
+      <button class="icobtn red" title="Hapus notifikasi" data-act="notif-del" data-id="${n.id}">🗑</button></div>`).join("")||'<div class="empty"><span class="em">🔕</span>Tidak ada notifikasi.</div>'}</div></div>
+  <div class="grid g4" style="margin-top:16px">
+    <div class="card pad"><b>💰 Pengingat Iuran</b><p class="small muted" style="margin-top:5px">Dikirim otomatis ke KK yang belum membayar iuran bulanan.</p></div>
+    <div class="card pad"><b>📣 Pengumuman Baru</b><p class="small muted" style="margin-top:5px">Warga mendapat notifikasi saat pengumuman diterbitkan.</p></div>
+    <div class="card pad"><b>🗓 Agenda Kegiatan</b><p class="small muted" style="margin-top:5px">Pengingat H-3 untuk setiap agenda RT.</p></div>
+    <div class="card pad"><b>🛠 Status Pengaduan</b><p class="small muted" style="margin-top:5px">Pelapor diberi tahu setiap status laporannya berubah.</p></div>
+  </div>`;
+};
+
+/* ================= PENGATURAN ================= */
+function userForm(u){
+  openModal(u?"✏️ Edit Pengguna":"＋ Tambah Admin / Pengurus",`
+  <div class="f2">
+    <div class="fld"><label>Nama Lengkap *</label><input class="inp" id="uNama" value="${esc(u?.nama||"")}"></div>
+    <div class="fld"><label>Jabatan *</label><input class="inp" id="uJab" placeholder="mis. Bendahara / Sie. Keamanan" value="${esc(u?.jab||"")}"></div>
+  </div>
+  <div class="fld"><label>Peran & Hak Akses *</label><select class="inp" id="uRole">
+    ${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${u?.role===k?"selected":""}>${v}</option>`).join("")}</select>
+    <div class="small muted" style="margin-top:5px">
+      <b>Admin/Ketua</b>: semua modul + kelola pengguna · <b>Sekretaris</b>: warga, pengumuman, agenda, berita, pengaduan · <b>Bendahara</b>: keuangan & iuran.</div></div>
+  <div class="f2">
+    <div class="fld"><label>Username *</label><input class="inp" id="uUser" placeholder="huruf kecil tanpa spasi" value="${esc(u?.u||"")}"></div>
+    <div class="fld"><label>${u?"Kata Sandi Baru (kosongkan jika tetap)":"Kata Sandi *"}</label><input class="inp" id="uPass" type="text" placeholder="min. 4 karakter"></div>
+  </div>
+  <button class="btn btn-pine btn-block" style="margin-top:12px" data-act="usr-save" data-id="${u?.id||0}">${u?"💾 Simpan Perubahan":"＋ Tambahkan Pengguna"}</button>`);
+}
+function pgwForm(x){
+  openModal(x?"✏️ Edit Pengurus":"＋ Tambah Pengurus",`
+  <div class="fld"><label>Jabatan *</label><input class="inp" id="fPwJab" list="jabList" placeholder="mis. Sie. Keamanan" value="${esc(x?.jab||"")}">
+    <datalist id="jabList">${["Ketua RT","Wakil Ketua","Sekretaris","Bendahara","Sie. Keamanan","Sie. Kebersihan","Sie. Sosial & Humas","Sie. Pemuda & Olahraga","Anggota"].map(j=>`<option value="${j}">`).join("")}</datalist></div>
+  <div class="f2">
+    <div class="fld"><label>Nama Lengkap *</label><input class="inp" id="fPwNama" value="${esc(x?.nama||"")}"></div>
+    <div class="fld"><label>No. HP / Kontak</label><input class="inp" id="fPwHp" value="${esc(x?.hp||"")}"></div>
+  </div>
+  <p class="small muted" style="margin-top:8px">💡 Jabatan "Ketua RT" otomatis tampil sebagai kartu utama di puncak struktur & pada kartu Sambutan Ketua.</p>
+  <button class="btn btn-pine btn-block" style="margin-top:12px" data-act="pgw-save" data-id="${x?.id||0}">${x?"💾 Simpan Perubahan":"＋ Tambahkan ke Struktur"}</button>`);
+}
+/* modal tutup periode & arsipkan */
+function perArsipModal(){
+  const m=DB.profil.periodeMulai,s=DB.profil.periodeSelesai;
+  openModal("⏭ Tutup Periode & Arsipkan Struktur",`
+  <div class="note" style="margin-bottom:4px">Struktur pengurus <b>saat ini</b> akan disimpan sebagai arsip (riwayat pergantian), lalu periode baru dimulai. Warga tetap dapat melihat arsip di Beranda.</div>
+  <div class="fld"><label>Tahun Periode yang Ditutup (arsip)</label>
+    <div class="f2"><input type="number" class="inp mono" id="fPerM" value="${m}"><input type="number" class="inp mono" id="fPerS" value="${s}"></div></div>
+  <div class="fld"><label>Keterangan Arsip (opsional)</label><input class="inp" id="fPerKet" placeholder="mis. Hasil musyawarah warga, serah terima di Pos RT…"></div>
+  <div class="fld"><label>Tahun Periode Baru (Mulai – Selesai)</label>
+    <div class="f2"><input type="number" class="inp mono" id="fPerNM" value="${s}"><input type="number" class="inp mono" id="fPerNS" value="${s+5}"></div></div>
+  <label class="small" style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="fPerKosong"> Kosongkan struktur saat ini (isi ulang pengurus baru satu per satu)</label>
+  <button class="btn btn-amber btn-block" style="margin-top:14px" data-act="per-save">📦 Arsipkan & Mulai Periode Baru</button>`);
+}
+function riwEditForm(a){
+  openModal("✏️ Edit Arsip Periode "+a.thn,`
+  <div class="f2"><div class="fld"><label>Tahun Mulai</label><input type="number" class="inp mono" id="fRwM" value="${a.mulai}"></div>
+  <div class="fld"><label>Tahun Selesai</label><input type="number" class="inp mono" id="fRwS" value="${a.selesai}"></div></div>
+  <div class="fld"><label>Keterangan</label><input class="inp" id="fRwKet" value="${esc(a.ket||"")}"></div>
+  <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="riw-save" data-id="${a.id}">💾 Simpan Perubahan</button>`);
+}
+RENDER.pengaturan=function(){
+  if(!logged()){$("#pg-pengaturan").innerHTML=lockedPage("🔒","Area Khusus Pengurus","Pengaturan aplikasi hanya untuk pengurus yang login.",true);return}
+  const tab=state.setTab||"profil",p=DB.profil;
+  let body="";
+  if(tab==="profil"){
+    body=`
+    <div class="grid g2">
+      <div class="card pad reveal">
+        <h3 style="margin-bottom:6px">🏡 Identitas RT</h3>
+        <p class="small muted">Data ini tampil di Beranda, kop laporan PDF, dan identitas aplikasi.</p>
+        <div class="f2">
+          <div class="fld"><label>Nama RT</label><input class="inp" id="sRT" value="${esc(p.rt)}"></div>
+          <div class="fld"><label>Padukuhan</label><input class="inp" id="sPad" value="${esc(p.padukuhan)}"></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>Kalurahan</label><input class="inp" id="sKal" value="${esc(p.kalurahan)}"></div>
+          <div class="fld"><label>Kapanewon</label><input class="inp" id="sKap" value="${esc(p.kapanewon)}"></div>
+        </div>
+        <div class="fld"><label>Kabupaten / Provinsi</label><input class="inp" id="sKab" value="${esc(p.kabupaten)}"></div>
+        <div class="f2">
+          <div class="fld"><label>Alamat Sekretariat</label><input class="inp" id="sAl" value="${esc(p.alamat)}"></div>
+          <div class="fld"><label>Kontak / WhatsApp</label><input class="inp" id="sWa" value="${esc(p.wa)}"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card pad reveal">
+          <h3>📅 Periode Kepengurusan & Iuran</h3>
+          <div class="f2">
+            <div class="fld"><label>Periode Mulai (Tahun)</label><input type="number" class="inp mono" id="sPerM" value="${p.periodeMulai}"></div>
+            <div class="fld"><label>Periode Selesai (Tahun)</label><input type="number" class="inp mono" id="sPerS" value="${p.periodeSelesai}"></div>
+          </div>
+          <div class="fld"><label>Nominal Iuran (Rp / KK / Bulan)</label><input type="number" class="inp mono" id="sIuran" min="0" step="500" value="${p.iuran}"></div>
+          <p class="small muted" style="margin-top:8px">Saat <b>pergantian pengurus</b>, gunakan tombol <b>⏭ Tutup Periode & Arsipkan</b> di kartu Struktur Pengurus (Beranda) — struktur lama otomatis masuk riwayat.</p>
+        </div>
+        <div class="card pad reveal">
+          <h3>🧭 Visi & Misi</h3>
+          <div class="fld"><label>Visi</label><textarea class="inp" id="sVisi" style="min-height:60px">${esc(p.visi)}</textarea></div>
+          <div class="fld"><label>Misi</label><textarea class="inp" id="sMisi" style="min-height:60px">${esc(p.misi)}</textarea></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px"><button class="btn btn-pine" data-act="prof-save">💾 Simpan Pengaturan</button></div>`;
+  }
+  else if(tab==="users"){
+    body=canUsers()?`
+    <div class="toolbar" style="margin-bottom:14px;justify-content:space-between">
+      <p class="small muted">Kelola akun login pengurus. Tambahkan admin/pengurus baru jika ada pergantian kepengurusan.</p>
+      <button class="btn btn-pine" data-act="usr-add">＋ Tambah Pengguna</button>
+    </div>
+    <div class="card"><div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Nama & Jabatan</th><th>Username</th><th>Peran</th><th>Aksi</th></tr></thead><tbody>
+      ${DB.users.map(u=>`<tr>
+        <td><div style="display:flex;gap:10px;align-items:center"><div class="avt sm" style="background:${avColor(u.nama)}">${initials(u.nama)}</div><div><b>${esc(u.nama)}</b>${u.id===state.user.id?' <span class="bdg b-green">Anda</span>':""}<div class="small muted">${esc(u.jab)}</div></div></div></td>
+        <td class="mono">${esc(u.u)}</td>
+        <td><span class="bdg ${u.role==="admin"?"b-red":u.role==="bendahara"?"b-amber":"b-blue"}">${ROLES[u.role]}</span></td>
+        <td><div class="rowact">
+          <button class="icobtn" title="Edit" data-act="usr-edit" data-id="${u.id}">✏️</button>
+          <button class="icobtn red" title="Hapus" data-act="usr-del" data-id="${u.id}">🗑</button></div></td></tr>`).join("")}
+      </tbody></table></div>
+      <div class="pad small muted">Login demo: ketua / sekretaris / bendahara, sandi <b>rt123</b>. ${DB.users.length} pengguna terdaftar.</div></div>`
+    :`<div class="note">🔒 Manajemen pengguna hanya dapat dilakukan oleh <b>Admin / Ketua RT</b>. Peran Anda: ${ROLES[role()]}.</div>`;
+  }
+  else{
+    body=`
+    <div class="card pad reveal" style="margin-bottom:16px">
+      <h3>☁️ Sinkronisasi Google Apps Script</h3>
+      <p class="small muted" style="margin:6px 0 12px">Data tersimpan di <b>Google Sheets</b> lewat GAS — semua warga yang membuka aplikasi melihat data yang sama. Status: <span class="bdg ${gasStatus.state==="ok"?"b-green":gasStatus.state==="err"?"b-red":gasStatus.state==="sync"?"b-amber":"b-gray"}">${gasStatus.state==="ok"?"Tersambung":gasStatus.state==="err"?"Gagal":gasStatus.state==="sync"?"Menyinkron…":"Belum dikonfigurasi"}</span></p>
+      <div class="toolbar">
+        <button class="btn btn-sm btn-pine" data-act="gas-sync-now">🔄 Sinkronkan Sekarang</button>
+        <button class="btn btn-sm btn-ghost" data-act="gas-pull">⬇ Muat dari Server</button>
+        <button class="btn btn-sm btn-ghost" data-act="gas-push">⬆ Kirim ke Server</button>
+      </div>
+      <div class="note" style="margin-top:12px">${GAS_URL?`URL aktif: <code>${esc(GAS_URL)}</code>`:"⚠️ <b>GAS_URL belum diisi.</b> Buka file <code>Code.gs</code> di Google Apps Script, deploy sebagai Web App (Execute as: Me, Access: Anyone), lalu tempel URL ke konstanta <code>GAS_URL</code> di bagian atas kode."}</div>
+    </div>
+    <div class="grid g2">
+      <div class="card pad reveal">
+        <h3>💾 Cadangan Data</h3>
+        <p class="small muted" style="margin:6px 0 14px">Unduh seluruh data aplikasi (warga, kas, pengaduan, pengguna, struktur, arsip periode…) sebagai file JSON untuk arsip atau migrasi.</p>
+        <button class="btn btn-ghost" data-act="set-backup">⬇ Export Backup (JSON)</button>
+      </div>
+      <div class="card pad reveal" style="border-color:#F2C6C6">
+        <h3 style="color:var(--red)">⚠️ Zona Berbahaya</h3>
+        <p class="small muted" style="margin:6px 0 14px">Kembalikan aplikasi ke data demo awal. <b>Seluruh data yang sudah diinput akan hilang</b> dan tidak dapat dipulihkan.</p>
+        <button class="btn btn-red" data-act="set-reset">🗑 Reset Data Aplikasi</button>
+      </div>
+    </div>`;
+  }
+  $("#pg-pengaturan").innerHTML=`
+  <div class="tabs">
+    <button class="tab ${tab==="profil"?"on":""}" data-act="set-tab" data-t="profil">🏡 Profil RT & Periode</button>
+    <button class="tab ${tab==="users"?"on":""}" data-act="set-tab" data-t="users">👤 Pengguna & Hak Akses</button>
+    <button class="tab ${tab==="data"?"on":""}" data-act="set-tab" data-t="data">💾 Data & Cadangan</button>
+  </div>${body}`;
+};
+
+/* ================= ACTIONS ================= */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const act=b.dataset.act,id=b.dataset.id;
+  const A={
+    nav:()=>setPage(b.dataset.page),
+    drawer:()=>{$("#sidebar").classList.toggle("open");$("#scrim").classList.toggle("show")},
+    logout,
+    "login-open":openLogin,
+    demo:()=>{$("#lgU").value=b.dataset.u;$("#lgP").value=b.dataset.p;$("#lgErr").style.display="none"},
+    "login-go":doLogin,
+    bell:()=>{$("#bellPanel").classList.toggle("open");$("#bellList").innerHTML=bellListHTML(DB.notifikasi.slice(0,8))},
+    "read-all":()=>{DB.notifikasi.forEach(n=>n.read=true);save();bellCount();const bl=$("#bellList");if(bl)bl.innerHTML=bellListHTML(DB.notifikasi.slice(0,8));if(state.page==="notifikasi")RENDER.notifikasi();toast("Semua notifikasi ditandai dibaca")},
+    "notif-read":()=>{const n=DB.notifikasi.find(x=>x.id==id);if(n)n.read=true;save();bellCount();const bl=$("#bellList");if(bl)bl.innerHTML=bellListHTML(DB.notifikasi.slice(0,8));if(state.page==="notifikasi")RENDER.notifikasi()},
+    "notif-del":()=>{DB.notifikasi=DB.notifikasi.filter(n=>n.id!=id);save();bellCount();RENDER.notifikasi();const bl=$("#bellList");if(bl)bl.innerHTML=bellListHTML(DB.notifikasi.slice(0,8));toast("Notifikasi dihapus")},
+    "notif-reminder":()=>{const n=DB.iuran.filter(i=>i.bulan===todayStr().slice(0,7)&&i.status==="Belum").length;pushNotif("iuran","Pengingat Iuran",`Kepada ${n} KK yang belum membayar, mohon segera melunasi iuran bulan ini.`);toast(`Pengingat iuran dikirim ke ${n} KK`);RENDER.notifikasi()},
+    close:closeModal,
+    /* warga */
+    "warga-add":()=>wargaForm(null),
+    "warga-edit":()=>wargaForm(DB.warga.find(k=>k.id==id)),
+    "warga-save":()=>saveWarga(+id||0),
+    "mem-add":()=>{state.members.push({nama:"",jk:"L",relasi:"Anak",kerja:""});renderMembers()},
+    "mem-del":()=>{state.members.splice(+b.dataset.i,1);renderMembers()},
+    "warga-tgl":()=>{const r=$("#mem-"+id);r.style.display=r.style.display==="none"?"table-row":"none"},
+    "warga-del":()=>{if(confirm("Hapus data KK ini beserta anggotanya?")){DB.warga=DB.warga.filter(k=>k.id!=id);DB.iuran=DB.iuran.filter(i=>i.kkId!=id);save();RENDER.warga();toast("Data warga dihapus")}},
+    "warga-export":()=>exportExcel("data-warga-modinan",["Nama KK","Alamat","No HP","Status Tinggal","Status Warga","Anggota: Nama","L/P","Hubungan","Pekerjaan"],DB.warga.flatMap(k=>[[k.nama,k.alamat,k.hp,k.tinggal,k.status,k.nama,k.jk||"L","Kepala Keluarga","—"],...k.anggota.map(a=>["","","","","",a.nama,a.jk,a.relasi,a.kerja])])),
+    "warga-template":()=>{const blob=new Blob(["\ufeffnama_kepala_keluarga;alamat;no_hp;status_tinggal\nContoh Warga;Jl. Modinan No. 99;0812xxxx;Tetap"],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="template-import-warga.csv";a.click()},
+    "warga-import":()=>openModal("⬆ Import Data Warga (Excel/CSV)",`
+      <p class="small muted">Format kolom: <b>nama_kepala_keluarga ; alamat ; no_hp ; status_tinggal</b>. Gunakan file .csv / .xls hasil export Excel.</p>
+      <div class="fld"><input type="file" id="impFile" class="inp" accept=".csv,.xls,.xlsx,.txt"></div>
+      <button class="btn btn-pine btn-block" data-act="warga-import-run">Proses Import</button>`),
+    "warga-import-run":()=>{const f=$("#impFile").files[0];if(!f){toast("Pilih file terlebih dahulu","err");return}
+      f.text().then(txt=>{const lines=txt.split(/\r?\n/).filter(Boolean);const sep=lines[0].includes(";")?";":",";let n=0;
+        lines.slice(1).forEach(l=>{const c=l.split(sep).map(x=>x.trim());if(c[0]&&!/nama_kepala/i.test(c[0])){DB.warga.push({id:++DB.nextId,nama:c[0],alamat:c[1]||"-",hp:c[2]||"-",tinggal:["Tetap","Kontrak","Kos"].includes(c[3])?c[3]:"Tetap",status:"Aktif",jk:"L",anggota:[]});n++}});
+        save();closeModal();RENDER.warga();toast(n?`${n} KK berhasil diimport`:"Tidak ada baris data valid",n?"":"err")})},
+    /* struktur pengurus */
+    "pgw-add":()=>{if(!canKonten()){toast("Khusus Admin/Ketua & Sekretaris","warn");return}pgwForm(null)},
+    "pgw-edit":()=>{if(!canKonten()){toast("Khusus Admin/Ketua & Sekretaris","warn");return}pgwForm(DB.pengurus.find(x=>x.id==id))},
+    "pgw-save":()=>{const nama=$("#fPwNama").value.trim(),jab=$("#fPwJab").value.trim(),hp=$("#fPwHp").value.trim();
+      if(!nama||!jab){toast("Nama dan jabatan wajib diisi","err");return}
+      if(+id){Object.assign(DB.pengurus.find(x=>x.id==id),{nama,jab,hp});toast("Data pengurus diperbarui: "+nama+" ("+jab+")")}
+      else{DB.pengurus.push({id:++DB.nextId,nama,jab,hp});toast("Pengurus baru ditambahkan: "+nama+" ("+jab+")")}
+      pushNotif("sistem","Struktur Pengurus Diperbarui",nama+" — "+jab);
+      save();closeModal();RENDER.beranda()},
+    "pgw-del":()=>{const x=DB.pengurus.find(y=>y.id==id);if(!x)return;
+      if(confirm(`Hapus ${x.nama} (${x.jab}) dari struktur pengurus?`)){DB.pengurus=DB.pengurus.filter(y=>y.id!=id);save();RENDER.beranda();toast("Pengurus dihapus dari struktur")}},
+    /* riwayat & periode */
+    "riw-tgl":()=>{const r=$("#riw-"+id);if(r)r.style.display=r.style.display==="none"?"block":"none"},
+    "per-arsip":()=>{if(!canKonten()){toast("Khusus Admin/Ketua & Sekretaris","warn");return}perArsipModal()},
+    "per-save":()=>{const m=+$("#fPerM").value,s=+$("#fPerS").value,nm=+$("#fPerNM").value,ns=+$("#fPerNS").value;
+      if(!m||!s||m>s){toast("Tahun periode yang diarsipkan tidak valid","err");return}
+      if(!nm||!ns||nm>ns){toast("Tahun periode baru tidak valid","err");return}
+      if(!DB.pengurus.length){toast("Struktur saat ini kosong — tidak ada yang bisa diarsipkan","err");return}
+      DB.periodeList.unshift({id:++DB.nextId,mulai:m,selesai:s,thn:m+"–"+s,ket:$("#fPerKet").value.trim(),pengurus:DB.pengurus.map(x=>({jab:x.jab,nama:x.nama,hp:x.hp}))});
+      DB.profil.periodeMulai=nm;DB.profil.periodeSelesai=ns;
+      if($("#fPerKosong").checked)DB.pengurus=[];
+      pushNotif("sistem","Pergantian Periode Kepengurusan",`Periode ${m}–${s} diarsipkan. Periode aktif kini ${nm}–${ns}.`);
+      save();closeModal();buildNav();RENDER.beranda();toast("Periode lama diarsipkan — periode "+nm+"–"+ns+" kini aktif")},
+    "riw-edit":()=>{if(!canKonten()){toast("Khusus Admin/Ketua & Sekretaris","warn");return}const a=DB.periodeList.find(x=>x.id==id);if(a)riwEditForm(a)},
+    "riw-save":()=>{const a=DB.periodeList.find(x=>x.id==id);if(!a)return;
+      const m=+$("#fRwM").value,s=+$("#fRwS").value;if(!m||!s||m>s){toast("Tahun tidak valid","err");return}
+      a.mulai=m;a.selesai=s;a.thn=m+"–"+s;a.ket=$("#fRwKet").value.trim();
+      save();closeModal();RENDER.beranda();toast("Arsip periode diperbarui")},
+    "riw-del":()=>{const a=DB.periodeList.find(x=>x.id==id);if(!a)return;
+      if(confirm(`Hapus arsip periode ${a.thn}?`)){DB.periodeList=DB.periodeList.filter(x=>x.id!=id);save();RENDER.beranda();toast("Arsip periode dihapus")}},
+    /* pengumuman */
+    "ann-f":()=>{state.annF=b.dataset.f;RENDER.pengumuman()},
+    "ann-add":()=>annForm(null),
+    "ann-edit":()=>annForm(DB.pengumuman.find(x=>x.id==id)),
+    "ann-save":()=>{const j=$("#fAnnJudul").value.trim(),isi=$("#fAnnIsi").value.trim();if(!j||!isi){toast("Judul dan isi wajib diisi","err");return}
+      const data={judul:j,kat:$("#fAnnKat").value,tgl:$("#fAnnTgl").value||todayStr(),penulis:$("#fAnnPen").value,isi};
+      if(+id){Object.assign(DB.pengumuman.find(x=>x.id==id),data);toast("Pengumuman diperbarui")}
+      else{DB.pengumuman.unshift({id:++DB.nextId,...data});
+        if($("#fAnnNotif")&&$("#fAnnNotif").checked)pushNotif("pengumuman","Pengumuman Baru "+(data.kat==="Darurat"?"⚠️ DARURAT":""),j);
+        toast("Pengumuman diterbitkan")}
+      save();closeModal();RENDER.pengumuman()},
+    "ann-broadcast":()=>{const p=DB.pengumuman.find(x=>x.id==id);pushNotif("pengumuman","Pengumuman",p.judul);toast("Notifikasi dikirim ke "+totalJiwa()+" warga")},
+    "ann-del":()=>{if(confirm("Hapus pengumuman ini?")){DB.pengumuman=DB.pengumuman.filter(x=>x.id!=id);save();RENDER.pengumuman();toast("Pengumuman dihapus")}},
+    /* agenda */
+    "cal-nav":()=>{let m=state.cal.m+(+b.dataset.n),y=state.cal.y;if(m<0){m=11;y--}if(m>11){m=0;y++}state.cal={y,m};state.calSel=null;RENDER.agenda()},
+    "cal-day":()=>{state.calSel=state.calSel===b.dataset.d?null:b.dataset.d;RENDER.agenda()},
+    "cal-clear":()=>{state.calSel=null;RENDER.agenda()},
+    "agenda-add":()=>agForm(null),
+    "agenda-edit":()=>agForm(DB.agenda.find(x=>x.id==id)),
+    "agenda-save":()=>{const j=$("#fAgJudul").value.trim();if(!j){toast("Nama kegiatan wajib diisi","err");return}
+      const data={judul:j,kat:$("#fAgKat").value,tgl:$("#fAgTgl").value||todayStr(),jam:$("#fAgJam").value||"—",tempat:$("#fAgTmp").value||"—",desc:$("#fAgDesc").value};
+      if(+id){Object.assign(DB.agenda.find(x=>x.id==id),data);toast("Kegiatan diperbarui")}
+      else{DB.agenda.push({id:++DB.nextId,...data});pushNotif("agenda","Agenda Baru",j+" — "+fmtTgl(data.tgl));toast("Kegiatan ditambahkan & warga dinotifikasi")}
+      save();closeModal();RENDER.agenda()},
+    "agenda-del":()=>{if(confirm("Hapus kegiatan ini?")){DB.agenda=DB.agenda.filter(x=>x.id!=id);save();RENDER.agenda();toast("Kegiatan dihapus")}},
+    "agenda-remind":()=>{const a=DB.agenda.find(x=>x.id==id);pushNotif("agenda","Pengingat H-3",a.judul+" — "+fmtTgl(a.tgl)+" pukul "+a.jam+" WIB di "+a.tempat);toast("Pengingat H-3 dijadwalkan")},
+    /* keuangan */
+    "fin-tab":()=>{state.finTab=b.dataset.t;RENDER.keuangan()},
+    "fin-add":()=>{if(!guardFin())return;finForm(null,"Kas RT")},
+    "fin-add-social":()=>{if(!guardFin())return;finForm(null,"Dana Sosial")},
+    "fin-edit":()=>{if(!guardFin())return;finForm(DB.transaksi.find(t=>t.id==id))},
+    "fin-save":()=>{const ket=$("#fTrKet").value.trim(),jum=+$("#fTrJum").value;if(!ket||!jum){toast("Keterangan dan jumlah wajib diisi","err");return}
+      const bukti=$("#fTrBukti").files[0]?.name;
+      if(+id){const t=DB.transaksi.find(x=>x.id==id);Object.assign(t,{tgl:$("#fTrTgl").value||todayStr(),jenis:$("#fTrJenis").value,kat:$("#fTrKat").value,ket,jumlah:jum});if(bukti)t.bukti=bukti;toast("Transaksi diperbarui")}
+      else{DB.transaksi.push({id:DB.nextTid++,tgl:$("#fTrTgl").value||todayStr(),jenis:$("#fTrJenis").value,kat:$("#fTrKat").value,ket,jumlah:jum,bukti:bukti||""});toast("Transaksi tercatat")}
+      save();closeModal();RENDER.keuangan()},
+    "fin-del":()=>{if(!guardFin())return;if(confirm("Hapus transaksi ini?")){DB.transaksi=DB.transaksi.filter(t=>t.id!=id);save();RENDER.keuangan();toast("Transaksi dihapus")}},
+    "fin-export":()=>exportExcel("transaksi-kas-modinan",["Tanggal","Keterangan","Kategori","Jenis","Jumlah","Bukti"],DB.transaksi.map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,t.jumlah,t.bukti||"—"])),
+    "fin-pdf":()=>exportPDF("Laporan Keuangan — Riwayat Transaksi",pdfTable(["Tanggal","Keterangan","Kategori","Jenis","Jumlah"],DB.transaksi.map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,rupiah(t.jumlah)]))+`<p class="tot" style="margin-top:10px">SALDO KAS: ${rupiah(saldo())}</p>`),
+    "fin-pdf-month":()=>{const ym=todayStr().slice(0,7),tx=DB.transaksi.filter(t=>t.tgl.startsWith(ym));
+      exportPDF(`Laporan Kas Bulanan — ${BULAN[new Date().getMonth()]} ${new Date().getFullYear()}`,`<p>Total pemasukan: <b class="tot">${rupiah(tx.filter(t=>t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0))}</b> · Total pengeluaran: <b class="tot">${rupiah(tx.filter(t=>t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))}</b> · Saldo kas: <b class="tot">${rupiah(saldo())}</b>`+pdfTable(["Tanggal","Keterangan","Jenis","Jumlah"],tx.map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,rupiah(t.jumlah)])))},
+    "fin-pdf-year":()=>{const y=new Date().getFullYear(),tx=DB.transaksi.filter(t=>t.tgl.startsWith(y));
+      exportPDF("Laporan Kas Tahunan "+y,`<p>Tahun ${y}: masuk <b class="tot">${rupiah(tx.filter(t=>t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0))}</b>, keluar <b class="tot">${rupiah(tx.filter(t=>t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))}</b>, saldo akhir <b class="tot">${rupiah(saldo())}</b>.`+pdfTable(["Bulan","Masuk","Keluar"],Array.from({length:12},(_,i)=>{const ym=y+"-"+pad(i+1);return[BULAN[i],rupiah(tx.filter(t=>t.tgl.startsWith(ym)&&t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0)),rupiah(tx.filter(t=>t.tgl.startsWith(ym)&&t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))]})))},
+    "iuran-pay":()=>{if(!guardFin())return;const i=DB.iuran.find(x=>x.kkId==id&&x.bulan===state.iurBulan);const kk=DB.warga.find(w=>w.id==id);
+      if(i){i.status="Lunas";i.tgl=todayStr();DB.transaksi.push({id:DB.nextTid++,tgl:todayStr(),jenis:"Masuk",kat:"Iuran Warga",ket:"Iuran "+kk.nama+" — "+BULAN[+state.iurBulan.slice(5)-1],jumlah:DB.profil.iuran,bukti:"kwitansi-"+kk.nama.replace(/\s/g,"-")+".jpg"});save();RENDER.keuangan();toast("Pembayaran iuran "+kk.nama+" diterima & tercatat di kas")}},
+    "iuran-remind":()=>{if(!guardFin())return;const n=DB.iuran.filter(i=>i.bulan===todayStr().slice(0,7)&&i.status==="Belum").length;pushNotif("iuran","Pengingat Iuran",`${n} KK belum membayar iuran bulan ${BULAN[new Date().getMonth()]}. Mohon segera dilunasi.`);toast("Pengingat dikirim ke "+n+" KK")},
+    "iuran-export":()=>exportExcel("iuran-"+state.iurBulan,["Nama KK","Bulan","Status","Tgl Bayar","Nominal"],DB.iuran.filter(i=>i.bulan===state.iurBulan).map(i=>{const kk=DB.warga.find(w=>w.id===i.kkId);return[kk?.nama,i.bulan,i.status,i.tgl?fmtTgl(i.tgl):"—",DB.profil.iuran]})),
+    /* pengaduan */
+    "adu-open":()=>aduanForm(b.dataset.kat),
+    "adu-save":()=>{const j=$("#fJudul").value.trim(),d=$("#fDesc").value.trim();if(!j||!d){toast("Judul dan uraian wajib diisi","err");return}
+      const pel=logged()?$("#fPel").value:($("#fPelTxt")?.value.trim()||"Warga Modinan");
+      DB.pengaduan.unshift({id:++DB.nextId,pelapor:pel,kat:$("#fKat").value,judul:j,desc:d,tgl:todayStr(),status:0,catatan:[]});
+      pushNotif("pengaduan","Pengaduan Baru",j+" ("+$("#fKat").value+")");save();closeModal();RENDER.pengaduan();bellCount();
+      toast(logged()?"Laporan dicatat":"Laporan terkirim! Pengurus akan menindaklanjuti.")},
+    "adu-edit":()=>aduEditForm(DB.pengaduan.find(x=>x.id==id)),
+    "adu-update":()=>{const a=DB.pengaduan.find(x=>x.id==id);if(!a)return;
+      const j=$("#fAdJudul").value.trim(),d=$("#fAdDesc").value.trim();if(!j||!d){toast("Judul dan uraian wajib diisi","err");return}
+      const newStat=+$("#fAdStat").value;
+      Object.assign(a,{judul:j,desc:d,kat:$("#fAdKat").value,pelapor:$("#fAdPel").value,status:newStat});
+      pushNotif("pengaduan","Pengaduan Diperbarui",`Laporan "${j}" kini berstatus: ${ADU_STAT[newStat]}`);
+      save();closeModal();RENDER.pengaduan();bellCount();toast("Pengaduan diperbarui")},
+    "adu-del":()=>{if(confirm("Hapus pengaduan ini secara permanen?")){DB.pengaduan=DB.pengaduan.filter(x=>x.id!=id);save();RENDER.pengaduan();bellCount();toast("Pengaduan dihapus")}},
+    "adu-f":()=>{state.aduF=b.dataset.f;RENDER.pengaduan()},
+    "adu-advance":()=>{const a=DB.pengaduan.find(x=>x.id==id);if(a&&a.status<3){a.status++;const note=prompt("Catatan penanganan (opsional):");if(note)a.catatan.push(note);
+      pushNotif("pengaduan","Status Pengaduan Diperbarui",`Laporan "${a.judul}" kini berstatus: ${ADU_STAT[a.status]}`);save();RENDER.pengaduan();bellCount();toast("Status → "+ADU_STAT[a.status])}},
+    "adu-note":()=>{const a=DB.pengaduan.find(x=>x.id==id);const n=prompt("Tambah catatan penanganan:");if(n){a.catatan.push(n);save();RENDER.pengaduan();toast("Catatan ditambahkan")}},
+    /* berita & galeri & arsip */
+    "ber-tab":()=>{state.beritaTab=b.dataset.t;RENDER.berita()},
+    "gal-f":()=>{state.galF=b.dataset.f;RENDER.berita()},
+    "ber-add":()=>berForm(null),
+    "ber-edit":()=>berForm(DB.berita.find(x=>x.id==id)),
+    "ber-save":()=>{const j=$("#fBerJudul").value.trim(),isi=$("#fBerIsi").value.trim();if(!j||!isi){toast("Judul dan isi wajib diisi","err");return}
+      const data={judul:j,kat:$("#fBerKat").value,foto:$("#fBerFoto").value||"https://picsum.photos/seed/modinan-"+Date.now()%999+"/640/400",isi,excerpt:isi.slice(0,110)+"…"};
+      if(+id){Object.assign(DB.berita.find(x=>x.id==id),data);toast("Berita diperbarui")}
+      else{DB.berita.unshift({id:++DB.nextId,tgl:todayStr(),...data});pushNotif("pengumuman","Berita Baru",j);toast("Berita diterbitkan")}
+      save();closeModal();RENDER.berita()},
+    "ber-del":()=>{if(confirm("Hapus berita ini?")){DB.berita=DB.berita.filter(x=>x.id!=id);save();RENDER.berita();toast("Berita dihapus")}},
+    "berita-read":()=>{const x=DB.berita.find(v=>v.id==id);if(!x)return;openModal(x.kat+" — "+fmtTgl(x.tgl),`
+      <img src="${x.foto}" style="border-radius:12px;width:100%;aspect-ratio:16/9;object-fit:cover" alt="">
+      <h3 style="margin:14px 0 8px;font-size:20px">${esc(x.judul)}</h3>
+      <p style="white-space:pre-wrap">${esc(x.isi)}</p>`)},
+    "gal-add":()=>openModal("📸 Tambah Foto Galeri",`
+      <div class="fld"><label>Judul Foto *</label><input class="inp" id="fGalJudul" placeholder="mis. Kerja bakti Minggu pagi"></div>
+      <div class="f2"><div class="fld"><label>Kategori</label><input class="inp" id="fGalKat" placeholder="mis. Kerja Bakti" list="galKats"><datalist id="galKats">${[...new Set(DB.galeri.map(g=>g.kat))].map(k=>`<option value="${k}">`).join("")}</datalist></div>
+      <div class="fld"><label>URL Foto</label><input class="inp" id="fGalFoto" placeholder="https://…"></div></div>
+      <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="gal-save">Tambahkan ke Galeri</button>`),
+    "gal-save":()=>{const j=$("#fGalJudul").value.trim();if(!j){toast("Judul foto wajib diisi","err");return}
+      DB.galeri.push({id:++DB.nextId,judul:j,kat:$("#fGalKat").value||"Kegiatan",foto:$("#fGalFoto").value||"https://picsum.photos/seed/gal-"+Date.now()%9999+"/500/380",tgl:todayStr()});
+      save();closeModal();RENDER.berita();toast("Foto ditambahkan ke galeri")},
+    "gal-del":()=>{if(confirm("Hapus foto ini dari galeri?")){DB.galeri=DB.galeri.filter(g=>g.id!=id);save();RENDER.berita();toast("Foto dihapus")}},
+    "ar-add":()=>openModal("🗄 Tambah Arsip Kegiatan",`
+      <div class="f2"><div class="fld"><label>Tahun</label><input type="number" class="inp mono" id="fArThn" value="${new Date().getFullYear()}"></div>
+      <div class="fld"><label>Nama Kegiatan *</label><input class="inp" id="fArAcara"></div></div>
+      <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="ar-save" data-id="0">Tambahkan</button>`),
+    "ar-edit":()=>{const a=DB.arsip.find(x=>x.id==id);openModal("✏️ Edit Arsip",`
+      <div class="f2"><div class="fld"><label>Tahun</label><input type="number" class="inp mono" id="fArThn" value="${a.thn}"></div>
+      <div class="fld"><label>Nama Kegiatan *</label><input class="inp" id="fArAcara" value="${esc(a.acara)}"></div></div>
+      <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="ar-save" data-id="${a.id}">💾 Simpan Perubahan</button>`)},
+    "ar-save":()=>{const ac=$("#fArAcara").value.trim(),th=+$("#fArThn").value||new Date().getFullYear();if(!ac){toast("Nama kegiatan wajib diisi","err");return}
+      if(+id){Object.assign(DB.arsip.find(x=>x.id==id),{thn:th,acara:ac});toast("Arsip diperbarui")}
+      else{DB.arsip.unshift({id:++DB.nextId,thn:th,acara:ac});toast("Arsip ditambahkan")}
+      save();closeModal();RENDER.berita()},
+    "ar-del":()=>{if(confirm("Hapus arsip ini?")){DB.arsip=DB.arsip.filter(x=>x.id!=id);save();RENDER.berita();toast("Arsip dihapus")}},
+    /* laporan */
+    "rep-pdf":()=>{const{H,R}=repData(b.dataset.k);exportPDF("Laporan — "+b.dataset.k,pdfTable(H,R))},
+    "rep-xls":()=>{const{H,R}=repData(b.dataset.k);exportExcel("laporan-"+b.dataset.k+"-modinan",H,R)},
+    /* pengaturan */
+    "set-tab":()=>{state.setTab=b.dataset.t;RENDER.pengaturan()},
+    "prof-save":()=>{const iur=+$("#sIuran").value,pm=+$("#sPerM").value,ps=+$("#sPerS").value;
+      if(isNaN(iur)||iur<0){toast("Nominal iuran tidak valid","err");return}
+      if(!pm||!ps||pm>ps){toast("Tahun periode tidak valid (mulai harus ≤ selesai)","err");return}
+      Object.assign(DB.profil,{rt:$("#sRT").value.trim()||"RT 14",padukuhan:$("#sPad").value,kalurahan:$("#sKal").value,kapanewon:$("#sKap").value,kabupaten:$("#sKab").value,alamat:$("#sAl").value,wa:$("#sWa").value,visi:$("#sVisi").value,misi:$("#sMisi").value,iuran:iur,periodeMulai:pm,periodeSelesai:ps});
+      save();buildNav();toast("Pengaturan disimpan — periode aktif "+periodeLabel())},
+    "usr-add":()=>userForm(null),
+    "usr-edit":()=>userForm(DB.users.find(x=>x.id==id)),
+    "usr-save":()=>{const nama=$("#uNama").value.trim(),jab=$("#uJab").value.trim(),u=$("#uUser").value.trim().toLowerCase(),p=$("#uPass").value,r=$("#uRole").value;
+      if(!nama||!jab||!u){toast("Nama, jabatan, dan username wajib diisi","err");return}
+      if(!/^[a-z0-9_]{3,20}$/.test(u)){toast("Username 3–20 karakter, huruf kecil/angka tanpa spasi","err");return}
+      if(DB.users.some(x=>x.u===u&&x.id!=+id)){toast("Username sudah dipakai pengguna lain","err");return}
+      if(+id){const usr=DB.users.find(x=>x.id==id);const isSelf=state.user.id===usr.id;
+        Object.assign(usr,{nama,jab,role:r,u});if(p){if(p.length<4){toast("Kata sandi minimal 4 karakter","err");return}usr.p=p}
+        if(isSelf){sessionStorage.setItem("simpadu_uid",usr.u);state.user=usr}
+        pushNotif("user","Pengguna Diperbarui",`Akun ${nama} (${ROLES[r]}) diperbarui.`);toast("Data pengguna diperbarui")}
+      else{if(!p||p.length<4){toast("Kata sandi minimal 4 karakter","err");return}
+        DB.users.push({id:++DB.nextId,u,p,role:r,nama,jab});
+        pushNotif("user","Pengguna Baru",`${nama} ditambahkan sebagai ${ROLES[r]}.`);toast("Pengguna baru ditambahkan — "+nama+" ("+ROLES[r]+")")}
+      save();closeModal();renderTopbar();buildNav();RENDER.pengaturan()},
+    "usr-del":()=>{const u=DB.users.find(x=>x.id==id);if(!u)return;
+      if(u.id===state.user.id){toast("Anda tidak dapat menghapus akun sendiri","err");return}
+      if(u.role==="admin"&&DB.users.filter(x=>x.role==="admin").length<=1){toast("Minimal harus tersisa satu Admin/Ketua","err");return}
+      if(confirm(`Hapus pengguna ${u.nama} (${u.u})?`)){DB.users=DB.users.filter(x=>x.id!=id);pushNotif("user","Pengguna Dihapus",`Akun ${u.nama} dihapus dari sistem.`);save();RENDER.pengaturan();toast("Pengguna dihapus")}},
+    "set-backup":()=>{const blob=new Blob([JSON.stringify(DB,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="backup-simpadu-"+todayStr()+".json";a.click();toast("Backup JSON berhasil diunduh")},
+    "set-reset":()=>{if(confirm("Yakin reset semua data ke kondisi demo awal? Seluruh data yang sudah diinput akan hilang.")){localStorage.removeItem(DB_KEY);sessionStorage.removeItem("simpadu_uid");location.reload()}},
+    /* sinkronisasi GAS */
+    "gas-sync-now":()=>{if(!GAS_URL){toast("GAS_URL belum diisi — lihat file Code.gs","warn");return}syncToGas().then(ok=>toast(ok?"Sinkronisasi selesai":"Sinkronisasi gagal",ok?"":"err"))},
+    "gas-pull":()=>{if(!GAS_URL){toast("GAS_URL belum diisi — lihat file Code.gs","warn");return}syncFromGas().then(ok=>{if(ok){applyAuth();toast("Data dimuat dari server")}else toast("Tidak ada data server / gagal","warn")})},
+    "gas-push":()=>{if(!GAS_URL){toast("GAS_URL belum diisi — lihat file Code.gs","warn");return}syncToGas().then(ok=>toast(ok?"Data dikirim ke server":"Gagal kirim",ok?"":"err"))},
+  };
+  if(A[act])A[act]();
+});
+document.addEventListener("change",e=>{
+  const el=e.target.closest("[data-chk]");if(!el)return;
+  const k=el.dataset.chk;state[k]=el.value;
+  const re={wq:RENDER.warga,wtTinggal:RENDER.warga,wtStatus:RENDER.warga,finBulan:RENDER.keuangan,finJenis:RENDER.keuangan,iurBulan:RENDER.keuangan,aduKat:RENDER.pengaduan};
+  if(re[k])re[k]();
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="wq"){state.wq=e.target.value;clearTimeout(window._wqt);window._wqt=setTimeout(()=>{const st=e.target.selectionStart;RENDER.warga();const el=$("#wq");if(el){el.focus();el.setSelectionRange(st,st)}},250)}
+});
+
+/* ================= INIT ================= */
+(function init(){
+  const emblem=s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64"><circle cx='32' cy='32' r='30' fill='#0B4D33' stroke='#F0A422' stroke-width='3'/><path d='M16 32 32 18l16 14' stroke='#F0A422' stroke-width='4' fill='none' stroke-linecap='round'/><path d='M22 32v14h20V32' stroke='#fff' stroke-width='4' fill='none'/><path d='M29 46v-8h6v8' stroke='#fff' stroke-width='3' fill='none'/></svg>`;
+  $("#sbMark").innerHTML=emblem(40);
+  $("#tbDate").textContent=new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const uid=sessionStorage.getItem("simpadu_uid");
+  state.user=DB.users.find(x=>x.u===uid)||null;
+  applyAuth();
+  syncFromGas().then(ok=>{if(ok){applyAuth();toast("Data tersinkron dari server")}});
+})();
+</script>
+</body>
+</html>
