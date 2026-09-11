@@ -1185,12 +1185,37 @@ RENDER.keuangan=function(){
     </div>
   </div>
   <div class="tabs">
+    <button class="tab ${state.finTab==="kasrt"?"on":""}" data-act="fin-tab" data-t="kasrt">Kas RT</button>
+    <button class="tab ${state.finTab==="danasosial"?"on":""}" data-act="fin-tab" data-t="danasosial">Kas Dana Sosial</button>
     <button class="tab ${state.finTab==="trans"?"on":""}" data-act="fin-tab" data-t="trans">Riwayat Transaksi</button>
     <button class="tab ${state.finTab==="arisan"?"on":""}" data-act="fin-tab" data-t="arisan">Arisan RT</button>
     <button class="tab ${state.finTab==="lap"?"on":""}" data-act="fin-tab" data-t="lap">Laporan Grafik</button>
   </div>
-  ${state.finTab==="trans"?finTransHTML(months,tx,ck):state.finTab==="arisan"?finArisanHTML(ck):finChartHTML()}`;
+  ${state.finTab==="kasrt"?finKatHTML("Kas RT",ck):state.finTab==="danasosial"?finKatHTML("Dana Sosial",ck):state.finTab==="trans"?finTransHTML(months,tx,ck):state.finTab==="arisan"?finArisanHTML(ck):finChartHTML()}`;
 };
+function finKatHTML(kat,ck){
+  const tx=DB.transaksi.filter(t=>t.kat===kat).sort((a,b)=>b.tgl.localeCompare(a.tgl));
+  const masuk=tx.filter(t=>t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0);
+  const keluar=tx.filter(t=>t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0);
+  return `
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="stat dark"><div class="ic" style="background:rgba(255,255,255,.15)">${kat==="Kas RT"?"🏦":"🤝"}</div><b class="mono" style="font-size:22px">${rupiah(masuk-keluar)}</b><span>Saldo ${kat}</span></div>
+    <div class="stat"><div class="ic" style="background:var(--mint);color:var(--pine)">⬇</div><b class="mono" style="font-size:20px">${rupiah(masuk)}</b><span>Total Masuk</span></div>
+    <div class="stat"><div class="ic" style="background:var(--red-s);color:var(--red)">⬆</div><b class="mono" style="font-size:20px">${rupiah(keluar)}</b><span>Total Keluar</span></div>
+  </div>
+  <div class="card"><div class="hd" style="flex-wrap:wrap;gap:10px">
+    <h3>${kat==="Kas RT"?"💼":"🤝"} ${kat}</h3>
+    ${ck?`<div class="toolbar"><button class="btn btn-sm btn-pine" data-act="fin-add-kat" data-kat="${kat}">＋ Input ${kat}</button><button class="btn btn-sm btn-ghost" data-act="fin-export-kat" data-kat="${kat}">⬇ Excel</button></div>`:""}
+  </div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Masuk</th><th>Keluar</th><th>Bukti</th><th>Aksi</th></tr></thead><tbody>
+  ${tx.map(t=>`<tr><td class="mono">${fmtTgl(t.tgl)}</td><td>${esc(t.ket)}<div class="small muted">#TRX-${String(t.id).padStart(4,"0")}</div></td>
+  <td><span class="bdg ${t.jenis==="Masuk"?"b-green":"b-gray"}">${t.jenis}</span></td>
+  <td class="num" style="color:var(--pine)">${t.jenis==="Masuk"?rupiah(t.jumlah):""}</td>
+  <td class="num" style="color:var(--red)">${t.jenis==="Keluar"?rupiah(t.jumlah):""}</td>
+  <td>${t.bukti?`<span class="bdg b-blue" title="${esc(t.bukti)}">📎 ${esc(t.bukti.length>14?t.bukti.slice(0,14)+"…":t.bukti)}</span>`:'<span class="muted">—</span>'}</td>
+  <td>${ck?`<div class="rowact"><button class="icobtn" title="Edit" data-act="fin-edit" data-id="${t.id}">✏️</button><button class="icobtn red" title="Hapus" data-act="fin-del" data-id="${t.id}">🗑</button></div>`:'<span class="muted">—</span>'}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="pad small muted">${tx.length} transaksi ${kat} · Total masuk <b class="mono">${rupiah(masuk)}</b> · Total keluar <b class="mono">${rupiah(keluar)}</b></div></div>`}
 function finTransHTML(months,tx,ck){return`
   <div class="card"><div class="hd" style="flex-wrap:wrap;gap:10px">
     <div class="toolbar">
@@ -1661,6 +1686,8 @@ document.addEventListener("click",e=>{
     "fin-tab":()=>{state.finTab=b.dataset.t;RENDER.keuangan()},
     "fin-add":()=>{if(!guardFin())return;finForm(null,"Kas RT")},
     "fin-add-social":()=>{if(!guardFin())return;finForm(null,"Dana Sosial")},
+    "fin-add-kat":()=>{if(!guardFin())return;finForm(null,b.dataset.kat||"Kas RT")},
+    "fin-export-kat":()=>{const kat=b.dataset.kat||"Kas RT";const tx=DB.transaksi.filter(t=>t.kat===kat);exportExcel("kas-"+kat.toLowerCase().replace(/\s/g,"-")+"-modinan",["Tanggal","Keterangan","Jenis","Jumlah","Bukti"],tx.map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,t.jumlah,t.bukti||"—"]))},
     "fin-edit":()=>{if(!guardFin())return;finForm(DB.transaksi.find(t=>t.id==id))},
     "fin-save":()=>{const ket=$("#fTrKet").value.trim(),jum=+$("#fTrJum").value;if(!ket||!jum){toast("Keterangan dan jumlah wajib diisi","err");return}
       const bukti=$("#fTrBukti").files[0]?.name;

@@ -3,3 +3,8 @@ git add -A
 git commit -m "deskripsi perubahan"
 git push origin main
 git push netlify main
+
+
+versi singkat
+
+cd "f:\rt14-modinan" ; git add -A ; git commit -m "deskripsi" ; git push origin main ; git push netlify main
