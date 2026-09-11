@@ -52,3 +52,29 @@ Aplikasi `index.html` sekarang bisa **tersinkron ke server** lewat Google Apps S
 - Setiap **perubahan di `Code.gs`** harus di-deploy ulang (Deploy → Manage deployments → Edit → New version).
 - URL Web App lama tetap valid; buat versi baru hanya saat kode berubah.
 - Data sensitif (data pribadi warga) tersimpan di Google Sheets milik Anda — atur izin berbagi sheet dengan bijak.
+
+## Deployment Web (GitHub + Netlify)
+
+Aplikasi di-hosting di **Netlify** dan terhubung ke **GitHub** untuk auto-deploy.
+
+| Item | Nilai |
+|---|---|
+| Repo GitHub | `https://github.com/Antoksuryanto/rt14-modinan` |
+| URL Warga | `https://cheery-smakager-d62f5e.netlify.app` |
+| URL Backend GAS | `https://script.google.com/macros/s/AKfycbxXCs1OnTC_dIvJQwxX19_iU0BMgG9PZ_SmzRtXUOD_FYIaCMB9WJ-dxF9WCcba7WkaZg/exec` |
+
+### Alur Sinkronisasi
+
+1. **Admin ubah data** → `save()` → debounce 1,5 detik → `POST action=save` → Google Sheets
+2. **Warga buka halaman** → `GET action=get` → data server dimuat
+3. **Admin ubah kode** → `git push` → Netlify auto-deploy (~30 detik)
+
+### Cara Update Kode
+
+```bash
+git add -A
+git commit -m "deskripsi perubahan"
+git push
+```
+
+Netlify otomatis build & deploy versi baru. Tidak perlu deploy manual.
