@@ -1240,7 +1240,7 @@ function finArisanHTML(ck){
   return `
   <div class="card"><div class="hd" style="flex-wrap:wrap;gap:10px">
     <div class="toolbar"><span class="bdg b-green">Rotasi Arisan RT</span></div>
-    ${ck?'<button class="btn btn-pine" data-act="ar-add">＋ Tambah Jadwal Arisan</button>':""}
+    ${ck?'<button class="btn btn-pine" data-act="arisan-add">＋ Tambah Jadwal Arisan</button>':""}
   </div>
   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Bulan</th><th>Penerima</th><th>Keterangan</th><th>Bulan Berikutnya</th><th>Penerima Berikutnya</th>${ck?'<th>Aksi</th>':""}</tr></thead><tbody>
   ${rows.map(item=>`<tr>
@@ -1249,7 +1249,7 @@ function finArisanHTML(ck){
     <td>${esc(item.keterangan)}</td>
     <td class="mono">${fmtTgl(item.bulanBerikutnya + "-01")}</td>
     <td><b>${esc(item.penerimaBerikutnya)}</b></td>
-    ${ck?`<td><div class="rowact"><button class="icobtn" data-act="ar-edit" data-id="${item.id}">✏️</button><button class="icobtn red" data-act="ar-del" data-id="${item.id}">🗑</button></div></td>`:""}
+    ${ck?`<td><div class="rowact"><button class="icobtn" data-act="arisan-edit" data-id="${item.id}">✏️</button><button class="icobtn red" data-act="arisan-del" data-id="${item.id}">🗑</button></div></td>`:""}
   </tr>`).join("")}
   </tbody></table></div>
   <div class="pad small muted">Catatan: penerima arisan berikutnya ditentukan berdasarkan rotasi bulan berikutnya dan peserta yang berkesempatan menerima pada periode selanjutnya.</div></div>`;
@@ -1696,6 +1696,25 @@ document.addEventListener("click",e=>{
       save();closeModal();RENDER.keuangan()},
     "fin-del":()=>{if(!guardFin())return;if(confirm("Hapus transaksi ini?")){DB.transaksi=DB.transaksi.filter(t=>t.id!=id);save();RENDER.keuangan();toast("Transaksi dihapus")}},
     "fin-export":()=>exportExcel("transaksi-kas-modinan",["Tanggal","Keterangan","Kategori","Jenis","Jumlah","Bukti"],DB.transaksi.map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,t.jumlah,t.bukti||"—"])),
+    /* arisan RT */
+    "arisan-add":()=>{if(!guardFin())return;openModal("📅 Tambah Jadwal Arisan",`
+      <div class="f2"><div class="fld"><label>Bulan (YYYY-MM) *</label><input class="inp" id="fArBulan" type="month" value="${todayStr().slice(0,7)}"></div>
+      <div class="fld"><label>Jumlah (Rp) *</label><input type="number" class="inp mono" id="fArJum" min="0" value="250000"></div></div>
+      <div class="fld"><label>Penerima *</label><input class="inp" id="fArPenerima" placeholder="mis. Ibu Dewi Lestari"></div>
+      <div class="fld"><label>Keterangan</label><input class="inp" id="fArKet" placeholder="mis. Arisan bulanan PKK"></div>
+      <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="arisan-save" data-id="0">Tambahkan</button>`)},
+    "arisan-edit":()=>{const a=DB.arisan.find(x=>x.id==id);if(!a)return;if(!guardFin())return;openModal("✏️ Edit Jadwal Arisan",`
+      <div class="f2"><div class="fld"><label>Bulan (YYYY-MM) *</label><input class="inp" id="fArBulan" type="month" value="${a.bulan}"></div>
+      <div class="fld"><label>Jumlah (Rp) *</label><input type="number" class="inp mono" id="fArJum" min="0" value="${a.jumlah}"></div></div>
+      <div class="fld"><label>Penerima *</label><input class="inp" id="fArPenerima" value="${esc(a.penerima)}"></div>
+      <div class="fld"><label>Keterangan</label><input class="inp" id="fArKet" value="${esc(a.keterangan)}"></div>
+      <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="arisan-save" data-id="${a.id}">💾 Simpan Perubahan</button>`)},
+    "arisan-save":()=>{const bulan=$("#fArBulan").value,penerima=$("#fArPenerima").value.trim(),jum=+$("#fArJum").value,ket=$("#fArKet").value.trim();
+      if(!bulan||!penerima||!jum){toast("Bulan, penerima, dan jumlah wajib diisi","err");return}
+      if(+id){const a=DB.arisan.find(x=>x.id==id);Object.assign(a,{bulan,penerima,jumlah:jum,keterangan:ket});toast("Jadwal arisan diperbarui")}
+      else{DB.arisan.push({id:++DB.nextId,bulan,penerima,jumlah:jum,keterangan:ket});toast("Jadwal arisan ditambahkan")}
+      save();closeModal();RENDER.keuangan()},
+    "arisan-del":()=>{if(!guardFin())return;if(confirm("Hapus jadwal arisan ini?")){DB.arisan=DB.arisan.filter(x=>x.id!=id);save();RENDER.keuangan();toast("Jadwal arisan dihapus")}},
     "fin-pdf":()=>exportPDF("Laporan Keuangan — Riwayat Transaksi",pdfTable(["Tanggal","Keterangan","Kategori","Jenis","Jumlah"],DB.transaksi.map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,rupiah(t.jumlah)]))+`<p class="tot" style="margin-top:10px">SALDO KAS: ${rupiah(saldo())}</p>`),
     "fin-pdf-month":()=>{const ym=todayStr().slice(0,7),tx=DB.transaksi.filter(t=>t.tgl.startsWith(ym));
       exportPDF(`Laporan Kas Bulanan — ${BULAN[new Date().getMonth()]} ${new Date().getFullYear()}`,`<p>Total pemasukan: <b class="tot">${rupiah(tx.filter(t=>t.jenis==="Masuk").reduce((s,t)=>s+t.jumlah,0))}</b> · Total pengeluaran: <b class="tot">${rupiah(tx.filter(t=>t.jenis==="Keluar").reduce((s,t)=>s+t.jumlah,0))}</b> · Saldo kas: <b class="tot">${rupiah(saldo())}</b>`+pdfTable(["Tanggal","Keterangan","Jenis","Jumlah"],tx.map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,rupiah(t.jumlah)])))},
