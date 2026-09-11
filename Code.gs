@@ -36,11 +36,11 @@ function handleRequest(e, method) {
     }
     var action = e.parameter.action;
     if (action === "get") {
-      out.setContent(JSON.stringify({ ok: true, data: loadAll() }));
+      out.setContent(JSON.stringify({ ok: true, data: loadAll(), rev: loadRev() }));
     } else if (action === "save") {
       var payload = JSON.parse(e.postData.contents);
       if (!payload || !payload.data) throw new Error("Payload tidak lengkap");
-      saveAll(payload.data);
+      saveAll(payload.data, payload.rev || null);
       out.setContent(JSON.stringify({ ok: true, saved: new Date().toISOString() }));
     } else if (action === "ping") {
       out.setContent(JSON.stringify({ ok: true, pong: true, time: new Date().toISOString() }));
@@ -58,7 +58,7 @@ function getSheet_() {
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
-    sh.appendRow(["key", "value", "updated"]);
+    sh.appendRow(["key", "value", "updated", "rev"]);
     sh.setFrozenRows(1);
   }
   return sh;
@@ -80,7 +80,20 @@ function loadAll() {
   return data;
 }
 
-function saveAll(data) {
+function loadRev() {
+  var sh = getSheet_();
+  var values = sh.getDataRange().getValues();
+  var rev = {};
+  for (var i = 1; i < values.length; i++) {
+    var key = String(values[i][0] || "").trim();
+    if (!key) continue;
+    var r = Number(values[i][3]);
+    if (!isNaN(r) && r > 0) rev[key] = r;
+  }
+  return rev;
+}
+
+function saveAll(data, rev) {
   var lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
@@ -96,11 +109,19 @@ function saveAll(data) {
     for (var j = 0; j < keys.length; j++) {
       var key = keys[j];
       var json = JSON.stringify(data[key]);
-      if (rowByKey[key]) {
-        sh.getRange(rowByKey[key], 2).setValue(json);
-        sh.getRange(rowByKey[key], 3).setValue(now);
+      var row = rowByKey[key];
+      if (row) {
+        // Per-modul conflict: hanya timpa jika rev kiriman lebih baru dari server
+        var curRev = Number(values[row - 1][3]);
+        var newRev = rev && rev[key] ? Number(rev[key]) : 0;
+        if (isNaN(curRev)) curRev = 0;
+        if (newRev > curRev) {
+          sh.getRange(row, 2).setValue(json);
+          sh.getRange(row, 3).setValue(now);
+          sh.getRange(row, 4).setValue(newRev);
+        }
       } else {
-        sh.appendRow([key, json, now]);
+        sh.appendRow([key, json, now, rev && rev[key] ? Number(rev[key]) : 0]);
       }
     }
   } finally {

@@ -485,12 +485,27 @@ if(!Array.isArray(DB.pengurus))DB.pengurus=[];
 DB.pengurus.forEach((x,i)=>{if(!x.id)x.id=i+1});
 if(!Array.isArray(DB.periodeList))DB.periodeList=[];
 if(DB.profil.periodeMulai==null){const m=String(DB.profil.periode||"2023–2028").match(/(\d{4})\s*[-–]\s*(\d{4})/);DB.profil.periodeMulai=m?+m[1]:2023;DB.profil.periodeSelesai=m?+m[2]:2028}
-const save=()=>{try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){};scheduleGasSync()};
+const save=()=>{bumpRevs();try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){};scheduleGasSync()};
 const periodeLabel=()=>DB.profil.periodeMulai+"–"+DB.profil.periodeSelesai;
 
 /* ================= SYNC GOOGLE APPS SCRIPT ================= */
 const GAS_URL="https://script.google.com/macros/s/AKfycbxXCs1OnTC_dIvJQwxX19_iU0BMgG9PZ_SmzRtXUOD_FYIaCMB9WJ-dxF9WCcba7WkaZg/exec"; // ← tempel URL Web App GAS di sini (lihat file Code.gs)
 let gasStatus={state:"off",msg:"Sinkronisasi"};
+const MODULES=["profil","users","warga","pengurus","periodeList","pengumuman","agenda","arisan","danaSosial","transaksi","iuran","pengaduan","berita","galeri","arsip","notifikasi"];
+if(!DB._rev)DB._rev={};
+if(!DB._fp)DB._fp={};
+MODULES.forEach(m=>{if(DB._rev[m]==null)DB._rev[m]=0;if(DB._fp[m]==null)DB._fp[m]=JSON.stringify(DB[m]||null)});
+["nextId","nextTid"].forEach(k=>{if(DB._rev[k]==null)DB._rev[k]=0;if(DB._fp[k]==null)DB._fp[k]=String(DB[k])});
+function bumpRevs(){
+  MODULES.forEach(m=>{
+    const fp=JSON.stringify(DB[m]||null);
+    if(DB._fp[m]!==fp){DB._fp[m]=fp;DB._rev[m]=Math.max(Date.now(),(DB._rev[m]||0)+1)}
+  });
+  ["nextId","nextTid"].forEach(k=>{
+    const fp=String(DB[k]);
+    if(DB._fp[k]!==fp){DB._fp[k]=fp;DB._rev[k]=Math.max(Date.now(),(DB._rev[k]||0)+1)}
+  });
+}
 function gasFetch(action,payload){
   if(!GAS_URL)return Promise.reject(new Error("GAS_URL belum diisi"));
   const url=GAS_URL+(GAS_URL.includes("?")?"&":"?")+"action="+action;
@@ -507,7 +522,18 @@ function scheduleGasSync(){
 function syncToGas(){
   if(!GAS_URL)return Promise.resolve();
   setGasStatus("sync","Menyinkron…");
-  return gasFetch("save",{data:DB}).then(()=>{setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
+  return gasFetch("get").then(j=>{
+    if(j.data&&Object.keys(j.data).length){
+      const before=JSON.stringify(DB);
+      DB=mergeGas(j.data,j.rev);
+      if(JSON.stringify(DB)!==before)saveLocalOnly();
+    }
+  }).catch(()=>{}).then(()=>{
+    const payload={data:{},rev:{}};
+    MODULES.forEach(m=>{payload.data[m]=DB[m];payload.rev[m]=DB._rev[m]||0});
+    ["nextId","nextTid"].forEach(k=>{payload.data[k]=DB[k];payload.rev[k]=DB._rev[k]||0});
+    return gasFetch("save",payload);
+  }).then(()=>{setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
     .catch(err=>{setGasStatus("err","Gagal: "+err.message);console.warn("GAS sync gagal",err);return false});
 }
 function syncFromGas(){
@@ -515,7 +541,7 @@ function syncFromGas(){
   setGasStatus("sync","Memuat server…");
   return gasFetch("get").then(j=>{
     if(j.data&&Object.keys(j.data).length){
-      DB=mergeGas(j.data);
+      DB=mergeGas(j.data,j.rev);
       saveLocalOnly();
       setGasStatus("ok","Data server dimuat "+new Date().toLocaleTimeString("id-ID"));
       return true;
@@ -525,12 +551,34 @@ function syncFromGas(){
   }).catch(err=>{setGasStatus("err","Gagal: "+err.message);return false});
 }
 function saveLocalOnly(){try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){}}
-function mergeGas(remote){
+function mergeGas(remote,remoteRev){
   const base=JSON.parse(JSON.stringify(remote));
+  if(!remoteRev){ // server lama (tanpa rev) — perilaku lama: data server menang
+    Object.keys(DB).forEach(k=>{if(base[k]===undefined)base[k]=DB[k]});
+    return base;
+  }
+  const localRev=DB._rev||{};
+  const mergedRev={};
+  MODULES.forEach(m=>{
+    const sRev=remoteRev[m]||0,lRev=localRev[m]||0;
+    if(sRev>lRev&&base[m]!==undefined){mergedRev[m]=sRev}
+    else{base[m]=DB[m];mergedRev[m]=Math.max(lRev,sRev)}
+  });
+  ["nextId","nextTid"].forEach(k=>{
+    const sRev=remoteRev[k]||0,lRev=localRev[k]||0;
+    if(sRev>lRev&&remote[k]!==undefined){base[k]=remote[k];mergedRev[k]=sRev}
+    else{base[k]=DB[k];mergedRev[k]=Math.max(lRev,sRev)}
+  });
   Object.keys(DB).forEach(k=>{if(base[k]===undefined)base[k]=DB[k]});
+  DB=base;
+  DB._rev=mergedRev;
+  DB._fp={};
+  MODULES.forEach(m=>{DB._fp[m]=JSON.stringify(DB[m]||null)});
+  ["nextId","nextTid"].forEach(k=>{DB._fp[k]=String(DB[k])});
   return base;
 }
 function setGasStatus(state,msg){gasStatus={state,msg};const el=$("#gasStatus");if(el)el.textContent=msg;const dot=$("#gasDot");if(dot)dot.className="dot "+(state==="ok"?"b-green":state==="err"?"b-red":"b-amber")}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")syncFromGas()});
 const state={user:null,page:"beranda",wq:"",wtTinggal:"",wtStatus:"",annF:"Semua",cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calSel:null,finTab:"trans",finBulan:"all",finJenis:"Semua",iurBulan:todayStr().slice(0,7),aduF:"Semua",aduKat:"Semua",members:[],beritaTab:"berita",galF:"Semua",setTab:"profil"};
 const ROLES={admin:"Admin / Ketua",sekretaris:"Sekretaris",bendahara:"Bendahara"};
 const ICONS={
