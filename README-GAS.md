@@ -60,7 +60,7 @@ Aplikasi di-hosting di **Netlify** dan terhubung ke **GitHub** untuk auto-deploy
 | Item | Nilai |
 |---|---|
 | Repo GitHub | `https://github.com/Antoksuryanto/rt14-modinan` |
-| URL Warga | `https://cheery-smakager-d62f5e.netlify.app` |
+| URL Warga | `https://rt14modinan.netlify.app` |
 | URL Backend GAS | `https://script.google.com/macros/s/AKfycbxXCs1OnTC_dIvJQwxX19_iU0BMgG9PZ_SmzRtXUOD_FYIaCMB9WJ-dxF9WCcba7WkaZg/exec` |
 
 ### Alur Sinkronisasi
