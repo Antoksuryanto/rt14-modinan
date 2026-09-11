@@ -1371,7 +1371,7 @@ RENDER.laporan=function(){
         <button class="btn btn-sm btn-amber" data-act="rep-xls" data-k="${r.k}">📗 Excel</button></div></div>`).join("")}</div>`;
 };
 function repData(k){
-  const H={warga:["Nama KK","Alamat","No HP","Status Tinggal","Status Warga","Jumlah Anggota"],
+  const H={warga:["No","Nama KK","Alamat","No HP","Status Tinggal","Status Warga","Anggota Keluarga"],
     kas:["Tanggal","Keterangan","Jenis","Kategori","Jumlah"],
     "dana-sosial":["Tanggal","Nama Kegiatan","Jenis","Jumlah","Keterangan"],
     keuangan:["Tanggal","Keterangan","Kategori","Jenis","Jumlah"],
@@ -1381,7 +1381,8 @@ function repData(k){
     pengurus:["Jabatan","Nama","No. HP / Kontak"],
     riwayat:["Periode","Status","Jumlah Pengurus","Ketua RT"]};
   const R={
-    warga:()=>DB.warga.map(x=>[x.nama,x.alamat,x.hp,x.tinggal,x.status,x.anggota.length+1]),
+    warga:()=>DB.warga.flatMap((x,i)=>[[i+1,x.nama,x.alamat,x.hp,x.tinggal,x.status,x.anggota.length+1+" jiwa"],
+      ...x.anggota.map(a=>["","","","","","","• "+a.nama+" ("+a.relasi+")"])]),
     kas:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,t.kat,rupiah(t.jumlah)]),
     "dana-sosial":()=>DB.transaksi.filter(t=>t.kat==="Dana Sosial").sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,rupiah(t.jumlah),t.kat]),
     keuangan:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,rupiah(t.jumlah)]),
