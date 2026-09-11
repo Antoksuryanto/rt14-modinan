@@ -1382,7 +1382,7 @@ function repData(k){
     riwayat:["Periode","Status","Jumlah Pengurus","Ketua RT"]};
   const R={
     warga:()=>DB.warga.flatMap((x,i)=>[[i+1,x.nama,x.alamat,x.hp,x.tinggal,x.status,x.anggota.length+1+" jiwa"],
-      ...x.anggota.map(a=>["","","","","","","• "+a.nama+" ("+a.relasi+")"])]),
+      ...x.anggota.map(a=>["","  • "+a.nama+" ("+a.relasi+")","","","","",""])]),
     kas:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,t.kat,rupiah(t.jumlah)]),
     "dana-sosial":()=>DB.transaksi.filter(t=>t.kat==="Dana Sosial").sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,rupiah(t.jumlah),t.kat]),
     keuangan:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,rupiah(t.jumlah)]),
