@@ -559,14 +559,19 @@ function mergeGas(remote,remoteRev){
   }
   const localRev=DB._rev||{};
   const mergedRev={};
+  const isEmpty=v=>v===undefined||v===null||v===""||(Array.isArray(v)&&v.length===0)||(typeof v==="object"&&!Array.isArray(v)&&Object.keys(v).length===0);
   MODULES.forEach(m=>{
     const sRev=remoteRev[m]||0,lRev=localRev[m]||0;
-    if(sRev>lRev&&base[m]!==undefined){mergedRev[m]=sRev}
+    const sEmpty=isEmpty(base[m]),lEmpty=isEmpty(DB[m]);
+    if(sRev>lRev&&!sEmpty){mergedRev[m]=sRev}
+    else if(sRev>lRev&&sEmpty&&!lEmpty){base[m]=DB[m];mergedRev[m]=Math.max(lRev,sRev)}
     else{base[m]=DB[m];mergedRev[m]=Math.max(lRev,sRev)}
   });
   ["nextId","nextTid"].forEach(k=>{
     const sRev=remoteRev[k]||0,lRev=localRev[k]||0;
-    if(sRev>lRev&&remote[k]!==undefined){base[k]=remote[k];mergedRev[k]=sRev}
+    const sEmpty=isEmpty(remote[k]),lEmpty=isEmpty(DB[k]);
+    if(sRev>lRev&&!sEmpty){base[k]=remote[k];mergedRev[k]=sRev}
+    else if(sRev>lRev&&sEmpty&&!lEmpty){base[k]=DB[k];mergedRev[k]=Math.max(lRev,sRev)}
     else{base[k]=DB[k];mergedRev[k]=Math.max(lRev,sRev)}
   });
   Object.keys(DB).forEach(k=>{if(base[k]===undefined)base[k]=DB[k]});

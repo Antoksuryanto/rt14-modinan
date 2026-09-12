@@ -312,9 +312,12 @@ function saveAll(data, rev) {
       }
       var curHash = hashKonten_(sh.getDataRange().getValues());
       var lastHash = Number(props.getProperty("hash_" + key) || 0);
-      if (curHash === lastHash || lastHash === 0) {
+      var isi = sh.getDataRange().getValues();
+      var kosong = isi.length < 2 || (isi.length === 1 && isi[0].join("").trim() === "");
+      if (curHash === lastHash || lastHash === 0 || kosong) {
         // Sheet tidak diubah manual sejak terakhir ditulis server → aman timpa
         // lastHash===0: sheet baru / hash belum pernah diset → timpa juga
+        // kosong: sheet cuma header → timpa juga (perbaiki race hash lama)
         if (MODULES.indexOf(key) >= 0) tulisSheet_(key, data[key]);
         else if (SCALAR_KEYS.indexOf(key) >= 0) tulisScalar_(key, data[key]);
         var sh2 = ssGetSheetByName_(key);
