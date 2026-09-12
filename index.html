@@ -1031,7 +1031,7 @@ function saveWarga(id){
 function annForm(a){
   openModal(a?"✏️ Edit Pengumuman":"📣 Buat Pengumuman",`
   <div class="fld"><label>Judul *</label><input class="inp" id="fAnnJudul" value="${esc(a?.judul||"")}"></div>
-  <div class="f2"><div class="fld"><label>Kategori</label><select class="inp" id="fAnnKat">${["RT","Darurat","Kerja Bakti"].map(k=>`<option ${a?.kat===k?"selected":""}>${k}</option>`).join("")}</select></div>
+  <div class="f2"><div class="fld"><label>Kategori</label><select class="inp" id="fAnnKat">${["RT","Darurat","Kerja Bakti","Lainnya"].map(k=>`<option ${a?.kat===k?"selected":""}>${k}</option>`).join("")}</select></div>
   <div class="fld"><label>Tanggal</label><input type="date" class="inp" id="fAnnTgl" value="${a?.tgl||todayStr()}"></div></div>
   <div class="fld"><label>Penulis</label><input class="inp" id="fAnnPen" value="${esc(a?.penulis||state.user.nama)}"></div>
   <div class="fld"><label>Isi Pengumuman *</label><textarea class="inp" id="fAnnIsi">${esc(a?.isi||"")}</textarea></div>
