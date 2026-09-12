@@ -1828,6 +1828,7 @@ document.addEventListener("click",e=>{
       if(u.role==="admin"&&DB.users.filter(x=>x.role==="admin").length<=1){toast("Minimal harus tersisa satu Admin/Ketua","err");return}
       if(confirm(`Hapus pengguna ${u.nama} (${u.u})?`)){DB.users=DB.users.filter(x=>x.id!=id);pushNotif("user","Pengguna Dihapus",`Akun ${u.nama} dihapus dari sistem.`);save();RENDER.pengaturan();toast("Pengguna dihapus")}},
     "set-backup":()=>{const blob=new Blob([JSON.stringify(DB,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="backup-simpadu-"+todayStr()+".json";a.click();toast("Backup JSON berhasil diunduh")},
+    "gas-backup":()=>{if(!GAS_URL){toast("GAS_URL belum diisi — lihat file Code.gs","warn");return}toast("Membuat backup spreadsheet…");gasFetch("backup").then(j=>{toast("Backup spreadsheet dibuat");if(j.url)window.open(j.url,"_blank")}).catch(e=>toast("Gagal: "+e.message,"err"))},
     "set-reset":()=>{if(confirm("Yakin reset semua data ke kondisi demo awal? Seluruh data yang sudah diinput akan hilang.")){localStorage.removeItem(DB_KEY);sessionStorage.removeItem("simpadu_uid");location.reload()}},
     /* sinkronisasi GAS */
     "gas-sync-now":()=>{if(!GAS_URL){toast("GAS_URL belum diisi — lihat file Code.gs","warn");return}syncToGas().then(ok=>toast(ok?"Sinkronisasi selesai":"Sinkronisasi gagal",ok?"":"err"))},
