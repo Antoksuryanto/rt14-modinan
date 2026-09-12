@@ -538,22 +538,15 @@ function syncToGas(){
   const fpBefore={};
   MODULES.forEach(m=>{fpBefore[m]=DB._fp[m]});
   ["nextId","nextTid"].forEach(k=>{fpBefore[k]=DB._fp[k]});
-  return gasFetch("get").then(j=>{
-    if(j.data&&Object.keys(j.data).length){
-      const before=JSON.stringify(DB);
-      DB=mergeGas(j.data,j.rev);
-      if(JSON.stringify(DB)!==before)saveLocalOnly();
-    }
-  }).catch(()=>{}).then(()=>{
-    const payload={data:{},rev:{}};
-    MODULES.forEach(m=>{payload.data[m]=DB[m];payload.rev[m]=DB._rev[m]||0});
-    ["nextId","nextTid"].forEach(k=>{payload.data[k]=DB[k];payload.rev[k]=DB._rev[k]||0});
-    return gasFetch("save",payload);
-  }).then(j=>{
+  // PUSH DULU — data lokal menang, server rev tidak bisa menimpa
+  const payload={data:{},rev:{}};
+  MODULES.forEach(m=>{payload.data[m]=DB[m];payload.rev[m]=DB._rev[m]||0});
+  ["nextId","nextTid"].forEach(k=>{payload.data[k]=DB[k];payload.rev[k]=DB._rev[k]||0});
+  return gasFetch("save",payload).then(j=>{
     if(j&&j.rev){
       DB._srvRev=j.rev;
-      // Module tidak berubah selama sync → rev lokal = server rev (sinkron)
-      // Module berubah selama sync → rev lokal = max(serverRev+1) → menang di sync berikutnya
+      // Module tidak berubah selama push → rev lokal = server rev (sinkron)
+      // Module berubah selama push → rev lokal = max(serverRev+1) → menang di pull
       MODULES.forEach(m=>{
         if(DB._fp[m]===fpBefore[m])DB._rev[m]=j.rev[m]||DB._rev[m]||0;
         else DB._rev[m]=Math.max(DB._rev[m]||0,(j.rev[m]||0)+1);
@@ -564,7 +557,15 @@ function syncToGas(){
       });
       saveLocalOnly();
     }
-    setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
+    // PULL SETELAH PUSH — server sudah punya data lokal, tidak ada konflik
+    return gasFetch("get").then(j2=>{
+      if(j2.data&&Object.keys(j2.data).length){
+        const before=JSON.stringify(DB);
+        DB=mergeGas(j2.data,j2.rev);
+        if(JSON.stringify(DB)!==before)saveLocalOnly();
+      }
+    }).catch(()=>{});
+  }).then(()=>{setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
     .catch(err=>{setGasStatus("err","Gagal: "+err.message);console.warn("GAS sync gagal",err);return false});
 }
 function syncFromGas(){
