@@ -345,11 +345,10 @@ function saveAll(data, rev) {
 function tulisSheet_(m, val) {
   var sh = getSheetByKey_(m);
   var cols = MODULE_COLUMNS[m] || ["key", "value"];
-  // Hapus isi lama, tulis ulang header + data
+  // Hapus isi lama (clearContent — deleteRows tidak bisa hapus semua baris non-frozen)
   var last = sh.getLastRow();
-  if (last > 1) sh.deleteRows(2, last - 1);
-  else if (last === 1) sh.getRange(1, 1, 1, cols.length).clearContent();
-  sh.appendRow(cols);
+  if (last > 1) sh.getRange(2, 1, last - 1, cols.length).clearContent();
+  sh.getRange(1, 1, 1, cols.length).setValues([cols]);
   if (m === "profil") {
     // profil = object → tulis key|value
     if (val && typeof val === "object" && !Array.isArray(val)) {
@@ -388,10 +387,9 @@ function tulisSheet_(m, val) {
 function tulisScalar_(k, val) {
   var sh = getSheetByKey_(k);
   var last = sh.getLastRow();
-  if (last > 1) sh.deleteRows(2, last - 1);
-  else if (last === 1) sh.getRange(1, 1, 1, 2).clearContent();
-  sh.appendRow(["key", "value"]);
-  sh.appendRow([k, val === null || val === undefined ? "" : String(val)]);
+  if (last > 1) sh.getRange(2, 1, last - 1, 2).clearContent();
+  sh.getRange(1, 1, 1, 2).setValues([["key", "value"]]);
+  sh.getRange(2, 1, 1, 2).setValues([[k, val === null || val === undefined ? "" : String(val)]]);
   sh.setFrozenRows(1);
 }
 
