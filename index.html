@@ -485,6 +485,17 @@ if(!Array.isArray(DB.pengurus))DB.pengurus=[];
 DB.pengurus.forEach((x,i)=>{if(!x.id)x.id=i+1});
 if(!Array.isArray(DB.periodeList))DB.periodeList=[];
 if(DB.profil.periodeMulai==null){const m=String(DB.profil.periode||"2023–2028").match(/(\d{4})\s*[-–]\s*(\d{4})/);DB.profil.periodeMulai=m?+m[1]:2023;DB.profil.periodeSelesai=m?+m[2]:2028}
+/* normalisasi: Google Sheets auto-convert "2026-03" → Date ISO; balikkan ke YYYY-MM */
+if(Array.isArray(DB.iuran))DB.iuran.forEach(i=>{if(i.bulan&&/^\d{4}-\d{2}-\d{2}T/.test(String(i.bulan)))i.bulan=String(i.bulan).slice(0,7)});
+if(Array.isArray(DB.transaksi))DB.transaksi.forEach(t=>{if(t.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(t.tgl)))t.tgl=String(t.tgl).slice(0,10)});
+if(Array.isArray(DB.pengumuman))DB.pengumuman.forEach(p=>{if(p.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(p.tgl)))p.tgl=String(p.tgl).slice(0,10)});
+if(Array.isArray(DB.agenda))DB.agenda.forEach(a=>{if(a.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.tgl)))a.tgl=String(a.tgl).slice(0,10)});
+if(Array.isArray(DB.pengaduan))DB.pengaduan.forEach(a=>{if(a.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.tgl)))a.tgl=String(a.tgl).slice(0,10)});
+if(Array.isArray(DB.arisan))DB.arisan.forEach(a=>{if(a.bulan&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.bulan)))a.bulan=String(a.bulan).slice(0,7)});
+if(Array.isArray(DB.danaSosial))DB.danaSosial.forEach(d=>{if(d.tanggal&&/^\d{4}-\d{2}-\d{2}T/.test(String(d.tanggal)))d.tanggal=String(d.tanggal).slice(0,10)});
+if(Array.isArray(DB.berita))DB.berita.forEach(b=>{if(b.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(b.tgl)))b.tgl=String(b.tgl).slice(0,10)});
+if(Array.isArray(DB.galeri))DB.galeri.forEach(g=>{if(g.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(g.tgl)))g.tgl=String(g.tgl).slice(0,10)});
+if(Array.isArray(DB.arsip))DB.arsip.forEach(a=>{if(a.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.tgl)))a.tgl=String(a.tgl).slice(0,10)});
 const save=()=>{bumpRevs();try{localStorage.setItem(DB_KEY,JSON.stringify(DB))}catch(e){};scheduleGasSync()};
 const periodeLabel=()=>DB.profil.periodeMulai+"–"+DB.profil.periodeSelesai;
 
@@ -576,6 +587,12 @@ function mergeGas(remote,remoteRev){
   });
   Object.keys(DB).forEach(k=>{if(base[k]===undefined)base[k]=DB[k]});
   DB=base;
+  /* normalisasi tanggal ISO dari server (Google Sheets auto-convert) */
+  const normISO=(arr,f)=>{if(Array.isArray(arr))arr.forEach(x=>{if(x[f]&&/^\d{4}-\d{2}-\d{2}T/.test(String(x[f])))x[f]=String(x[f]).slice(0,10)})};
+  const normBulan=(arr,f)=>{if(Array.isArray(arr))arr.forEach(x=>{if(x[f]&&/^\d{4}-\d{2}-\d{2}T/.test(String(x[f])))x[f]=String(x[f]).slice(0,7)})};
+  normBulan(DB.iuran,"bulan");normBulan(DB.arisan,"bulan");
+  normISO(DB.transaksi,"tgl");normISO(DB.pengumuman,"tgl");normISO(DB.agenda,"tgl");normISO(DB.pengaduan,"tgl");
+  normISO(DB.danaSosial,"tanggal");normISO(DB.berita,"tgl");normISO(DB.galeri,"tgl");normISO(DB.arsip,"tgl");
   DB._rev=mergedRev;
   DB._fp={};
   MODULES.forEach(m=>{DB._fp[m]=JSON.stringify(DB[m]||null)});
