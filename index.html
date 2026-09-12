@@ -534,6 +534,10 @@ function scheduleGasSync(){
 function syncToGas(){
   if(!GAS_URL)return Promise.resolve();
   setGasStatus("sync","Menyinkron…");
+  // Snapshot fingerprint sebelum sync — deteksi edit selama sync berjalan
+  const fpBefore={};
+  MODULES.forEach(m=>{fpBefore[m]=DB._fp[m]});
+  ["nextId","nextTid"].forEach(k=>{fpBefore[k]=DB._fp[k]});
   return gasFetch("get").then(j=>{
     if(j.data&&Object.keys(j.data).length){
       const before=JSON.stringify(DB);
@@ -546,8 +550,20 @@ function syncToGas(){
     ["nextId","nextTid"].forEach(k=>{payload.data[k]=DB[k];payload.rev[k]=DB._rev[k]||0});
     return gasFetch("save",payload);
   }).then(j=>{
-    // Simpan baseline server rev dari response (jika ada) supaya bumpRevs berikutnya menang
-    if(j&&j.rev){DB._srvRev=j.rev;saveLocalOnly()}
+    if(j&&j.rev){
+      DB._srvRev=j.rev;
+      // Module tidak berubah selama sync → rev lokal = server rev (sinkron)
+      // Module berubah selama sync → rev lokal = max(serverRev+1) → menang di sync berikutnya
+      MODULES.forEach(m=>{
+        if(DB._fp[m]===fpBefore[m])DB._rev[m]=j.rev[m]||DB._rev[m]||0;
+        else DB._rev[m]=Math.max(DB._rev[m]||0,(j.rev[m]||0)+1);
+      });
+      ["nextId","nextTid"].forEach(k=>{
+        if(DB._fp[k]===fpBefore[k])DB._rev[k]=j.rev[k]||DB._rev[k]||0;
+        else DB._rev[k]=Math.max(DB._rev[k]||0,(j.rev[k]||0)+1);
+      });
+      saveLocalOnly();
+    }
     setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
     .catch(err=>{setGasStatus("err","Gagal: "+err.message);console.warn("GAS sync gagal",err);return false});
 }
