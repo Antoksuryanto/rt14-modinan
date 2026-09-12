@@ -215,6 +215,10 @@ function bacaObject_(sh) {
     if (!k) continue;
     var v = values[i][1];
     if (v === "" || v === null || v === undefined) { obj[k] = ""; continue; }
+    if (v instanceof Date) {
+      obj[k] = Utilities.formatDate(v, Session.getScriptTimeZone(), "yyyy-MM-dd");
+      continue;
+    }
     if (typeof v === "string" && (v.charAt(0) === "[" || v.charAt(0) === "{")) {
       try { obj[k] = JSON.parse(v); } catch (e) { obj[k] = v; }
     } else {
@@ -241,6 +245,11 @@ function bacaSheet_(sh, m) {
       if (!headers[j]) continue;
       var v = row[j];
       if (v === "" || v === null || v === undefined) { obj[headers[j]] = ""; continue; }
+      if (v instanceof Date) {
+        // Google Sheets auto-convert string tanggal → Date. Kembalikan ke string.
+        obj[headers[j]] = Utilities.formatDate(v, Session.getScriptTimeZone(), headers[j] === "bulan" ? "yyyy-MM" : "yyyy-MM-dd");
+        continue;
+      }
       if (typeof v === "string" && (v.charAt(0) === "[" || v.charAt(0) === "{")) {
         try { obj[headers[j]] = JSON.parse(v); } catch (e) { obj[headers[j]] = v; }
       } else {
@@ -366,6 +375,11 @@ function tulisSheet_(m, val) {
     });
     rows.push(row);
   });
+  // Paksa kolom "bulan" jadi teks SEBELUM setValues — cegah Google Sheets auto-convert "2026-03" → Date
+  var idxBulan = cols.indexOf("bulan");
+  if (idxBulan >= 0 && rows.length) {
+    sh.getRange(2, idxBulan + 1, rows.length, 1).setNumberFormat("@");
+  }
   if (rows.length) sh.getRange(2, 1, rows.length, cols.length).setValues(rows);
   sh.setFrozenRows(1);
 }
