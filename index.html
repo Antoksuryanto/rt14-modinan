@@ -746,6 +746,15 @@ function revealInView(scope){
 }
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.1});
 window.addEventListener("scroll",()=>{const sec=document.querySelector(".page.active");if(sec)revealInView(sec)},{passive:true});
+/* Pantau semua render ulang (ganti bulan, filter, tab, dll) — reveal baru langsung tampil */
+const mo=new MutationObserver(()=>{
+  const sec=document.querySelector(".page.active");
+  if(!sec)return;
+  revealInView(sec);
+  setTimeout(()=>revealInView(sec),50);
+  setTimeout(()=>{sec.querySelectorAll(".reveal:not(.in)").forEach(el=>el.classList.add("in"))},500);
+});
+mo.observe($("#pages"),{childList:true,subtree:true});
 function runCounters(){$$(".page.active [data-count]").forEach(el=>{const t=+el.dataset.count,s=performance.now(),dur=900;
   (function f(n){const p=Math.min(1,(n-s)/dur);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString("id-ID");if(p<1)requestAnimationFrame(f)})(s)})}
 function lockedPage(em,t,d,showLogin){return`<div class="gate"><div><div class="em">${em}</div><h2>${t}</h2>
