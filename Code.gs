@@ -347,7 +347,8 @@ function tulisSheet_(m, val) {
   var cols = MODULE_COLUMNS[m] || ["key", "value"];
   // Hapus isi lama, tulis ulang header + data
   var last = sh.getLastRow();
-  if (last > 0) sh.deleteRows(1, last);
+  if (last > 1) sh.deleteRows(2, last - 1);
+  else if (last === 1) sh.getRange(1, 1, 1, cols.length).clearContent();
   sh.appendRow(cols);
   if (m === "profil") {
     // profil = object → tulis key|value
@@ -387,7 +388,8 @@ function tulisSheet_(m, val) {
 function tulisScalar_(k, val) {
   var sh = getSheetByKey_(k);
   var last = sh.getLastRow();
-  if (last > 0) sh.deleteRows(1, last);
+  if (last > 1) sh.deleteRows(2, last - 1);
+  else if (last === 1) sh.getRange(1, 1, 1, 2).clearContent();
   sh.appendRow(["key", "value"]);
   sh.appendRow([k, val === null || val === undefined ? "" : String(val)]);
   sh.setFrozenRows(1);
