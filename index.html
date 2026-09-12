@@ -505,16 +505,17 @@ let gasStatus={state:"off",msg:"Sinkronisasi"};
 const MODULES=["profil","users","warga","pengurus","periodeList","pengumuman","agenda","arisan","danaSosial","transaksi","iuran","pengaduan","berita","galeri","arsip","notifikasi"];
 if(!DB._rev)DB._rev={};
 if(!DB._fp)DB._fp={};
+if(!DB._srvRev)DB._srvRev={};
 MODULES.forEach(m=>{if(DB._rev[m]==null)DB._rev[m]=0;if(DB._fp[m]==null)DB._fp[m]=JSON.stringify(DB[m]||null)});
 ["nextId","nextTid"].forEach(k=>{if(DB._rev[k]==null)DB._rev[k]=0;if(DB._fp[k]==null)DB._fp[k]=String(DB[k])});
 function bumpRevs(){
   MODULES.forEach(m=>{
     const fp=JSON.stringify(DB[m]||null);
-    if(DB._fp[m]!==fp){DB._fp[m]=fp;DB._rev[m]=Math.max(Date.now(),(DB._rev[m]||0)+1)}
+    if(DB._fp[m]!==fp){DB._fp[m]=fp;DB._rev[m]=Math.max(Date.now(),(DB._srvRev&&DB._srvRev[m]||0)+1,(DB._rev[m]||0)+1)}
   });
   ["nextId","nextTid"].forEach(k=>{
     const fp=String(DB[k]);
-    if(DB._fp[k]!==fp){DB._fp[k]=fp;DB._rev[k]=Math.max(Date.now(),(DB._rev[k]||0)+1)}
+    if(DB._fp[k]!==fp){DB._fp[k]=fp;DB._rev[k]=Math.max(Date.now(),(DB._srvRev&&DB._srvRev[k]||0)+1,(DB._rev[k]||0)+1)}
   });
 }
 function gasFetch(action,payload){
@@ -544,7 +545,10 @@ function syncToGas(){
     MODULES.forEach(m=>{payload.data[m]=DB[m];payload.rev[m]=DB._rev[m]||0});
     ["nextId","nextTid"].forEach(k=>{payload.data[k]=DB[k];payload.rev[k]=DB._rev[k]||0});
     return gasFetch("save",payload);
-  }).then(()=>{setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
+  }).then(j=>{
+    // Simpan baseline server rev dari response (jika ada) supaya bumpRevs berikutnya menang
+    if(j&&j.rev){DB._srvRev=j.rev;saveLocalOnly()}
+    setGasStatus("ok","Tersinkron "+new Date().toLocaleTimeString("id-ID"));return true})
     .catch(err=>{setGasStatus("err","Gagal: "+err.message);console.warn("GAS sync gagal",err);return false});
 }
 function syncFromGas(){
@@ -594,6 +598,7 @@ function mergeGas(remote,remoteRev){
   normISO(DB.transaksi,"tgl");normISO(DB.pengumuman,"tgl");normISO(DB.agenda,"tgl");normISO(DB.pengaduan,"tgl");
   normISO(DB.danaSosial,"tanggal");normISO(DB.berita,"tgl");normISO(DB.galeri,"tgl");normISO(DB.arsip,"tgl");
   DB._rev=mergedRev;
+  DB._srvRev=JSON.parse(JSON.stringify(remoteRev||{}));
   DB._fp={};
   MODULES.forEach(m=>{DB._fp[m]=JSON.stringify(DB[m]||null)});
   ["nextId","nextTid"].forEach(k=>{DB._fp[k]=String(DB[k])});

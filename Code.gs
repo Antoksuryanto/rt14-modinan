@@ -91,7 +91,7 @@ function handleRequest(e, method) {
       var payload = JSON.parse(e.postData.contents);
       if (!payload || !payload.data) throw new Error("Payload tidak lengkap");
       saveAll(payload.data, payload.rev || null);
-      out.setContent(JSON.stringify({ ok: true, saved: new Date().toISOString() }));
+      out.setContent(JSON.stringify({ ok: true, saved: new Date().toISOString(), rev: loadRev() }));
     } else if (action === "ping") {
       out.setContent(JSON.stringify({ ok: true, pong: true, time: new Date().toISOString() }));
     } else if (action === "backup") {
@@ -154,7 +154,9 @@ function loadAll() {
     var lastSavedHash = Number(props.getProperty("hash_" + m) || 0);
     if (curHash !== lastSavedHash && lastSavedHash !== 0) {
       // Sheet diubah manual → bump rev supaya frontend pull data server
+      // Set hash sekaligus supaya tidak bump lagi di load berikutnya
       props.setProperty("rev_" + m, String(Date.now()));
+      props.setProperty("hash_" + m, String(curHash));
     }
   });
   SCALAR_KEYS.forEach(function(k) {
@@ -165,6 +167,7 @@ function loadAll() {
     var lastSavedHash = Number(props.getProperty("hash_" + k) || 0);
     if (curHash !== lastSavedHash && lastSavedHash !== 0) {
       props.setProperty("rev_" + k, String(Date.now()));
+      props.setProperty("hash_" + k, String(curHash));
     }
   });
   // 2) Migrasi satu kali dari format lama (blob JSON) jika belum pernah
@@ -302,11 +305,14 @@ function saveAll(data, rev) {
   var lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
-    var now = new Date().toISOString();
     var props = PropertiesService.getScriptProperties();
     var keys = Object.keys(data);
     for (var j = 0; j < keys.length; j++) {
       var key = keys[j];
+      var serverRev = Number(props.getProperty("rev_" + key) || 0);
+      var clientRev = rev ? Number(rev[key] || 0) : 0;
+      // Race multi-tab: data lokal lebih lama dari server → jangan timpa
+      if (clientRev < serverRev) continue;
       var sh = ssGetSheetByName_(key);
       if (!sh) {
         // Sheet belum ada — tulis langsung
@@ -323,6 +329,8 @@ function saveAll(data, rev) {
       var lastHash = Number(props.getProperty("hash_" + key) || 0);
       var isi = sh.getDataRange().getValues();
       var kosong = isi.length < 2 || (isi.length === 1 && isi[0].join("").trim() === "");
+      // Optimasi: rev sama & sheet tidak berubah → skip tulis (hemat waktu)
+      if (clientRev === serverRev && curHash === lastHash && !kosong) continue;
       if (curHash === lastHash || lastHash === 0 || kosong) {
         // Sheet tidak diubah manual sejak terakhir ditulis server → aman timpa
         // lastHash===0: sheet baru / hash belum pernah diset → timpa juga
