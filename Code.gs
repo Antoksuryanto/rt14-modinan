@@ -139,6 +139,7 @@ function getSheetByKey_(key) {
 
 function loadAll() {
   var data = {};
+  var props = PropertiesService.getScriptProperties();
   // 1) Baca dari sheet per kategori (format baru)
   MODULES.forEach(function(m) {
     var sh = ssGetSheetByName_(m);
@@ -148,14 +149,27 @@ function loadAll() {
     } else {
       data[m] = bacaSheet_(sh, m);
     }
+    // Deteksi perubahan eksternal (inject manual): jika hash sheet != hash terakhir saveAll
+    var curHash = hashKonten_(sh.getDataRange().getValues());
+    var lastSavedHash = Number(props.getProperty("hash_" + m) || 0);
+    if (curHash !== lastSavedHash && lastSavedHash !== 0) {
+      // Sheet diubah manual → bump rev supaya frontend pull data server
+      props.setProperty("rev_" + m, String(Date.now()));
+    }
+    props.setProperty("hash_" + m, String(curHash));
   });
   SCALAR_KEYS.forEach(function(k) {
     var sh = ssGetSheetByName_(k);
     if (!sh) return;
     data[k] = bacaScalar_(sh);
+    var curHash = hashKonten_(sh.getDataRange().getValues());
+    var lastSavedHash = Number(props.getProperty("hash_" + k) || 0);
+    if (curHash !== lastSavedHash && lastSavedHash !== 0) {
+      props.setProperty("rev_" + k, String(Date.now()));
+    }
+    props.setProperty("hash_" + k, String(curHash));
   });
   // 2) Migrasi satu kali dari format lama (blob JSON) jika belum pernah
-  var props = PropertiesService.getScriptProperties();
   if (props.getProperty("migrated_tabel") !== "1") {
     var legacy = getSheet_();
     var values = legacy.getDataRange().getValues();
