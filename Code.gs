@@ -156,7 +156,6 @@ function loadAll() {
       // Sheet diubah manual → bump rev supaya frontend pull data server
       props.setProperty("rev_" + m, String(Date.now()));
     }
-    props.setProperty("hash_" + m, String(curHash));
   });
   SCALAR_KEYS.forEach(function(k) {
     var sh = ssGetSheetByName_(k);
@@ -167,7 +166,6 @@ function loadAll() {
     if (curHash !== lastSavedHash && lastSavedHash !== 0) {
       props.setProperty("rev_" + k, String(Date.now()));
     }
-    props.setProperty("hash_" + k, String(curHash));
   });
   // 2) Migrasi satu kali dari format lama (blob JSON) jika belum pernah
   if (props.getProperty("migrated_tabel") !== "1") {
@@ -187,6 +185,24 @@ function loadAll() {
       props.setProperty("migrated_tabel", "1");
     }
   }
+  // 3) Isi sheet kosong dari data lokal (jika sheet ada tapi kosong — mis. arisan/profil)
+  //    Ini menutup kasus: sheet dibuat tapi data tidak pernah tertulis (race hash lama)
+  MODULES.forEach(function(m) {
+    var sh = ssGetSheetByName_(m);
+    if (!sh) return;
+    var isi = sh.getDataRange().getValues();
+    var kosong = isi.length < 2 || (isi.length === 1 && isi[0].join("").trim() === "");
+    if (kosong && data[m] !== undefined && data[m] !== null) {
+      var isiData = (m === "profil" && typeof data[m] === "object" && !Array.isArray(data[m]))
+        ? Object.keys(data[m]).length > 0
+        : Array.isArray(data[m]) && data[m].length > 0;
+      if (isiData) {
+        tulisSheet_(m, data[m]);
+        props.setProperty("hash_" + m, String(hashKonten_(sh.getDataRange().getValues())));
+        props.setProperty("rev_" + m, String(Date.now()));
+      }
+    }
+  });
   return data;
 }
 
@@ -296,8 +312,9 @@ function saveAll(data, rev) {
       }
       var curHash = hashKonten_(sh.getDataRange().getValues());
       var lastHash = Number(props.getProperty("hash_" + key) || 0);
-      if (curHash === lastHash) {
+      if (curHash === lastHash || lastHash === 0) {
         // Sheet tidak diubah manual sejak terakhir ditulis server → aman timpa
+        // lastHash===0: sheet baru / hash belum pernah diset → timpa juga
         if (MODULES.indexOf(key) >= 0) tulisSheet_(key, data[key]);
         else if (SCALAR_KEYS.indexOf(key) >= 0) tulisScalar_(key, data[key]);
         var sh2 = ssGetSheetByName_(key);
@@ -417,6 +434,21 @@ function resetData() {
     if (last > 1) legacy.deleteRows(2, last - 1);
   }
   return "Data direset";
+}
+
+/* Reset semua hash_* di ScriptProperties agar saveAll bisa menulis ulang.
+ * Jalankan dari editor GAS: pulihkanData_()  */
+function pulihkanData_() {
+  var props = PropertiesService.getScriptProperties();
+  var keys = props.getKeys();
+  var count = 0;
+  keys.forEach(function(k) {
+    if (k.indexOf("hash_") === 0) {
+      props.deleteProperty(k);
+      count++;
+    }
+  });
+  return "Reset " + count + " hash propertie(s). Sekarang frontend bisa push data.";
 }
 
 function testConnection() {
