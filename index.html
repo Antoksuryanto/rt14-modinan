@@ -341,7 +341,7 @@ const BULANS=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov",
 const pad=n=>String(n).padStart(2,"0");
 const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 const todayStr=()=>iso(new Date());
-const fmtTgl=t=>{if(!t)return"-";const d=new Date(t+"T00:00");return d.getDate()+" "+BULANS[d.getMonth()]+" "+d.getFullYear()};
+const fmtTgl=t=>{if(!t)return"-";const d=/T| /.test(String(t))?new Date(t):new Date(t+"T00:00");if(isNaN(d.getTime()))return String(t);return d.getDate()+" "+BULANS[d.getMonth()]+" "+d.getFullYear()};
 function rel(isoStr){const s=(Date.now()-new Date(isoStr))/1000;if(s<60)return"baru saja";if(s<3600)return Math.floor(s/60)+" mnt lalu";if(s<86400)return Math.floor(s/3600)+" jam lalu";return Math.floor(s/86400)+" hari lalu"}
 const avColor=n=>["#0B4D33","#1F7A4D","#B97A0E","#2A7FA8","#7B5EA7","#C94F7C","#D98324"][(n.charCodeAt(0)+n.length)%7];
 const initials=n=>n.replace(/^[A-Z][a-z]*\.?\s*/,"").split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase()||n.slice(0,2).toUpperCase();
@@ -834,7 +834,7 @@ RENDER.beranda=function(){
     <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
       <div class="card reveal">
         <div class="hd"><h3>${modernIcon("calendar")} Agenda Terdekat</h3><button class="btn btn-sm btn-ghost" data-act="nav" data-page="agenda">Kalender →</button></div>
-        <div class="pad">${upc.length?upc.map(a=>{const dd=new Date(a.tgl+"T00:00");return`
+        <div class="pad">${upc.length?upc.map(a=>{const dd=/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00");return`
           <div class="tl-item"><div class="dt-blk"><b>${dd.getDate()}</b><span>${BULANS[dd.getMonth()]}</span></div>
           <div style="min-width:0"><b style="font-size:13.5px">${esc(a.judul)}</b>
           <div class="small muted">⏰ ${a.jam} WIB · 📍 ${esc(a.tempat)}</div>
@@ -1112,7 +1112,7 @@ RENDER.agenda=function(){
     </div>
     <div class="card reveal"><div class="hd"><h3>${state.calSel?"📌 Kegiatan "+fmtTgl(state.calSel):"📌 Kegiatan "+BULAN[m]}</h3><span class="bdg b-gray">${shown.length} kegiatan</span></div>
       <div class="pad">${shown.length?shown.map(a=>`
-        <div class="tl-item"><div class="dt-blk" style="background:${KAT_COLORS[a.kat]}18"><b style="color:${KAT_COLORS[a.kat]}">${new Date(a.tgl+"T00:00").getDate()}</b><span style="color:${KAT_COLORS[a.kat]}">${BULANS[new Date(a.tgl+"T00:00").getMonth()]}</span></div>
+        <div class="tl-item"><div class="dt-blk" style="background:${KAT_COLORS[a.kat]}18"><b style="color:${KAT_COLORS[a.kat]}">${(/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00")).getDate()}</b><span style="color:${KAT_COLORS[a.kat]}">${BULANS[(/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00")).getMonth()]}</span></div>
         <div style="flex:1;min-width:0"><b style="font-size:13.5px">${esc(a.judul)}</b>
         <div class="small muted">⏰ ${a.jam} WIB · 📍 ${esc(a.tempat)}</div>
         <div class="small muted" style="margin-top:3px">${esc(a.desc||"")}</div>
