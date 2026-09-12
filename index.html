@@ -578,7 +578,7 @@ function mergeGas(remote,remoteRev){
   return base;
 }
 function setGasStatus(state,msg){gasStatus={state,msg};const el=$("#gasStatus");if(el)el.textContent=msg;const dot=$("#gasDot");if(dot)dot.className="dot "+(state==="ok"?"b-green":state==="err"?"b-red":"b-amber")}
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")syncFromGas()});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")syncFromGas().then(ok=>{if(ok)setPage(state.page)})});
 const state={user:null,page:"beranda",wq:"",wtTinggal:"",wtStatus:"",annF:"Semua",cal:{y:new Date().getFullYear(),m:new Date().getMonth()},calSel:null,finTab:"trans",finBulan:"all",finJenis:"Semua",iurBulan:todayStr().slice(0,7),aduF:"Semua",aduKat:"Semua",members:[],beritaTab:"berita",galF:"Semua",setTab:"profil"};
 const ROLES={admin:"Admin / Ketua",sekretaris:"Sekretaris",bendahara:"Bendahara"};
 const ICONS={
@@ -669,8 +669,8 @@ function doLogin(){
   state.user=u;sessionStorage.setItem("simpadu_uid",u.u);
   closeModal();applyAuth();toast("Selamat datang, "+u.nama+" — "+ROLES[u.role]);
 }
-function logout(){state.user=null;sessionStorage.removeItem("simpadu_uid");applyAuth();toast("Anda keluar — kembali ke tampilan warga")}
-function applyAuth(){renderTopbar();buildNav();buildBnav();bellCount();setPage(logged()?state.page:"beranda")}
+function logout(){state.user=null;sessionStorage.removeItem("simpadu_uid");state.page="beranda";applyAuth();toast("Anda keluar — kembali ke tampilan warga")}
+function applyAuth(){renderTopbar();buildNav();buildBnav();bellCount();setPage(state.page)}
 
 /* ================= NAV & TOPBAR ================= */
 function renderTopbar(){
