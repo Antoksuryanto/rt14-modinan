@@ -174,15 +174,16 @@ textarea.inp{resize:vertical;min-height:90px}
 .stp.cur{color:var(--amber-d)}
 .stp.cur::before{background:var(--amber);animation:pl2 1.6s infinite}
 @keyframes pl2{0%{box-shadow:0 0 0 1.5px var(--amber)}70%{box-shadow:0 0 0 7px rgba(240,164,34,0)}100%{box-shadow:0 0 0 1.5px var(--amber)}}
-.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.cal .dow{font-size:10px;font-weight:800;text-align:center;color:var(--muted);padding:4px 0;text-transform:uppercase}
-.cal-cell{aspect-ratio:1;border-radius:9px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.14s;background:var(--mint-2)}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal-head h3{font-size:15px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-width:520px}
+.cal .dow{font-size:9.5px;font-weight:800;text-align:center;color:var(--muted);padding:3px 0;text-transform:uppercase}
+.cal-cell{aspect-ratio:1.5;border-radius:8px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11.5px;font-weight:600;cursor:pointer;transition:.14s;background:var(--mint-2);min-height:32px}
 .cal-cell:hover{border-color:var(--leaf);transform:scale(1.06)}
 .cal-cell.blank{background:none;cursor:default}
 .cal-cell.today{background:var(--pine);color:#fff;font-weight:800}
 .cal-cell.sel{border-color:var(--amber);box-shadow:0 0 0 2px var(--amber-s)}
-.dots{display:flex;gap:3px}.dots i{width:5px;height:5px;border-radius:50%;display:block}
+.dots{display:flex;gap:2px}.dots i{width:4px;height:4px;border-radius:50%;display:block}
 .bars{display:flex;align-items:flex-end;gap:14px;height:190px;padding-top:10px}
 .bar-g{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
 .bar-pair{display:flex;gap:4px;align-items:flex-end;width:100%;height:100%;justify-content:center}
@@ -491,7 +492,7 @@ if(Array.isArray(DB.transaksi))DB.transaksi.forEach(t=>{if(t.tgl&&/^\d{4}-\d{2}-
 if(Array.isArray(DB.pengumuman))DB.pengumuman.forEach(p=>{if(p.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(p.tgl)))p.tgl=String(p.tgl).slice(0,10)});
 if(Array.isArray(DB.agenda))DB.agenda.forEach(a=>{if(a.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.tgl)))a.tgl=String(a.tgl).slice(0,10)});
 if(Array.isArray(DB.pengaduan))DB.pengaduan.forEach(a=>{if(a.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.tgl)))a.tgl=String(a.tgl).slice(0,10)});
-if(Array.isArray(DB.arisan))DB.arisan.forEach(a=>{if(a.bulan&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.bulan)))a.bulan=String(a.bulan).slice(0,7)});
+if(Array.isArray(DB.arisan))DB.arisan.forEach(a=>{if(a.bulan&&/^\d{4}-\d{2}$/.test(String(a.bulan)))a.bulan=String(a.bulan)+"-01";else if(a.bulan&&/^\d{4}-\d{2}-\d{2}T/.test(String(a.bulan)))a.bulan=String(a.bulan).slice(0,10)});
 if(Array.isArray(DB.danaSosial))DB.danaSosial.forEach(d=>{if(d.tanggal&&/^\d{4}-\d{2}-\d{2}T/.test(String(d.tanggal)))d.tanggal=String(d.tanggal).slice(0,10)});
 if(Array.isArray(DB.berita))DB.berita.forEach(b=>{if(b.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(b.tgl)))b.tgl=String(b.tgl).slice(0,10)});
 if(Array.isArray(DB.galeri))DB.galeri.forEach(g=>{if(g.tgl&&/^\d{4}-\d{2}-\d{2}T/.test(String(g.tgl)))g.tgl=String(g.tgl).slice(0,10)});
@@ -506,6 +507,8 @@ const MODULES=["profil","users","warga","pengurus","periodeList","pengumuman","a
 if(!DB._rev)DB._rev={};
 if(!DB._fp)DB._fp={};
 if(!DB._srvRev)DB._srvRev={};
+// Asumsi GAS lama sampai terbukti rev-aware (response save punya rev)
+if(DB._gasOld==null)DB._gasOld=true;
 MODULES.forEach(m=>{if(DB._rev[m]==null)DB._rev[m]=0;if(DB._fp[m]==null)DB._fp[m]=JSON.stringify(DB[m]||null)});
 ["nextId","nextTid"].forEach(k=>{if(DB._rev[k]==null)DB._rev[k]=0;if(DB._fp[k]==null)DB._fp[k]=String(DB[k])});
 function bumpRevs(){
@@ -576,12 +579,14 @@ function syncFromGas(){
   setGasStatus("sync","Memuat server…");
   return gasFetch("get").then(j=>{
     if(j.data&&Object.keys(j.data).length){
-      if(DB._gasOld){
-        // GAS lama: loadAll bump rev tiap get → server rev selalu > local rev → pull menimpa.
-        // Jangan timpa data lokal. Setelah deploy GAS baru, pull aktif.
+      // GAS baru (rev-aware) → pull aman. GAS lama → jangan timpa data lokal.
+      if(!j.rev){
+        DB._gasOld=true;
+        saveLocalOnly();
         setGasStatus("ok","Data lokal dipakai (GAS lama)");
         return false;
       }
+      DB._gasOld=false;
       DB=mergeGas(j.data,j.rev);
       saveLocalOnly();
       setGasStatus("ok","Data server dimuat "+new Date().toLocaleTimeString("id-ID"));
@@ -619,7 +624,7 @@ function mergeGas(remote,remoteRev){
   DB=base;
   /* normalisasi tanggal ISO dari server (Google Sheets auto-convert) */
   const normISO=(arr,f)=>{if(Array.isArray(arr))arr.forEach(x=>{if(x[f]&&/^\d{4}-\d{2}-\d{2}T/.test(String(x[f])))x[f]=String(x[f]).slice(0,10)})};
-  const normBulan=(arr,f)=>{if(Array.isArray(arr))arr.forEach(x=>{if(x[f]&&/^\d{4}-\d{2}-\d{2}T/.test(String(x[f])))x[f]=String(x[f]).slice(0,7)})};
+  const normBulan=(arr,f)=>{if(Array.isArray(arr))arr.forEach(x=>{if(x[f]&&/^\d{4}-\d{2}$/.test(String(x[f])))x[f]=String(x[f])+"-01";else if(x[f]&&/^\d{4}-\d{2}-\d{2}T/.test(String(x[f])))x[f]=String(x[f]).slice(0,10)})};
   normBulan(DB.iuran,"bulan");normBulan(DB.arisan,"bulan");
   normISO(DB.transaksi,"tgl");normISO(DB.pengumuman,"tgl");normISO(DB.agenda,"tgl");normISO(DB.pengaduan,"tgl");
   normISO(DB.danaSosial,"tanggal");normISO(DB.berita,"tgl");normISO(DB.galeri,"tgl");normISO(DB.arsip,"tgl");
@@ -691,7 +696,7 @@ const guardFin=()=>{if(canKeu())return true;toast("Modul keuangan hanya dapat di
 const aktifKK=()=>DB.warga.filter(k=>k.status==="Aktif");
 const totalJiwa=()=>aktifKK().reduce((s,k)=>s+k.anggota.length+1,0);
 const ADU_STAT=["Diajukan","Diproses","Ditangani","Selesai"];
-const KAT_COLORS={"Kerja Bakti":"#2F8F5B","Rapat Warga":"#0B4D33","Posyandu":"#D98324","Pengajian":"#7B5EA7","Arisan":"#C94F7C","Sosial":"#2A7FA8"};
+const KAT_COLORS={"Kerja Bakti":"#2F8F5B","Rapat Warga":"#0B4D33","Posyandu":"#D98324","Pengajian":"#7B5EA7","Arisan":"#C94F7C","Sosial":"#2A7FA8","Lainnya":"#8A8F98"};
 const ADU_KAT=[["Lampu Jalan","💡"],["Jalan Rusak","🛣"],["Sampah","🗑"],["Keamanan","🛡"],["Gangguan Lingkungan","🌳"],["Fasilitas Umum","🏛"],["Masalah Air","🚰"],["Masalah Listrik","⚡"],["Keluhan Lainnya","📝"]];
 const NOTIF_ICON={iuran:"💰",pengumuman:"📣",agenda:"🗓",pengaduan:"🛠",sistem:"🔔",user:"👤"};
 function pushNotif(tipe,judul,pesan){DB.notifikasi.unshift({id:++DB.nextId,tipe,judul,pesan,waktu:new Date().toISOString(),read:false});save();bellCount()}
@@ -886,7 +891,7 @@ RENDER.beranda=function(){
           <div class="tl-item"><div class="dt-blk"><b>${dd.getDate()}</b><span>${BULANS[dd.getMonth()]}</span></div>
           <div style="min-width:0"><b style="font-size:13.5px">${esc(a.judul)}</b>
           <div class="small muted">⏰ ${a.jam} WIB · 📍 ${esc(a.tempat)}</div>
-          <span class="bdg" style="background:${KAT_COLORS[a.kat]}18;color:${KAT_COLORS[a.kat]};margin-top:4px">${a.kat}</span></div></div>`}).join(""):'<div class="empty"><span class="em">🗓</span>Belum ada agenda terdekat.</div>'}</div>
+          <span class="bdg" style="background:${KAT_COLORS[a.kat]||"#8A8F98"}18;color:${KAT_COLORS[a.kat]||"#8A8F98"};margin-top:4px">${a.kat}</span></div></div>`}).join(""):'<div class="empty"><span class="em">🗓</span>Belum ada agenda terdekat.</div>'}</div>
       </div>
       <div class="card reveal"><div class="pad">
         <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-family:var(--disp)">${modernIcon("wallet")} Iuran ${BULAN[new Date().getMonth()]}</b><span class="bdg ${pct>=80?"b-green":"b-amber"}">${lunas}/${iurNow.length} KK lunas</span></div>
@@ -919,8 +924,8 @@ RENDER.beranda=function(){
     <div class="pad grid g2">
       <div>
         <h4 style="margin-bottom:8px; font-size:16px;">Arisan Warga</h4>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Bulan</th><th>Penerima</th><th>Keterangan</th><th>Selanjutnya</th></tr></thead><tbody>
-          ${DB.arisan.map(item=>`<tr><td class="mono">${fmtTgl(item.bulan + '-01')}</td><td><b>${esc(item.penerima)}</b></td><td>${esc(item.keterangan)}</td><td class="small muted">${esc(item.selanjutnya)}</td></tr>`).join("")}
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Penerima</th><th>Keterangan</th><th>Selanjutnya</th><th>Status</th></tr></thead><tbody>
+          ${DB.arisan.map(item=>{const done=item.bulan<todayStr();return `<tr><td class="mono">${fmtTgl(item.bulan)}</td><td><b>${esc(item.penerima)}</b></td><td>${esc(item.keterangan)}</td><td class="small muted">${done?esc(item.selanjutnya):"—"}</td><td><span class="bdg ${done?"b-green":"b-red"}">${done?"Sudah Terlaksana":"Akan Datang"}</span></td></tr>`}).join("")}
         </tbody></table></div>
       </div>
       <div>
@@ -1160,11 +1165,11 @@ RENDER.agenda=function(){
     </div>
     <div class="card reveal"><div class="hd"><h3>${state.calSel?"📌 Kegiatan "+fmtTgl(state.calSel):"📌 Kegiatan "+BULAN[m]}</h3><span class="bdg b-gray">${shown.length} kegiatan</span></div>
       <div class="pad">${shown.length?shown.map(a=>`
-        <div class="tl-item"><div class="dt-blk" style="background:${KAT_COLORS[a.kat]}18"><b style="color:${KAT_COLORS[a.kat]}">${(/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00")).getDate()}</b><span style="color:${KAT_COLORS[a.kat]}">${BULANS[(/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00")).getMonth()]}</span></div>
+        <div class="tl-item"><div class="dt-blk" style="background:${KAT_COLORS[a.kat]||"#8A8F98"}18"><b style="color:${KAT_COLORS[a.kat]||"#8A8F98"}">${(/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00")).getDate()}</b><span style="color:${KAT_COLORS[a.kat]||"#8A8F98"}">${BULANS[(/T| /.test(String(a.tgl))?new Date(a.tgl):new Date(a.tgl+"T00:00")).getMonth()]}</span></div>
         <div style="flex:1;min-width:0"><b style="font-size:13.5px">${esc(a.judul)}</b>
         <div class="small muted">⏰ ${a.jam} WIB · 📍 ${esc(a.tempat)}</div>
         <div class="small muted" style="margin-top:3px">${esc(a.desc||"")}</div>
-        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="bdg" style="background:${KAT_COLORS[a.kat]}18;color:${KAT_COLORS[a.kat]}">${a.kat}</span>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="bdg" style="background:${KAT_COLORS[a.kat]||"#8A8F98"}18;color:${KAT_COLORS[a.kat]||"#8A8F98"}">${a.kat}</span>
         ${ck?`<button class="chip" style="padding:2px 10px;font-size:11px" data-act="agenda-edit" data-id="${a.id}">✏️ Edit</button>
         <button class="chip" style="padding:2px 10px;font-size:11px;color:var(--red)" data-act="agenda-del" data-id="${a.id}">🗑 Hapus</button>
         ${a.tgl>=todayStr()?`<button class="chip" style="padding:2px 10px;font-size:11px" data-act="agenda-remind" data-id="${a.id}">🔔 H-3</button>`:""}`:""}</div></div></div>`).join(""):'<div class="empty"><span class="em">🗓</span>Tidak ada kegiatan pada tanggal ini.</div>'}</div></div>
@@ -1194,9 +1199,11 @@ function finForm(t,presetKat="Kas RT"){
 }
 function arisanRotasi(){
   const rows=[...DB.arisan].sort((a,b)=>a.bulan.localeCompare(b.bulan));
+  const today=todayStr();
   return rows.map((it,idx)=>{
     const next=rows[(idx+1)%rows.length];
-    return { ...it, bulanBerikutnya: next.bulan, penerimaBerikutnya: next.penerima };
+    const done=it.bulan<today;
+    return { ...it, status:done?"Sudah Terlaksana":"Akan Datang", bulanBerikutnya: done?next.bulan:"", penerimaBerikutnya: done?next.penerima:"" };
   });
 }
 RENDER.keuangan=function(){
@@ -1314,13 +1321,14 @@ function finArisanHTML(ck){
     <div class="toolbar"><span class="bdg b-green">Rotasi Arisan RT</span></div>
     ${ck?'<button class="btn btn-pine" data-act="arisan-add">＋ Tambah Jadwal Arisan</button>':""}
   </div>
-  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Bulan</th><th>Penerima</th><th>Keterangan</th><th>Bulan Berikutnya</th><th>Penerima Berikutnya</th>${ck?'<th>Aksi</th>':""}</tr></thead><tbody>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Penerima</th><th>Keterangan</th><th>Bulan Berikutnya</th><th>Penerima Berikutnya</th><th>Status</th>${ck?'<th>Aksi</th>':""}</tr></thead><tbody>
   ${rows.map(item=>`<tr>
-    <td class="mono">${fmtTgl(item.bulan + "-01")}</td>
+    <td class="mono">${fmtTgl(item.bulan)}</td>
     <td><b>${esc(item.penerima)}</b></td>
     <td>${esc(item.keterangan)}</td>
-    <td class="mono">${fmtTgl(item.bulanBerikutnya + "-01")}</td>
-    <td><b>${esc(item.penerimaBerikutnya)}</b></td>
+    <td class="mono">${fmtTgl(item.bulanBerikutnya)}</td>
+    <td>${item.penerimaBerikutnya?`<b>${esc(item.penerimaBerikutnya)}</b>`:'<span class="muted">—</span>'}</td>
+    <td><span class="bdg ${item.status==="Sudah Terlaksana"?"b-green":"b-red"}">${item.status}</span></td>
     ${ck?`<td><div class="rowact"><button class="icobtn" data-act="arisan-edit" data-id="${item.id}">✏️</button><button class="icobtn red" data-act="arisan-del" data-id="${item.id}">🗑</button></div></td>`:""}
   </tr>`).join("")}
   </tbody></table></div>
@@ -1468,22 +1476,22 @@ RENDER.laporan=function(){
         <button class="btn btn-sm btn-amber" data-act="rep-xls" data-k="${r.k}">📗 Excel</button></div></div>`).join("")}</div>`;
 };
 function repData(k){
-  const H={warga:["No","Nama KK","Alamat","No HP","Status Tinggal","Status Warga","Anggota Keluarga"],
+  const H={warga:["No","Nama","Jenis Kelamin","Hubungan Keluarga","Pekerjaan","Alamat","No HP","Status Tinggal","Status Warga"],
     kas:["Tanggal","Keterangan","Jenis","Kategori","Jumlah"],
     "dana-sosial":["Tanggal","Nama Kegiatan","Jenis","Jumlah","Keterangan"],
     keuangan:["Tanggal","Keterangan","Kategori","Jenis","Jumlah"],
-    arisan:["Bulan","Penerima","Keterangan","Bulan Berikutnya","Penerima Berikutnya"],
+    arisan:["Tanggal","Penerima","Keterangan","Status","Bulan Berikutnya","Penerima Berikutnya"],
     kegiatan:["Tanggal","Kegiatan","Kategori","Jam","Tempat"],
     pengaduan:["ID","Tanggal","Pelapor","Kategori","Judul","Status"],
     pengurus:["Jabatan","Nama","No. HP / Kontak"],
     riwayat:["Periode","Status","Jumlah Pengurus","Ketua RT"]};
   const R={
-    warga:()=>DB.warga.flatMap((x,i)=>[[i+1,x.nama,x.alamat,x.hp,x.tinggal,x.status,x.anggota.length+1+" jiwa"],
-      ...x.anggota.map(a=>["","  • "+a.nama+" ("+a.relasi+")","","","","",""])]),
+    warga:()=>DB.warga.flatMap((x,i)=>[[i+1,x.nama,x.jk||"L","Kepala Keluarga","—",x.alamat,x.hp,x.tinggal,x.status],
+      ...x.anggota.map(a=>["",a.nama,a.jk||"",a.relasi||"",a.kerja||"—",x.alamat,x.hp,x.tinggal,x.status])]),
     kas:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,t.kat,rupiah(t.jumlah)]),
     "dana-sosial":()=>DB.transaksi.filter(t=>t.kat==="Dana Sosial").sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.jenis,rupiah(t.jumlah),t.kat]),
     keuangan:()=>[...DB.transaksi].sort((a,b)=>a.tgl.localeCompare(b.tgl)).map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,rupiah(t.jumlah)]),
-    arisan:()=>arisanRotasi().map(item=>[fmtTgl(item.bulan + "-01"),item.penerima,item.keterangan,fmtTgl(item.bulanBerikutnya + "-01"),item.penerimaBerikutnya]),
+    arisan:()=>arisanRotasi().map(item=>[fmtTgl(item.bulan),item.penerima,item.keterangan,item.status,fmtTgl(item.bulanBerikutnya),item.penerimaBerikutnya]),
     kegiatan:()=>DB.agenda.map(a=>[fmtTgl(a.tgl),a.judul,a.kat,a.jam+" WIB",a.tempat]),
     pengaduan:()=>DB.pengaduan.map(a=>["ADU-"+a.id,fmtTgl(a.tgl),a.pelapor,a.kat,a.judul,ADU_STAT[a.status]]),
     pengurus:()=>DB.pengurus.map(x=>[x.jab,x.nama,x.hp]),
@@ -1688,7 +1696,7 @@ document.addEventListener("click",e=>{
     "mem-del":()=>{state.members.splice(+b.dataset.i,1);renderMembers()},
     "warga-tgl":()=>{const r=$("#mem-"+id);r.style.display=r.style.display==="none"?"table-row":"none"},
     "warga-del":()=>{if(confirm("Hapus data KK ini beserta anggotanya?")){DB.warga=DB.warga.filter(k=>k.id!=id);DB.iuran=DB.iuran.filter(i=>i.kkId!=id);save();RENDER.warga();toast("Data warga dihapus")}},
-    "warga-export":()=>exportExcel("data-warga-modinan",["Nama KK","Alamat","No HP","Status Tinggal","Status Warga","Anggota: Nama","L/P","Hubungan","Pekerjaan"],DB.warga.flatMap(k=>[[k.nama,k.alamat,k.hp,k.tinggal,k.status,k.nama,k.jk||"L","Kepala Keluarga","—"],...k.anggota.map(a=>["","","","","",a.nama,a.jk,a.relasi,a.kerja])])),
+    "warga-export":()=>exportExcel("data-warga-modinan",["No","Nama","Jenis Kelamin","Hubungan Keluarga","Pekerjaan","Alamat","No HP","Status Tinggal","Status Warga"],DB.warga.flatMap((k,i)=>[[i+1,k.nama,k.jk||"L","Kepala Keluarga","—",k.alamat,k.hp,k.tinggal,k.status],...k.anggota.map(a=>["",a.nama,a.jk||"",a.relasi||"",a.kerja||"—",k.alamat,k.hp,k.tinggal,k.status])])),
     "warga-template":()=>{const blob=new Blob(["\ufeffnama_kepala_keluarga;alamat;no_hp;status_tinggal\nContoh Warga;Jl. Modinan No. 99;0812xxxx;Tetap"],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="template-import-warga.csv";a.click()},
     "warga-import":()=>openModal("⬆ Import Data Warga (Excel/CSV)",`
       <p class="small muted">Format kolom: <b>nama_kepala_keluarga ; alamat ; no_hp ; status_tinggal</b>. Gunakan file .csv / .xls hasil export Excel.</p>
@@ -1770,19 +1778,19 @@ document.addEventListener("click",e=>{
     "fin-export":()=>exportExcel("transaksi-kas-modinan",["Tanggal","Keterangan","Kategori","Jenis","Jumlah","Bukti"],DB.transaksi.map(t=>[fmtTgl(t.tgl),t.ket,t.kat,t.jenis,t.jumlah,t.bukti||"—"])),
     /* arisan RT */
     "arisan-add":()=>{if(!guardFin())return;openModal("📅 Tambah Jadwal Arisan",`
-      <div class="f2"><div class="fld"><label>Bulan (YYYY-MM) *</label><input class="inp" id="fArBulan" type="month" value="${todayStr().slice(0,7)}"></div>
+      <div class="f2"><div class="fld"><label>Tanggal Arisan *</label><input class="inp" id="fArBulan" type="date" value="${todayStr()}"></div>
       <div class="fld"><label>Jumlah (Rp) *</label><input type="number" class="inp mono" id="fArJum" min="0" value="250000"></div></div>
       <div class="fld"><label>Penerima *</label><input class="inp" id="fArPenerima" placeholder="mis. Ibu Dewi Lestari"></div>
       <div class="fld"><label>Keterangan</label><input class="inp" id="fArKet" placeholder="mis. Arisan bulanan PKK"></div>
       <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="arisan-save" data-id="0">Tambahkan</button>`)},
     "arisan-edit":()=>{const a=DB.arisan.find(x=>x.id==id);if(!a)return;if(!guardFin())return;openModal("✏️ Edit Jadwal Arisan",`
-      <div class="f2"><div class="fld"><label>Bulan (YYYY-MM) *</label><input class="inp" id="fArBulan" type="month" value="${a.bulan}"></div>
+      <div class="f2"><div class="fld"><label>Tanggal Arisan *</label><input class="inp" id="fArBulan" type="date" value="${a.bulan}"></div>
       <div class="fld"><label>Jumlah (Rp) *</label><input type="number" class="inp mono" id="fArJum" min="0" value="${a.jumlah}"></div></div>
       <div class="fld"><label>Penerima *</label><input class="inp" id="fArPenerima" value="${esc(a.penerima)}"></div>
       <div class="fld"><label>Keterangan</label><input class="inp" id="fArKet" value="${esc(a.keterangan)}"></div>
       <button class="btn btn-pine btn-block" style="margin-top:10px" data-act="arisan-save" data-id="${a.id}">💾 Simpan Perubahan</button>`)},
     "arisan-save":()=>{const bulan=$("#fArBulan").value,penerima=$("#fArPenerima").value.trim(),jum=+$("#fArJum").value,ket=$("#fArKet").value.trim();
-      if(!bulan||!penerima||!jum){toast("Bulan, penerima, dan jumlah wajib diisi","err");return}
+      if(!bulan||!penerima||!jum){toast("Tanggal, penerima, dan jumlah wajib diisi","err");return}
       if(+id){const a=DB.arisan.find(x=>x.id==id);Object.assign(a,{bulan,penerima,jumlah:jum,keterangan:ket});toast("Jadwal arisan diperbarui")}
       else{DB.arisan.push({id:++DB.nextId,bulan,penerima,jumlah:jum,keterangan:ket});toast("Jadwal arisan ditambahkan")}
       save();closeModal();RENDER.keuangan()},
